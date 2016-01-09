@@ -5,6 +5,8 @@ Copy site directory locally
 From Command line:
 
 <code>cd [directory]
+
+
 npm install
 </code>
 
