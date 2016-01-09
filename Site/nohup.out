@@ -1,0 +1,155 @@
+sudo: node: command not found
+MEANness happens on port 3030
+sudo: node: command not found
+sudo: node: command not found
+MEANness happens on port 3030
+MEANness happens on port 3030
+MEANness happens on port 80
+events.js:85
+      throw er; // Unhandled 'error' event
+            ^
+Error: listen EACCES
+    at exports._errnoException (util.js:746:11)
+    at Server._listen2 (net.js:1139:19)
+    at listen (net.js:1182:10)
+    at Server.listen (net.js:1267:5)
+    at Function.app.listen (/home/ubuntu/bolt/node_modules/express/lib/application.js:531:24)
+    at Object.<anonymous> (/home/ubuntu/bolt/server.js:80:5)
+    at Module._compile (module.js:460:26)
+    at Object.Module._extensions..js (module.js:478:10)
+    at Module.load (module.js:355:32)
+    at Function.Module._load (module.js:310:12)
+sudo: node: command not found
+MEANness happens on port 3030
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+Error: Forbidden
+    at SendStream.error (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:145:16)
+    at SendStream.pipe (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/node_modules/send/lib/send.js:310:52)
+    at Layer.staticMiddleware [as handle] (/home/ubuntu/bolt/node_modules/express/node_modules/serve-static/index.js:85:8)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9
+    at Function.proto.process_params (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:251:12)
+    at next (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:189:19)
+    at Layer.jsonParser [as handle] (/home/ubuntu/bolt/node_modules/body-parser/index.js:31:38)
+    at trim_prefix (/home/ubuntu/bolt/node_modules/express/lib/router/index.js:226:17)
+    at /home/ubuntu/bolt/node_modules/express/lib/router/index.js:198:9

@@ -1,0 +1,220 @@
+/* Shared
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+html {
+	background-image: url("../images/bg-splash.jpg");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	/*background: url("../images/bg-splash.jpg") no-repeat center center fixed;*/ 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	position: relative;
+	min-height: 100%;
+}
+
+html.privacy {
+	background: none;	
+}
+
+body {
+    margin: 0 0 50px 0; /* bottom = footer height */
+}
+
+/* Nav
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+nav {
+	position: fixed;
+	top: 0;
+	z-index: 9999;
+	width: 100%;
+	height: 65px;
+	background-color: #ffffff;	
+}
+
+.privacy nav {
+	border-bottom: 1px solid #ebebeb;	
+}
+	nav .u-pull-left {
+		padding-top: 10px;	
+	}
+
+	.navbar-brand {
+		width: 98px;
+		height: 36px;	
+	}
+	
+	.navbar-nav {
+		margin-top: 20px;
+		list-style: none;
+		font-weight: 700;	
+	}
+	
+		.navbar-nav a {
+			text-decoration: none;
+			color: #889682;	
+		}
+		
+		.navbar-nav a:hover {
+			text-decoration: underline;	
+		}
+
+/* Footer
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+	background-color: #2b3b2b;
+	color: #889682;
+	display: block;
+}
+
+	footer p { margin: 10px 0 0 0; }
+
+	footer a {
+		text-decoration: none;
+		color: #889682;
+	}
+	
+		footer a:hover {
+			color: #889682;
+			text-decoration: underline;	
+		}
+
+
+/* Sections
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.section {
+  padding: 8rem 0 7rem;
+  text-align: left;
+}
+
+/* Hero
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.hero-h1, .hero-h2, .hero p {
+	color: #2b3b2b;
+}
+
+.hero-h1 {
+	font-size: 7.2rem; line-height: 1;
+}
+
+.hero-h1 span {
+	color: #55BA00; /*#55ba47;*/
+	
+}
+
+.hero p {
+	font-size: 2.4rem; line-height: 1.4;	
+}
+
+.hero-h2 {
+	font-size: 3rem; line-height: 1.4;	
+	margin-bottom: 0;
+}
+
+/* Forms
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.hero #MERGE5 {
+	border: none;
+	border-radius: 0;
+}
+
+.hero #MERGE0 {
+	margin-left: 1px;
+	border: none;
+	border-radius: 0;
+}
+
+.hero .button-primary {
+	margin-left: 1px;
+	border: none;
+	border-radius: 0;
+}
+
+
+/* Bigger than 320 */
+@media (min-width: 320px) {
+  .section {
+    padding: 12rem 0 11rem;
+  }
+  .hero {
+    padding-bottom: 12rem;
+    text-align: left;
+    height: 480px;
+  }
+	.hero-h1 {
+		font-size: 4.8rem;
+	}
+	.hero-h2 {
+		font-size: 2.4rem;
+	}
+	.hero p {
+		font-size: 1.8rem;
+	}
+	
+	.button-primary {
+		width: 100%;	
+	}
+}
+
+/* Bigger than 550 */
+@media (min-width: 550px) {
+  .section {
+    padding: 12rem 0 11rem;
+  }
+  .hero {
+    padding-bottom: 12rem;
+    text-align: left;
+    height: 480px;
+  }
+	.hero-h1 {
+		font-size: 4.8rem;
+	}
+	.hero-h2 {
+		font-size: 2.1rem;
+	}
+	.hero p {
+		font-size: 1.8rem;
+	}
+	.button-primary {
+		width: auto;	}
+}
+
+/* Bigger than 750 */
+@media (min-width: 750px) {
+
+	.hero-h1 {
+		font-size: 4.8rem;
+	}
+	.hero-h2 {
+		font-size: 2.1rem;
+	}
+	.hero p {
+		font-size: 1.8rem;
+	}
+		.button-primary {
+		width: auto;	}
+}
+
+/* Bigger than 1000 */
+@media (min-width: 1000px) {
+
+  .hero {
+    padding: 22rem 0;
+  }
+  .hero-h1 {
+	  font-size: 7.2rem; }
+  .hero-h2 {
+    font-size: 3.0rem;
+  }
+  .hero p {
+	  font-size: 2.4rem;
+}
+	.button-primary {
+		width: auto;	
+	}
+}
