@@ -6,7 +6,12 @@ angular.module("CertCtrl", ["CertService"]).controller("CertController", ['$scop
 	})
 	$scope.message = "Stored Certifications";
 }])
-.controller("CertDetailController", ['$scope','$http','CertificationService', function($http,$scope,CertificationService) {
+.controller("CertDetailController", ['$scope','$http','$routeParams','CertificationService', function($http,$scope,$routeParams,CertificationService) {
+	var currentFormId = $routeParams.id;
+	var cert = CertificationService.get(currentFormId);
+	cert.then(function(responseData) {
+		console.log(responseData);
+	})
 	$scope.processForm = function(formData) {
 		
 	}

@@ -10,7 +10,11 @@ angular.module("CertService", []).service("CertificationService", ['$http', func
 				return $promise;
 			} else {
 				//return a specific cert
-				return "Getting one cert";
+				var $promise = $http({
+					method: 'get',
+					url: '../data/certifications?id=' + id
+				});
+				return $promise;
 			}
 		},
 		post : function(certData) {

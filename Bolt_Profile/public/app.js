@@ -28,21 +28,3 @@ angular.module("boltprofiles", ["ui.router", "HomeCtrl", "CertCtrl", "CertServic
     })
 
   })
-	// .config(function($stateProvider,$urlRouteProvider) {
-	// 	$urlRouteProvider.otherwise('/home');
-
-	// 	$stateProvider.state('home', {
-	// 		url: "/home",
-	// 		templateUrl: "templates/home.html"
-	// 	});
-
-	// 	$stateProvider.state('certifications', {
-	// 		url: "/certifications",
-	// 		templateUrl: "templates/certifications.html"
-	// 	});
-
-	// 	$stateProvider.state('profiles', {
-	// 		url: "/profiles",
-	// 		templateUrl: "templates/profiles.html"
-	// 	})
-	// });
