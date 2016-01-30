@@ -5,15 +5,17 @@
 </div>
 <div class="row">
 	<div class="col-sm-6 col-md-6 col-lg-6">
-		<table class="table table-striped table-condensed">
-			<thead>
-				<th></th>
-				<th>Certification</th>
-				<th>Description</th>
-			</thead>
-			<tbody>
-			<tr ng-repeat="item in data"><td><a class="btn btn-default" ui-sref="/cert/detail?id={{ item._id }}">Edit Item</a></td><td>{{ item.type }}</td><td>{{ item.desc }}</td></tr>
-			</tbody>
-		</table>
+		Choose to view and edit existing certifications or add new ones. Certifications can also be added to the collection by using the profile form.
 	</div>
 </div>
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<a ui-sref="cert.list" class="btn btn-link">View/Edit Existing Certifications</a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<a ui-sref="cert.detail" class="btn btn-link">Add New Certifications</a>
+	</div>
+</div>
+<div ui-view></div>

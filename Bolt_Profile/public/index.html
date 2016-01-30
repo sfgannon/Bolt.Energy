@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <base href="/">
 
-    <title>Starter Node and Angular</title>
+    <title>Bolt Profiles</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
@@ -58,9 +58,13 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+        $("a.navbar-brand").on("click", function() {
+          $(".nav").find(".active").removeClass("active");
+          $('a[ui-sref="home"]').parent().addClass("active");
+        })
         $(".nav a").on("click", function(){
-         $(".nav").find(".active").removeClass("active");
-         $(this).parent().addClass("active");
+          $(".nav").find(".active").removeClass("active");
+          $(this).parent().addClass("active");
         });
     </script>
 

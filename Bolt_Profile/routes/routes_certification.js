@@ -61,10 +61,45 @@ router.route("/certifications/:id")
 		}
 	})
 	.put(function(req, res) {
+	  	objectid = mongoose.Types.ObjectId;
+		if (objectid.isValid(req.params.id)) {
+			Certification.findById(req.params.id, function(err, certification) {
 
+	            if (err)
+	                res.send(err);
+
+	            certification.type = req.body.type;
+	            certification.desc = req.body.desc;
+
+	            if ((certification.type)&&(certification.desc)) {
+		            certification.save(function(err) {
+		                if (err)
+		                    res.send(err);
+
+		                res.json({ message: 'Certification updated.' });
+		            });
+	            } else {
+	            	res.json({ message: "Certification fields cannot be blank." })
+	            }
+	        });
+		} else {
+			res.json({ message: "Invalid ObjectId" });
+		}
 	})
 	.delete(function(req, res) {
-		
-	})
+	  	objectid = mongoose.Types.ObjectId;
+		if (objectid.isValid(req.params.id)) {
+	        Certification.remove({
+	            _id: req.params.id
+	        }, function(err, certification) {
+	            if (err)
+	                res.json({ error: err, message: "Error deleting certification." });
+
+	            res.json({ message: 'Successfully deleted' });
+	        });
+	    } else {
+	    	res.json({ message: "Invalid ObjecyId" });
+	    }
+	});
 
 module.exports = router;

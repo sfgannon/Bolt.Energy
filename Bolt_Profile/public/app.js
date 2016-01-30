@@ -11,12 +11,17 @@ angular.module("boltprofiles", ["ui.router", "HomeCtrl", "CertCtrl", "CertServic
 
     .state('cert', {
         url: '/cert',
-        templateUrl: '/templates/certification.html',
+        templateUrl: '/templates/certification.html'
+    })
+
+    .state('cert.list', {
+        url: '/cert/list',
+        templateUrl: '/templates/certification_list.html',
         controller: 'CertController'
     })
 
     .state('cert.detail', {
-    	url: '/cert/detail?id=:id',
+    	url: '/cert/detail/:certid',
     	templateUrl: '/templates/certification_detail.html',
     	controller: 'CertDetailController'
     })
