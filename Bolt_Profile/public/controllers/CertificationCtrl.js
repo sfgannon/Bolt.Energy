@@ -27,21 +27,40 @@ angular.module("CertCtrl", ["CertService"]).controller("CertController", ['$scop
 			// 	alert("Error saving certification: " + response);
 			// })
 			//return CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc }).then(function(responseData) { 
-			CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc }).then(function(responseData) {
-				//return ({ "response": responseData, "message":"Successfully saved certification." });
-				alert(responseData.data.message);
-			}, function(response, status) {
-				return ($q.reject({ "message" : "Error saving: " + status }));
+
+
+			// CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc }).then(function(responseData) {
+			// 	//return ({ "response": responseData, "message":"Successfully saved certification." });
+			// 	alert(responseData.data.message);
+			// }, function(response, status) {
+			// 	return ($q.reject({ "message" : "Error saving: " + status }));
+			// })
+			var promise = CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc });
+			promise.then(function(response) {
+				alert(response.message);
+				$state.go('cert');
+			}, function(response) {
+				alert(response.message);
 			})
+			//return retVal;
 		} else {
 			//$promise = CertificationService.post({ type:$scope.type, desc: $scope.desc });
 			//var returnVal = CertificationService.post({ type:$scope.type, desc: $scope.desc });
 			//alert(returnVal.message);
-			return CertificationService.post({ type:$scope.type, desc: $scope.desc }).then(function(responseData) { 
-				//return ({ "response": responseData, "message": "Successfully saved certification. "});
-				alert(responseData);
-			}, function(response, status) { 
-				$q.reject({ "message" : "Error saving certification.", "response": response });
+
+
+			// return CertificationService.post({ type:$scope.type, desc: $scope.desc }).then(function(responseData) { 
+			// 	//return ({ "response": responseData, "message": "Successfully saved certification. "});
+			// 	alert(responseData);
+			// }, function(response, status) { 
+			// 	$q.reject({ "message" : "Error saving certification.", "response": response });
+			// })
+
+			var promise = CertificationService.post({ _id: $scope._id, type: $scope.type, desc: $scope.desc });
+			promise.then(function(response) {
+				alert(response.message);
+			}, function(response) {
+				alert(response.message);
 			})
 		}
 
