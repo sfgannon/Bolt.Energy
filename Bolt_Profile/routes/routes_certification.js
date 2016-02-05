@@ -24,7 +24,7 @@ router.route("/certifications")
 						})
 					}
 				} else {
-					res.json({ message: 'Cert already exists.' });
+					res.json({ message: 'Certificate already exists.' });
 				}
 			}
 		})
@@ -98,7 +98,7 @@ router.route("/certifications/:id")
 	            res.json({ message: 'Successfully deleted' });
 	        });
 	    } else {
-	    	res.json({ message: "Invalid ObjecyId" });
+	    	res.json({ message: "Invalid ObjectId" });
 	    }
 	});
 

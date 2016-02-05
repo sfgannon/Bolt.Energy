@@ -16,25 +16,25 @@ angular.module("CertCtrl", ["CertService"]).controller("CertController", ['$scop
 		$scope.type = responseData.data.type;
 		$scope.desc = responseData.data.desc;
 	});
-	$scope.processForm = function() {
-		//var $promise = $q.deferred;
+
+	$scope.cancelForm = function() {
+		$state.go('cert');
+	};
+
+	$scope.deleteCertification = function() {
 		if ($scope._id) {
-			//$promise = CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc });
-			// var returnVal = CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc });
-			// returnVal.success(function(responseData) {
-			// 	alert(responseData.data);
-			// }).error(function(response, status) {
-			// 	alert("Error saving certification: " + response);
-			// })
-			//return CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc }).then(function(responseData) { 
+			var promise = CertificationService.delete({ _id: $scope._id });
+			promise.then(function(response) {
+				alert(response.message);
+				$state.go('cert');
+			}, function(response) {
+				alert(response.message);
+			})
+		}
+	};
 
-
-			// CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc }).then(function(responseData) {
-			// 	//return ({ "response": responseData, "message":"Successfully saved certification." });
-			// 	alert(responseData.data.message);
-			// }, function(response, status) {
-			// 	return ($q.reject({ "message" : "Error saving: " + status }));
-			// })
+	$scope.processForm = function() {
+		if ($scope._id) {
 			var promise = CertificationService.put({ _id: $scope._id, type: $scope.type, desc: $scope.desc });
 			promise.then(function(response) {
 				alert(response.message);
@@ -42,28 +42,14 @@ angular.module("CertCtrl", ["CertService"]).controller("CertController", ['$scop
 			}, function(response) {
 				alert(response.message);
 			})
-			//return retVal;
 		} else {
-			//$promise = CertificationService.post({ type:$scope.type, desc: $scope.desc });
-			//var returnVal = CertificationService.post({ type:$scope.type, desc: $scope.desc });
-			//alert(returnVal.message);
-
-
-			// return CertificationService.post({ type:$scope.type, desc: $scope.desc }).then(function(responseData) { 
-			// 	//return ({ "response": responseData, "message": "Successfully saved certification. "});
-			// 	alert(responseData);
-			// }, function(response, status) { 
-			// 	$q.reject({ "message" : "Error saving certification.", "response": response });
-			// })
-
 			var promise = CertificationService.post({ _id: $scope._id, type: $scope.type, desc: $scope.desc });
 			promise.then(function(response) {
 				alert(response.message);
+				$state.go('cert');
 			}, function(response) {
 				alert(response.message);
 			})
 		}
-
-		//TODO put a watcher on the onStateCHanged event and listen for updates to the state params. When the stateparams are updated trigger a navigate to the List view of the certifications page
-	}
+	};
 }])
