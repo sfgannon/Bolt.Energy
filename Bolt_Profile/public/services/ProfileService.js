@@ -2,20 +2,93 @@ angular.module("ProfService", []).service("ProfileService", ['$http', function($
 	return {
 		get : function(id) {
 			if (!id) {
-				//return all profiles
-				return "Getting all profiles";
+				var $promise = $http({
+					method: 'get',
+					url: '../data/profiles'
+				});
+				return $promise;
 			} else {
-				//return a specific profile
-				return "Getting one profile";
+				var $promise = $http({
+					method: 'get',
+					url: '../data/profiles/' + id
+				});
+				return $promise;
 			}
 		},
 		post : function(profData) {
-			//Save a Prof, check for an ID, update if exsting
-			return "Updating a profile";
+			var $retVal = $q.defer();
+			if ((profData.name)&&(profData.desc)) {
+				$retVal.promise = $http({
+					method: 'post',
+					url: '../data/profiles',
+					data: ({
+						name: profData.name,
+						desc: profData.desc,
+						availability: profData.availability,
+						type: profData.type,
+						states: profData.states.split(','),
+						energyMix: profData.energyMix,
+						certifications: profData.certifications.split(','),
+						bannerUrl: profData.bannerUrl
+					})
+				}).then(function(responseData) {
+					$retVal.resolve({ profile: responseData.data, message: "Profile saved successfully." });
+				}, function(responseData, status) {
+					$retval.reject({ error: responseData.data, message: "Profile save failed." });
+				})
+				return $retVal.promise;
+			} else {
+				$retVal.reject({ message: "Required fields missing." });
+				return $retVal.promise;
+			}
 		},
-		delete : function(id) {
-			//Delete a profile
-			return "deleting a profile";
+		put : function(profData) {
+			var $retVal = $q.defer();
+
+			if(profData._id) {
+				///Check each field
+				if ((profData.name)&&(profData.desc)) {
+					$retVal.promise = $http({
+						method: 'put',
+						url: '../data/profiles/' + profData._id,
+					 	data: ({ _id: profData._id,
+							name: profData.name,
+							desc: profData.desc,
+							availability: profData.availability,
+							type: profData.type,
+							states: profData.states.split(','),
+							energyMix: profData.energyMix,
+							certifications: profData.certifications.split(','),
+							bannerUrl: profData.bannerUrl
+						})
+					}).then(function(responseData) {
+						$retVal.resolve({ profile: responseData.data, message: "Profile updated successfully." });
+					}, function(responseData, status) {
+						$retval.reject({ error: responseData.data, message: "Profile update failed." });
+					})
+					return $retVal.promise;
+				} else {
+					$retVal.reject({ message: "Required fields missing." });
+					return $retVal.promise;
+				}
+			}
+		},
+		delete : function(profData) {
+			var $retVal = $q.defer();
+			if(profData._id) {
+				$retVal.promise = $http({
+					method: 'delete',
+					url: '../data/profiles/' + profData._id
+				}).then(function(response) {
+					$retVal.resolve({ message: "Profile deleted successfully." });
+				}, function(response, status) {
+					$retVal.reject({ message: "Error deleting profile.", response: response });
+				})
+				return $retVal.promise;
+			} else {
+				$retVal.reject({ message: "Missing profile ID." });
+				return $retVal.promise;
+			}
 		}
 	}
 }])

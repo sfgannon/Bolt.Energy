@@ -1,4 +1,4 @@
-angular.module("boltprofiles", ["ui.router", "HomeCtrl", "CertCtrl", "CertService"])
+angular.module("boltprofiles", ["ui.router", "HomeCtrl", "CertCtrl", "CertService", "ProfCtrl", "ProfService"])
  .config(function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
@@ -28,8 +28,21 @@ angular.module("boltprofiles", ["ui.router", "HomeCtrl", "CertCtrl", "CertServic
 
     .state('prof', {
         url: '/prof',
-        templateUrl: '/templates/profile.html',
-        controller: 'ProfileController'
+        templateUrl: '/templates/profile.html'
     })
+
+    .state('prof.list', {
+        url: '/prof/list',
+        templateUrl: '/templates/profile_list.html',
+        controller: 'ProfController'
+    })
+
+    .state('prof.detail', {
+        url: '/prof/detail/:profid',
+        templateUrl: '/templates/profile_detail.html',
+        controller: 'ProfDetailController'
+    })
+
+
 
   })
