@@ -5,41 +5,34 @@ var Profile = require('../models/model_profile');
 var profileRouter = express.Router();
 profileRouter.route("/profiles")
 	.post(function(req, res) {
-		var prof = new Profile();
-		prof.name = req.body.name;
-		prof.desc = req.body.desc;
-		prof.availability = req.body.availability;
-		prof.type = req.body.type;
-		prof.energyMix = req.body.energyMix;
-		prof.states = req.body.states.split(",");
+		var profile = new Profile();
+		profile.name = req.body.name ? req.body.name : profile.name;
+		profile.desc = req.body.desc ? req.body.desc : profile.desc;
+		profile.availability = req.body.availability ? req.body.availability : profile.availability;
+		profile.type = req.body.type ? req.body.type : profile.type;
+		profile.energyMix = req.body.energyMix ? req.body.energyMix : profile.energyMix;
+		profile.states = req.body.states ? req.body.states : profile.states;
 		var certifications;
 		if (req.body.certifications) {
-			certifications = req.body.certifications.split(",");
+			profile.certifications = [];
+			console.log(req.body.certifications);
+			certifications = req.body.certifications;
 			for (i = 0; i < certifications.length; i++) {
-				prof.certifications.push({  _id: certifications[i] });
+				profile.certifications.push(certifications[i]);
 			}
+			console.log(profile.certifications);
 		}
-		prof.bannerUrl = req.body.bannerUrl;
-		Profile.where({ 'name': prof.name, 'desc': prof.desc }).exec(function(err, results){
-			if (err) { res.json({ message: "Error executing Model.Find().", error: err}); }
-			else {
-				if (results.length == 0) {
-					if ((prof.name)&&(prof.desc)) {
-						prof.save(function(err) {
-							if (err) {
-								res.json({ error: err, message: 'Error saving profile.' });
-							};
-							res.json({ message: 'Profile saved successfully.' });
-						})
-					} else {
-						res.json({ message: "Name and Description are required for profiles."});
-					}
-				} else {
-					res.json({ message: "Profile already exists." });
-				}
-			}
 
-		})
+        if ((profile.name)&&(profile.desc)) {
+            profile.save(function(err) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'Profile updated.' });
+            });
+        } else {
+        	res.json({ message: "Profile fields cannot be blank." })
+        }
 	})
 	.get(function(req, res) {
 		Profile.find(function(err, profiles) {
@@ -73,25 +66,31 @@ profileRouter.route("/profiles/:id")
 	})
 	.put(function(req, res) {
 	  	objectid = mongoose.Types.ObjectId;
-		if (objectid.isValid(req.params.id)) {
-			Profile.findById(req.params.id, function(err, profile) {
+	  	// console.log(req);
+	  	// console.log(req.data);
+	  	// console.log(req._id);
+		if (objectid.isValid(req.body._id)) {
+			Profile.findById(req.body._id, function(err, profile) {
 
 	            if (err)
 	                res.send(err);
 
-				prof.name = req.body.name ? req.body.name : prof.name;
-				prof.desc = req.body.desc ? req.body.desc : prof.desc;
-				prof.availability = req.body.availability ? req.body.availability : prof.availability;
-				prof.type = req.body.type ? req.body.type : prof.type;
-				prof.energyMix = req.body.energyMix ? req.body.energyMix : prof.energyMix;
-				prof.states = req.body.states ? req.body.states.split(",") : prof.states;
+				profile.name = req.body.name ? req.body.name : profile.name;
+				profile.desc = req.body.desc ? req.body.desc : profile.desc;
+				profile.availability = req.body.availability ? req.body.availability : profile.availability;
+				profile.type = req.body.type ? req.body.type : profile.type;
+				profile.energyMix = req.body.energyMix ? req.body.energyMix : profile.energyMix;
+				profile.states = req.body.states ? req.body.states : profile.states;
 				var certifications;
 				if (req.body.certifications) {
-					prof.certifications.clear();
-					certifications = req.body.certifications.split(",");
+					Profile.update({ _id: objectid(req.body._id) }, {$set: {"certifications": []}});
+					profile.certifications = [];
+					console.log(req.body.certifications);
+					certifications = req.body.certifications;
 					for (i = 0; i < certifications.length; i++) {
-						prof.certifications.push({  _id: certifications[i] });
+						profile.certifications.push(certifications[i]);
 					}
+					console.log(profile.certifications);
 				}
 
 	            if ((profile.name)&&(profile.desc)) {

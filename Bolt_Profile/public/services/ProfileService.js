@@ -1,4 +1,4 @@
-angular.module("ProfService", []).service("ProfileService", ['$http', function($http) {
+angular.module("ProfService", []).service("ProfileService", ['$http','$q', function($http,$q) {
 	return {
 		get : function(id) {
 			if (!id) {
@@ -26,9 +26,9 @@ angular.module("ProfService", []).service("ProfileService", ['$http', function($
 						desc: profData.desc,
 						availability: profData.availability,
 						type: profData.type,
-						states: profData.states.split(','),
+						states: profData.states,
 						energyMix: profData.energyMix,
-						certifications: profData.certifications.split(','),
+						certifications: profData.certifications,
 						bannerUrl: profData.bannerUrl
 					})
 				}).then(function(responseData) {
@@ -51,20 +51,21 @@ angular.module("ProfService", []).service("ProfileService", ['$http', function($
 					$retVal.promise = $http({
 						method: 'put',
 						url: '../data/profiles/' + profData._id,
-					 	data: ({ _id: profData._id,
+					 	data: ({
+					 		_id: profData._id,
 							name: profData.name,
 							desc: profData.desc,
 							availability: profData.availability,
 							type: profData.type,
-							states: profData.states.split(','),
+							states: profData.states,
 							energyMix: profData.energyMix,
-							certifications: profData.certifications.split(','),
+							certifications: profData.certifications,
 							bannerUrl: profData.bannerUrl
 						})
 					}).then(function(responseData) {
 						$retVal.resolve({ profile: responseData.data, message: "Profile updated successfully." });
 					}, function(responseData, status) {
-						$retval.reject({ error: responseData.data, message: "Profile update failed." });
+						$retVal.reject({ error: responseData.data, message: "Profile update failed." });
 					})
 					return $retVal.promise;
 				} else {
