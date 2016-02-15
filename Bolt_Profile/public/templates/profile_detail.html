@@ -85,6 +85,14 @@
 				</select>
 			</div>
 			<div class="form-group">
+				<label for="selType">Type: </label>
+				<select name="selType" class="form-control" ng-model="type" value="{{type}}">
+					<option value="Community Renewable">Community Renewable</option>
+					<option value="Carbon Credits">Carbon Credits</option>
+					<option value="Something Else">Something Else</option>
+				</select>
+			</div>
+			<div class="form-group">
 				<label for="inpBannerUrl">Banner Url: </label>
 				<input name="inpBannerUrl" type="text" class="form-control" ng-model="bannerUrl" value="{{bannerUrl}}">
 			</div>
