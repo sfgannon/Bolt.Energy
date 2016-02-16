@@ -12,7 +12,7 @@ profileRouter.route("/profiles")
 		profile.type = req.body.type ? req.body.type : profile.type;
 		profile.energyMix = req.body.energyMix ? req.body.energyMix : profile.energyMix;
 		profile.states = req.body.states ? req.body.states : profile.states;
-		profile.bannerUrl = req.body.bannerUrl ? req.body.bannerUrl : profile.bannnerUrl;
+		profile.bannerUrl = req.body.bannerUrl ? req.body.bannerUrl : profile.bannerUrl;
 		var certifications;
 		if (req.body.certifications) {
 			profile.certifications = [];
@@ -82,7 +82,7 @@ profileRouter.route("/profiles/:id")
 				profile.type = req.body.type ? req.body.type : profile.type;
 				profile.energyMix = req.body.energyMix ? req.body.energyMix : profile.energyMix;
 				profile.states = req.body.states ? req.body.states : profile.states;
-				profile.bannerUrl = req.body.bannerUrl ? req.body.bannerUrl : profile.bannnerUrl;
+				profile.bannerUrl = req.body.bannerUrl ? req.body.bannerUrl : profile.bannerUrl;
 				profile.type = req.body.type ? req.body.type : profile.type;
 				var certifications;
 				if (req.body.certifications) {
