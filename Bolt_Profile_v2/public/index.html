@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+
+    <title>Bolt Profiles</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap-theme.min.css">
+    <!-- JS -->
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+    <!-- ANGULAR CUSTOM -->
+    <script src="controllers/HomeCtrl.js"></script>
+    <script src="services/CertificationService.js"></script>
+    <script src="services/ProfileService.js"></script>
+    <script src="controllers/CertificationCtrl.js"></script>
+    <script src="controllers/ProfileCtrl.js"></script>
+    <script src="app.js"></script>
+
+</head>
+<body ng-app="boltprofiles">
+<div class="container">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bolt</a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="active"><a ui-sref="home">Home <span class="sr-only">(current)</span></a></li>
+              <li><a ui-sref="cert">Certifications</a></li>
+              <li><a ui-sref="prof">Profiles</a></li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <!-- ANGULAR DYNAMIC CONTENT -->
+    <div ui-view></div>
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="libs/jquery/dist/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $("a.navbar-brand").on("click", function() {
+          $(".nav").find(".active").removeClass("active");
+          $('a[ui-sref="home"]').parent().addClass("active");
+        })
+        $(".nav a").on("click", function(){
+          $(".nav").find(".active").removeClass("active");
+          $(this).parent().addClass("active");
+        });
+    </script>
+
+</div>
+</body>
+</html>
