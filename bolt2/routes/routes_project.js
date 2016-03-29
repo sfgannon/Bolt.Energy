@@ -8,7 +8,7 @@ router.route("/projects")
 	.get(function(req, res){
 		//Get all projects
 		Project.find(function(err, projects){ 
-			res.json({ err: err, projects: projects });
+			res.json(projects);
 		})
 	})
 	.post(function(req, res) {

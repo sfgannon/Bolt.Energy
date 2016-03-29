@@ -1,12 +1,11 @@
-angular.module("boltprofiles", ["ui.router", "HomeCtrl", "CertCtrl", "CertService", "ProfCtrl", "ProfService", "ProfileModule"])
+angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule"])
  .config(function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
 
     $stateProvider.state('home', {
         url: '/home',
-        templateUrl: '/templates/home.html',
-        controller: 'HomeController'
+        templateUrl: '/templates/home.html'
     })
 
     .state('cert', {
