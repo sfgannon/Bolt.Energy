@@ -11,10 +11,10 @@ var ProjectSchema = new Schema({
 		required: true
 	},
 	status: String,
-	availability: {
+	availability: [{
 		type:String,
 		required: true
-	},
+	}],
 	projectType: {
 		type: String,
 		required: true

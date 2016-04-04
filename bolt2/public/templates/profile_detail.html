@@ -1,26 +1,22 @@
 <div class="row">
 	<div class="col-sm-6 col-md-6 col-lg-6">
-		<form ng-submit="processForm()">
+		<form ng-submit="saveProfile()">
 			<div class="form-group">
-				<label for="inpType">Name: </label>
-				<input type="hidden" ng-model="_id" name="hiddenId">
-				<input name="inpName" type="text" class="form-control" ng-model="name" value="{{ name }}">
+				<label for="inpName">Name: </label>
+				<input type="hidden" ng-model="profile._id" name="hiddenId">
+				<input name="inpName" type="text" class="form-control" ng-model="profile.name" value="{{ profile.name }}">
 			</div>
 			<div class="form-group">
 				<label for="inpDesc">Description: </label>
-				<textarea name="inpDesc" rows=6 cols=10 class="form-control" ng-model="desc"></textarea>
+				<textarea name="inpDesc" rows=6 cols=10 class="form-control" ng-model="profile.desc"></textarea>
 			</div>
 			<div class="form-group">
-				<label for="selAvailability">Availability: </label>
-				<select name="selAvailability" class="form-control" ng-model="availability" value="{{availability}}">
-					<option value="Closed">Closed</option>
-					<option value="Accepting Members">Accepting Members</option>
-					<option value="In Development">In Development</option>
-				</select>
+				<label for="inpStatus">Status: </label>
+				<input name="inpStatus" type="text" class="form-control" ng-model="profile.status" value="{{ profile.status }}">
 			</div>
 			<div class="form-group">
-				<label for="lstStates">States: </label>
-				<select name="lstStates" multiple class="form-control" ng-model="states" value="{{states}}">
+				<label for="lstAvailability">Availability: </label>
+				<select name="lstAvailability" multiple class="form-control" ng-model="profile.availability" value="{{profile.availability}}">
 					<option value="AL">Alabama</option>
 					<option value="AK">Alaska</option>
 					<option value="AZ">Arizona</option>
@@ -75,31 +71,72 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="inpEnergyMix">Energy Mix: </label>
-				<input name="inpEnergyMix" type="text" class="form-control" ng-model="energyMix" value="{{energyMix}}">
+				<label for="selProfileType">Profile Type: </label>
+				<select name="selProfileType" class="form-control" ng-model="profile.profileType" value="{{profile.profileType}}">
+					<option value="Non-Commercial">Non-Commercial</option>
+					<option value="Commercial">Commercial</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="selEnergyType">Energy Type: </label>
+				<select name="selEnergyType" id="selEnergyType" class="form-control" ng-model="profile.energyType" value="{{profile.energyType}}">
+					<option value="Wind">Wind</option>
+					<option value="Solar">Solar</option>
+					<option value="Hydro">Hydro</option>
+					<option value="Geo_Thermal">Geo-Thermal</option>
+					<option value="Biomass">Biomass</option>
+					<option value="Landfill Gas">Landfill Gas</option>
+					<option value="Other">Other</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="inpAddress1">Address 1: </label>
+				<input name="inpAddress1" type="text" class="form-control" ng-model="profile.address1" value="{{ profile.address1 }}">
+			</div>
+			<div class="form-group">
+				<label for="inpAddress2">Address 2: </label>
+				<input name="inpAddress2" type="text" class="form-control" ng-model="profile.address2" value="{{ profile.address2 }}">
+			</div>
+			<div class="form-group">
+				<label for="inpCity">City: </label>
+				<input name="inpCity" type="text" class="form-control" ng-model="profile.city" value="{{ profile.city }}">
+			</div>
+			<div class="form-group">
+				<label for="inpState">State: </label>
+				<input name="inpState" type="text" class="form-control" ng-model="profile.state" value="{{ profile.state }}">
+			</div>
+			<div class="form-group">
+				<label for="inpZip">Zip: </label>
+				<input name="inpZip" type="text" class="form-control" ng-model="profile.zip" value="{{ profile.zip }}">
+			</div>
+			<div class="form-group">
+				<label for="selProfileOwner">Profile Owner: </label>
+				<input type="textbox" ng-model="profile.owner" class="form-control" value="{{profile.owner}}" id="inpProfile">
+			</div>
+			<div class="form-group">
+				<label for="inpBannerUrl">Banner Url: </label>
+				<input name="inpBannerUrl" type="text" class="form-control" ng-model="profile.bannerUrl" value="{{profile.bannerUrl}}">
+			</div>
+			<div class="form-group">
+				<label for="inpApprovalNumber">Approval Number: </label>
+				<input name="inpState" type="text" class="form-control" ng-model="profile.approvalNumber" value="{{ profile.approvalNumber }}">
 			</div>
 			<div class="form-group">
 				<label for="selCertifications">Certifications: </label>
-				<select name="selCertifications" multiple class="form-control" ng-model="certifications" value="{{certifications}}">
+				<select name="selCertifications" multiple class="form-control" ng-model="profile.certifications" value="{{project.certifications}}">
 					<option ng-repeat="cert in allCerts" value="{{ cert._id }}">{{ cert.type }}</option>
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="selType">Type: </label>
-				<select name="selType" class="form-control" ng-model="type" value="{{type}}">
-					<option value="Community Renewable">Community Renewable</option>
-					<option value="Carbon Credits">Carbon Credits</option>
-					<option value="Something Else">Something Else</option>
+				<label for="selProjects">Projects: </label>
+				<select name="selProjects" multiple class="form-control" ng-model="profile.projects" value="{{profile.projects}}">
+					<option ng-repeat="proj in projects" value="{{ proj._id }}">{{ proj.name
+					 }}</option>
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="inpBannerUrl">Banner Url: </label>
-				<input name="inpBannerUrl" type="text" class="form-control" ng-model="bannerUrl" value="{{bannerUrl}}">
-			</div>
-
-			<div class="form-group">
 				<input type='submit' class="btn btn-default">&nbsp
-				<button type="button" class="btn btn-warning" ng-click="cancelForm()">Cancel</button>&nbsp
+				<button type="button" class="btn btn-warning" ng-click="cancelProfile()">Cancel</button>&nbsp
 				<button type="button" class="btn btn-danger" ng-click="deleteProfile()">Delete</button>
 			</div>
 		</form>

@@ -3,6 +3,7 @@ var config = require('./config/config');
 var mongoose = config.getDB();
 
 var projectRouter = require('./routes/routes_project');
+var profileRouter = require('./routes/routes_profile');
 
 var bodyParser = require('body-parser');
 var app = express();
@@ -12,6 +13,7 @@ app.use(express.static('public'));
 var port = config.getPort() || 3002;
 
 app.use("/data", projectRouter);
+app.use("/data", profileRouter);
 
 app.listen(port);
 console.log("Bolt Profile app running on " + port);

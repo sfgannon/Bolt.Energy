@@ -1,22 +1,22 @@
 <div class="row">
 	<div class="col-sm-6 col-md-6 col-lg-6">
-		<form ng-submit="processForm()">
+		<form ng-submit="saveProject()">
 			<div class="form-group">
 				<label for="inpName">Name: </label>
-				<input type="hidden" ng-model="_id" name="hiddenId">
-				<input name="inpName" type="text" class="form-control" ng-model="name" value="{{ name }}">
+				<input type="hidden" ng-model="project._id" name="hiddenId">
+				<input name="inpName" type="text" class="form-control" ng-model="project.name" value="{{ project.name }}">
 			</div>
 			<div class="form-group">
 				<label for="inpDesc">Description: </label>
-				<textarea name="inpDesc" rows=6 cols=10 class="form-control" ng-model="desc"></textarea>
+				<textarea name="inpDesc" rows=6 cols=10 class="form-control" ng-model="project.desc"></textarea>
 			</div>
 			<div class="form-group">
 				<label for="inpStatus">Status: </label>
-				<input name="inpStatus" type="text" class="form-control" ng-model="status" value="{{ status }}">
+				<input name="inpStatus" type="text" class="form-control" ng-model="project.status" value="{{ project.status }}">
 			</div>
 			<div class="form-group">
 				<label for="lstAvailability">Availability: </label>
-				<select name="lstAvailability" multiple class="form-control" ng-model="availability" value="{{availability}}">
+				<select name="lstAvailability" multiple class="form-control" ng-model="project.availability" value="{{project.availability}}">
 					<option value="AL">Alabama</option>
 					<option value="AK">Alaska</option>
 					<option value="AZ">Arizona</option>
@@ -72,7 +72,7 @@
 			</div>
 			<div class="form-group">
 				<label for="selProjectType">Project Type: </label>
-				<select name="selProjectType" class="form-control" ng-model="projectType" value="{{projectType}}">
+				<select name="selProjectType" class="form-control" ng-model="project.projectType" value="{{project.projectType}}">
 					<option value="Non-Commercial">Non-Commercial</option>
 					<option value="Community Solar">Community Solar</option>
 					<option value="Solar Co-Op">Solar Co-Op</option>
@@ -85,39 +85,39 @@
 			</div>
 			<div class="form-group">
 				<label for="inpEnergyMix">Energy Mix: </label>
-				<input name="inpEnergyMix" type="text" class="form-control" ng-model="energyMix" value="{{energyMix}}">
+				<input name="inpEnergyMix" type="text" class="form-control" ng-model="project.energyMix" value="{{project.energyMix}}">
 			</div>
 			<div class="form-group">
 				<label for="inpAddress1">Address 1: </label>
-				<input name="inpAddress1" type="text" class="form-control" ng-model="address1" value="{{ address1 }}">
+				<input name="inpAddress1" type="text" class="form-control" ng-model="project.address1" value="{{ project.address1 }}">
 			</div>
 			<div class="form-group">
 				<label for="inpAddress2">Address 2: </label>
-				<input name="inpAddress2" type="text" class="form-control" ng-model="address2" value="{{ address2 }}">
+				<input name="inpAddress2" type="text" class="form-control" ng-model="project.address2" value="{{ project.address2 }}">
 			</div>
 			<div class="form-group">
 				<label for="inpCity">City: </label>
-				<input name="inpCity" type="text" class="form-control" ng-model="city" value="{{ city }}">
+				<input name="inpCity" type="text" class="form-control" ng-model="project.city" value="{{ project.city }}">
 			</div>
 			<div class="form-group">
 				<label for="inpState">State: </label>
-				<input name="inpState" type="text" class="form-control" ng-model="state" value="{{ state }}">
+				<input name="inpState" type="text" class="form-control" ng-model="project.state" value="{{ project.state }}">
 			</div>
 			<div class="form-group">
 				<label for="inpZip">Zip: </label>
-				<input name="inpZip" type="text" class="form-control" ng-model="zip" value="{{ zip }}">
+				<input name="inpZip" type="text" class="form-control" ng-model="project.zip" value="{{ project.zip }}">
 			</div>
 			<div class="form-group">
 				<label for="inpProgramCategory">Program Category: </label>
-				<input name="inpProgramCategory" type="text" class="form-control" ng-model="programCategory" value="{{ programCategory }}">
+				<input name="inpProgramCategory" type="text" class="form-control" ng-model="project.programCategory" value="{{ project.programCategory }}">
 			</div>
 			<div class="form-group">
 				<label for="inpCapacity">Capacity: </label>
-				<input name="inpCapacity" type="text" class="form-control" ng-model="capacity" value="{{ capacity }}">
+				<input name="inpCapacity" type="text" class="form-control" ng-model="project.capacity" value="{{ project.capacity }}">
 			</div>
 			<div class="form-group">
 				<label for="selUtilityDIstricts">Utility Districts: </label>
-				<select name="selUtilityDIstricts" multiple class="form-control" ng-model="utilityDistricts" value="{{utilityDistricts}}">
+				<select name="selUtilityDIstricts" multiple class="form-control" ng-model="project.utilityDistricts" value="{{project.utilityDistricts}}">
 					<option value="Berlin">Berlin</option>
 					<option value="BGE">BGE</option>
 					<option value="Choptank">Choptank</option>
@@ -133,18 +133,18 @@
 			</div>
 			<div class="form-group">
 				<label for="selProjectOwner">Project Owner: </label>
-				<select name="selProjectOwner" class="form-control" ng-model="projectOwner" value="{{projectOwner}}">
+				<select name="selProjectOwner" class="form-control" ng-model="project.projectOwner" value="{{project.projectOwner}}">
 					<option ng-repeat="po in owners" value="{{ po._id }}">{{ po.name }}</option>
 				</select>
 			</div>
 			<div class="form-group">
 				<label for="inpBannerUrl">Banner Url: </label>
-				<input name="inpBannerUrl" type="text" class="form-control" ng-model="bannerUrl" value="{{bannerUrl}}">
+				<input name="inpBannerUrl" type="text" class="form-control" ng-model="project.bannerUrl" value="{{project.bannerUrl}}">
 			</div>
 			<div class="form-group">
 				<input type='submit' class="btn btn-default">&nbsp
-				<button type="button" class="btn btn-warning" ng-click="cancelForm()">Cancel</button>&nbsp
-				<button type="button" class="btn btn-danger" ng-click="deleteProfile()">Delete</button>
+				<button type="button" class="btn btn-warning" ng-click="cancelProject()">Cancel</button>&nbsp
+				<button type="button" class="btn btn-danger" ng-click="deleteProject()">Delete</button>
 			</div>
 		</form>
 	</div>

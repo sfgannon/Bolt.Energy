@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-sm12 col-md-12 col-lg-12">
-		<span>These are the projects currently saved in the database.</span>
+		<span>These are the profiles currently saved in the database.</span>
 	</div>
 </div>
 <div class="row">
@@ -11,17 +11,17 @@
 				<th>Name</th>
 				<th>Description</th>
 				<th>Status</th>
+				<th>Type</th>
 				<th>Mix</th>
-				<th>Owner</th>
 			</thead>
 			<tbody>
-			<tr ng-repeat="item in projects">
-			<td><a class="btn btn-default" ui-sref="project.detail({ projectid: item._id })">Edit Item</a></td>
-				<td>{{ item.name }}</td>
-				<td>{{ item.desc }}</td>
-				<td>{{ item.status }}</td>
-				<td>{{ item.energyMix }}</td>
-				<td>{{ item.owner.name }}</td>
+			<tr ng-repeat="item in profiles">
+			<td><a class="btn btn-default" ui-sref="profile.detail({ profileid: item._id })">Edit Item</a></td>
+			<td>{{ item.name }}</td>
+			<td>{{ item.desc }}</td>
+			<td>{{ item.status }}</td>
+			<td>{{ item.type }}</td>
+			<td>{{ item.energyMix }}</td>
 			</tr>
 			</tbody>
 		</table>
@@ -29,7 +29,7 @@
 </div>
 <div class="row">
 	<div class="btn-group">
-		<a class="btn btn-primary" ui-sref="project.detail">Add New Project</a>
+		<a class="btn btn-primary" ui-sref="profile.detail">Add New Profile</a>
 	</div>
 </div>
 <div class="row">
