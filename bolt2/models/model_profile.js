@@ -5,7 +5,7 @@ var ProfileSchema = new Schema({
 	name: String,
 	desc: String,
 	status: String,
-	availability: String,
+	availability: [],
 	type: String,
 	states: [],
 	energyType: String,

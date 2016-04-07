@@ -6,6 +6,7 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
         templateUrl: '/templates/profile_home.html',
         controller: 'ProfileController'
     })
+    //.state('profile.detail', {
     .state('profile.detail', {
         url: '/detail/:profileid',
         templateUrl: '/templates/profile_detail.html',
@@ -22,7 +23,7 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
 .controller('ProfileController', ['$scope', '$http', 'ProfileFactory', function($scope, $http,ProfileFactory) {
     $scope.profiles = ProfileFactory.query();
 }])
-.controller('ProfileDetailController', ['$scope', '$http', '$state', '$stateParams', 'ProfileFactory','ProjectFactory', function($scope,$http,$state,$stateParams,ProfileFactory,ProjectFactory) {
+.controller('ProfileDetailController', ['$scope', '$http', '$state', '$stateParams', 'ProfileFactory','ProjectFactory', 'CertificationFactory', function($scope,$http,$state,$stateParams,ProfileFactory,ProjectFactory,CertificationFactory) {
     if ($stateParams.profileid){
         //This is an existing profile
         var id = $stateParams.profileid;
@@ -31,7 +32,8 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
         //This is a new profile
         $scope.profile = new ProfileFactory();
     };
-    $scope.projects = ProjectFactory.query();    
+    $scope.projects = ProjectFactory.query();   
+    $scope.certifications = CertificationFactory.query(); 
     $scope.saveProfile = function() {
         if (!$scope.profile._id) {
             $scope.profile.$save(function() {

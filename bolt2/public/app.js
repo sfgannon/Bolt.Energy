@@ -1,4 +1,4 @@
-angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","ProfileModule"])
+angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","ProfileModule","CertificationModule"])
  .config(function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');

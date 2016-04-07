@@ -72,7 +72,7 @@
 			</div>
 			<div class="form-group">
 				<label for="selProfileType">Profile Type: </label>
-				<select name="selProfileType" class="form-control" ng-model="profile.profileType" value="{{profile.profileType}}">
+				<select name="selProfileType" class="form-control" ng-model="profile.type" value="{{profile.type}}">
 					<option value="Non-Commercial">Non-Commercial</option>
 					<option value="Commercial">Commercial</option>
 				</select>
@@ -123,8 +123,8 @@
 			</div>
 			<div class="form-group">
 				<label for="selCertifications">Certifications: </label>
-				<select name="selCertifications" multiple class="form-control" ng-model="profile.certifications" value="{{project.certifications}}">
-					<option ng-repeat="cert in allCerts" value="{{ cert._id }}">{{ cert.type }}</option>
+				<select name="selCertifications" multiple class="form-control" ng-model="profile.certifications" value="{{profile.certifications}}">
+					<option ng-repeat="cert in certifications" value="{{ cert._id }}">{{ cert.type }}</option>
 				</select>
 			</div>
 			<div class="form-group">

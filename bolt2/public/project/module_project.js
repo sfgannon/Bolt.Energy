@@ -6,6 +6,7 @@ angular.module("ProjectModule", ["ui.router","ngResource"])
         templateUrl: '/templates/project_home.html',
         controller: 'ProjectController'
     })
+    //.state('project.detail', {
     .state('project.detail', {
         url: '/detail/:projectid',
         templateUrl: '/templates/project_detail.html',
