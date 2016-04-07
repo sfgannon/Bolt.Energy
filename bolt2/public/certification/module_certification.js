@@ -13,7 +13,7 @@ angular.module("CertificationModule", ["ui.router","ngResource"])
     })
 })
 .factory('CertificationFactory',function($resource){
-    return $resource('http://localhost:3002/data/certifications/:id',{id:'@_id'},{
+    return $resource('./data/certifications/:id',{id:'@_id'},{
         update: {
             method: 'PUT'
         }
