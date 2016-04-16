@@ -1,6 +1,6 @@
 <main id="main" role="main">
   <div class="visual">
-    <div class="container">s
+    <div class="container">
       <div class="visual-content">
         <div class="slogan">
           <strong class="title">
@@ -27,7 +27,6 @@
         <div class="mask">
           <div class="slideset">
             <div class="slide active" style="width: 620px;"><img src="media/video1.jpg" alt="img description"></div>
-            <div class="slide"><img src="{{project.bannerUrl}}" alt="img description"></div>
           </div>
         </div>
         <a class="btn-prev" href="#">Previous</a>
@@ -41,7 +40,7 @@
         <strong class="title line">Snapshot</strong>
         <dl>
           <dt>Owner</dt>
-          <dd>{{profile.owner.name}}</dd>
+          <dd>{{ profile.owner }}</dd>
           <dt>Street</dt>
           <dd>{{profile.address1}}<br>{{profile.address2}}<br>{{profile.city}}, {{profile.state}} {{profile.zip}}</dd>
           <dt>Type</dt>
@@ -49,7 +48,7 @@
           <dt>Energy Type</dt>
           <dd>{{profile.energyType}}</dd>
           <dt>Availability</dt>
-          <dd>{{profile.availability}}</dd>
+          <dd>{{  profile.availability }}</dd>
           <dt>Certifications</dt>
           <dd><a href="#">Learn More</a></dd>
         </dl>
@@ -125,9 +124,9 @@
           <div class="carousel">
             <div class="mask">
               <div class="slideset">
-                <div class="slide"><img src="images/img-4.jpg" alt="img description"></div>
-                <div class="slide"><img src="images/img-4.jpg" alt="img description"></div>
-                <div class="slide"><img src="images/img-4.jpg" alt="img description"></div>
+                <div class="slide active" style="width: 620px;"><img src="images/img-4.jpg" alt="img description"></div>
+                <div class="slide" style="width: 620px;"><img src="images/img-4.jpg" alt="img description"></div>
+                <div class="slide" style="width: 620px;"><img src="images/img-4.jpg" alt="img description"></div>
               </div>
             </div>
             <a class="btn-prev" href="#">Previous</a>
