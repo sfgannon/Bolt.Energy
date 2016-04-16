@@ -1,0 +1,86 @@
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<h2>Bolt V2</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+	<h3>Directions</h3>
+		<span>
+		The Profiles and Projects are available in this version.
+		</span>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+	<h3>In Progress</h3>
+		<span>
+		Still working on integrating the comments and authentication pieces.
+		</span>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<h3>Profiles</h3>
+		<table>
+			<thead>
+				<th></th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th>Type</th>
+				<th>Mix</th>
+			</thead>
+			<tbody >
+			<tr ng-repeat="prof in profiles">
+			<td><a ui-sref="profiledetail({ profileid: prof._id })">Edit Item</a></td>
+			<td>{{ prof.name }}</td>
+			<td>{{ prof.desc }}</td>
+			<td>{{ prof.status }}</td>
+			<td>{{ prof.type }}</td>
+			<td>{{ prof.energyMix }}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<h3>Projects</h3>
+		<table class="table table-striped table-condensed">
+			<thead>
+				<th></th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th>Mix</th>
+				<th>Owner</th>
+			</thead>
+			<tbody>
+			<tr ng-repeat="proj in projects">
+			<td><a ui-sref="project.detail({ projectid: proj._id })">Edit Item</a></td>
+				<td>{{ proj.name }}</td>
+				<td>{{ proj.desc }}</td>
+				<td>{{ proj.status }}</td>
+				<td>{{ proj.energyMix }}</td>
+				<td>{{ proj.owner.name }}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<h3>Certifications</h3>
+		<table class="table table-striped table-condensed">
+			<thead>
+				<th></th>
+				<th>Certification</th>
+				<th>Description</th>
+			</thead>
+			<tbody>
+			<tr ng-repeat="item in certifications"><td><a ui-sref="certification.detail({ certificationid: item._id })">Edit Item</a></td><td>{{ item.type }}</td><td>{{ item.desc }}</td></tr>
+			</tbody>
+		</table>
+	</div>
+</div>
