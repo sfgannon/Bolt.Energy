@@ -11,6 +11,8 @@ angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","Profil
 })
  .controller('HomeController', ['$scope','CertificationFactory','ProfileFactory','ProjectFactory', function($scope,CertificationFactory,ProfileFactory,ProjectFactory){
  	$scope.certifications = CertificationFactory.query();
- 	$scope.profiles = ProfileFactory.query();
+ 	$scope.profiles = ProfileFactory.query(function(data) {
+ 		console.log(data);
+ 	});
  	$scope.projects = ProjectFactory.query();
  }])

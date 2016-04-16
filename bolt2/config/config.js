@@ -7,7 +7,7 @@ var config = (function() {
 	var dbAuth = false;
 	var dbUserName = '';
 	var dbPassword = '';
-	var appPort = 3002;
+	var appPort = 3001;
 
 	return {
 		getDB: function() {

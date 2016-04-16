@@ -11,7 +11,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
-var port = config.getPort() || 3002;
+var port = config.getPort() || 3001;
 
 app.use("/data", projectRouter);
 app.use("/data", profileRouter);

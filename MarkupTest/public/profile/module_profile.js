@@ -1,20 +1,21 @@
 angular.module("ProfileModule", ["ui.router","ngResource"])
 .config(function($stateProvider,$urlRouterProvider) {
-    $stateProvider.state('profilelist', {
+    $stateProvider.state('profile', {
+        params: { single: {} },
         cache: false,
-        url: '/profile/list',
-        templateUrl: '/templates/profile_home.html',
+        url: '/profile',
+        templateUrl: function($stateParams) {
+            if ($stateParams.single) {
+                return '/templates/project_single.html';
+            } else {
+                return '/templates/project_multi.html';
+            }
+        },
         controller: 'ProfileController'
-    })
-    //.state('profile.detail', {
-    .state('profiledetail', {
-        url: '/detail/:profileid',
-        templateUrl: '/templates/profile_detail.html',
-        controller: 'ProfileDetailController'
     })
 })
 .factory('ProfileFactory',function($resource){
-    return $resource('http://localhost:3002/data/profiles/:id',{id:'@_id'},{
+    return $resource('./data/profiles/:id',{id:'@_id'},{
         update: {
             method: 'PUT'
         }

@@ -14,7 +14,7 @@ angular.module("ProjectModule", ["ui.router","ngResource"])
     })
 })
 .factory('ProjectFactory',function($resource){
-    return $resource('http://localhost:3002/data/projects/:id',{id:'@_id'},{
+    return $resource('http://localhost:3001/data/projects/:id',{id:'@_id'},{
         update: {
             method: 'PUT'
         }

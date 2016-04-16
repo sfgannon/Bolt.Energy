@@ -14,7 +14,7 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
     })
 })
 .factory('ProfileFactory',function($resource){
-    return $resource('http://localhost:3002/data/profiles/:id',{id:'@_id'},{
+    return $resource('http://localhost:3001/data/profiles/:id',{id:'@_id'},{
         update: {
             method: 'PUT'
         }
