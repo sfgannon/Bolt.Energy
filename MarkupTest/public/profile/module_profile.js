@@ -1,10 +1,9 @@
 angular.module("ProfileModule", ["ui.router","ngResource"])
 .config(function($stateProvider,$urlRouterProvider) {
     $stateProvider.state('profile', {
-        // params: { single: {}, profileid: {} },
         params: { single: {} },
         cache: false,
-        url: '/profile/:profileid',
+        url: '/profile',
         templateUrl: function($stateParams) {
             if ($stateParams.single) {
                 return '/templates/project_single.html';
@@ -12,7 +11,7 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
                 return '/templates/project_multi.html';
             }
         },
-        controller: 'ProfileDetailController'
+        controller: 'ProfileController'
     })
 })
 .factory('ProfileFactory',function($resource){
@@ -22,31 +21,14 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
         }
     })
 })
+.controller('ProfileController', ['$scope', '$http', 'ProfileFactory', function($scope, $http,ProfileFactory) {
+    $scope.profiles = ProfileFactory.query();
+}])
 .controller('ProfileDetailController', ['$scope', '$http', '$state', '$stateParams', 'ProfileFactory','ProjectFactory', 'CertificationFactory', function($scope,$http,$state,$stateParams,ProfileFactory,ProjectFactory,CertificationFactory) {
     if ($stateParams.profileid){
         //This is an existing profile
         var id = $stateParams.profileid;
-        $scope.profile = ProfileFactory.get({ id: id }, function(profile) {
-            //Format some fields for display
-            var formattedValue = '';
-            formattedValue = profile.availability.toString();
-            formattedValue = formattedValue.replace('[').replace(']').replace('"').replace(/,/g, ', ');
-            $scope.profile.availability = formattedValue;
-
-            //Populate Project
-            var project = ProjectFactory.get({ id: profile.projects[0] }, function(project) {
-                var formattedValue = '';
-                formattedValue = project.availability.toString();
-                formattedValue = formattedValue.replace('[').replace(']').replace('"').replace(/,/g, ', ');
-                project.availability = formattedValue;
-
-                formattedValue = project.utilityDistricts.toString();
-                formattedValue = formattedValue.replace('[').replace(']').replace('"').replace(/,/g, ', ');
-                project.utilityDistricts = formattedValue;
-
-                $scope.project = project;
-            })
-        });
+        $scope.profile = ProfileFactory.get({ id: id });
     } else {
         //This is a new profile
         $scope.profile = new ProfileFactory();

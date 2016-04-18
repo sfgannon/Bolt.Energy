@@ -36,3 +36,43 @@
 		</table>
 	</div>
 </div>
+<div>
+	<div style="padding:10px;">
+		<h3>Projects</h3>
+		<table style="border-collapse:separate; border-spacing:15px;">
+			<thead>
+				<th></th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th>Mix</th>
+				<th>Owner</th>
+			</thead>
+			<tbody>
+			<tr ng-repeat="proj in projects">
+			<td><a ui-sref="project.detail({ projectid: proj._id })">Edit Item</a></td>
+				<td>{{ proj.name }}</td>
+				<td>{{ proj.desc }}</td>
+				<td>{{ proj.status }}</td>
+				<td>{{ proj.energyMix }}</td>
+				<td>{{ proj.owner.name }}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div>
+	<div style="padding:10px;">
+		<h3>Certifications</h3>
+		<table style="border-collapse:separate; border-spacing:15px;">
+			<thead>
+				<th></th>
+				<th>Certification</th>
+				<th>Description</th>
+			</thead>
+			<tbody>
+			<tr ng-repeat="item in certifications"><td><a ui-sref="certification.detail({ certificationid: item._id })">Edit Item</a></td><td>{{ item.type }}</td><td>{{ item.desc }}</td></tr>
+			</tbody>
+		</table>
+	</div>
+</div>
