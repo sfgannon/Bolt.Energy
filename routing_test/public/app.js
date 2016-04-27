@@ -1,5 +1,7 @@
 angular.module("routingTest", ["ui.router"])
 .config(function($stateProvider,$urlRouterProvider) {
+	$urlRouterProvider.when("", "/main");
+	$urlRouterProvider.when("/", "/main");	
 	$urlRouterProvider.otherwise('/main');
 	$stateProvider.state('home', {
 		url: '/main',
@@ -19,13 +21,11 @@ angular.module("routingTest", ["ui.router"])
 		},
 		controller: 'ProjectController'
 	})
-	.state('detail.single', {
-		url: '/single',
-		templateUrl: 'templates/single.html'
-	})
-	.state('detail.multi', {
-		url: '/multi',
-		templateUrl: 'templates/multi.html'
+	.state('detail.single', {})
+	.state('login', {
+		url: '/login',
+		templateUrl: 'templates/login.html',
+		controller: 'LoginController'
 	})
 })
 .controller('HomeController', ['$scope','$http','$state','$stateParams',function($scope,$http,$state,$stateParams) {
@@ -39,4 +39,9 @@ angular.module("routingTest", ["ui.router"])
 }])
 .controller('ProjectController', ['$scope','$http','$state','$stateParams',function($scope,$http,$state,$stateParams) {
 	$scope.single = $stateParams.single;
+}])
+.controller('LoginController', ['$scope','$http','$state','$stateParams', function($scope,$http,$state,$stateParams) {
+	$scope.login = function() {
+		$state.transitionTo('home');
+	}
 }])
