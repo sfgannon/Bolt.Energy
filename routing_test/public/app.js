@@ -27,7 +27,20 @@ angular.module("routingTest", ["ui.router"])
 		templateUrl: 'templates/login.html',
 		controller: 'LoginController'
 	})
+	.state('register', {
+		url: '/register',
+		templateUrl: 'templates/register.html',
+		controller: 'LoginController'
+	})
 })
+.service("UserService", ['$http','$q', function($http,$q) {
+	return {
+		register: function(userData) {
+			//Validate that user has entered valid data for all required fields
+			
+		}
+	}
+}])
 .controller('HomeController', ['$scope','$http','$state','$stateParams',function($scope,$http,$state,$stateParams) {
 	$scope.setSingle = function() {
 		$scope.single = true;
@@ -42,6 +55,11 @@ angular.module("routingTest", ["ui.router"])
 }])
 .controller('LoginController', ['$scope','$http','$state','$stateParams', function($scope,$http,$state,$stateParams) {
 	$scope.login = function() {
+		//Validate the data input: email and password must be non zero length
 		$state.transitionTo('home');
+	}
+
+	$scope.register = function() {
+
 	}
 }])

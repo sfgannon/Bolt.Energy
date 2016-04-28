@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4 col-sm-offset-4 col-sm-4">
+    <form class="form-signin">
+      <h2 class="form-signin-heading">Please Register</h2>
+      <label for="inputFName" class="sr-only">Name</label>
+      <input type="text" id="inputFName" class="form-control form-inline" placeholder="First Name" required autofocus>{{firstName}}</input>
+      <input type="text" id="inputLName" class="form-control form-inline" placeholder="Last Name" required>{{lastName}}</input>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>{{username}}</input>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>{{password}}</input>
+      <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
+      <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required>{{password}}</input>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" ng-click="register()" ui-sref="home">Register Me</button>
+    </form>
+  </div>
+</div>
