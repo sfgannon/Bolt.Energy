@@ -1,8 +1,3 @@
 node_modules/
 public/libs/
-public/css/
-public/fonts/
-public/images/
-public/media/
-public/scss/
-public/sourceimages/
+public2/bower_components/

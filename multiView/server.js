@@ -19,7 +19,12 @@ app.use(morgan('dev'));
 // app.get('/', function(req, res) {
 //   res.send('Relax. We will put the home page here later.');
 // });
+// app.use(express.static(__dirname + '/public'));
+// console.log(__dirname + '/public');
+// app.use(express.static(__dirname + '/public2'));
+// console.log(__dirname + '/public2');
 app.use(express.static('public'));
+app.use(express.static('public2'));
 
 // Connect to database
 mongoose.connect(config.dbUrl);

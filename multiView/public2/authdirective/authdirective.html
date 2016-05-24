@@ -1,0 +1,10 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-2 col-md-2 col-lg-2"><span>Logo</span></div>
+		<div class="col-sm-4 col-md-4 col-lg-4" ng-if='!authenticated'><label for="inpusername" class="small">Username: </label><input type="text" id="inpusername" class="small" ng-model="username"></div>
+		<div class="col-sm-4 col-md-4 col-lg-4" ng-if='!authenticated'><label for="inppassword" class="small">Password: </label><input type="password" id="inppassword" class="small" ng-model="password"></div>
+		<div class="col-sm-2 col-md-2 col-lg-2" ng-if='!authenticated'><button type="button" class="btn btn-primary small" ng-click="login()">Log In</button></div>
+		<div class="col-sm-8 col-md-8 col-lg-8" ng-if='authenticated'><span>You've been authenticated.</span></div>
+		<div class="col-sm-2 col-md-2 col-lg-2" ng-if='authenticated'><button type="button" class="btn btn-primary small" ng-click="logout()">Log Out</button></div>
+	</div>
+</div>
