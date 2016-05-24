@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" ng-app="boltprofiles">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+
+    <title>Bolt.Energy</title>
+    <!-- Styling -->    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link media="all" rel="stylesheet" href="css/main.css">
+    <script src="https://use.typekit.net/oex8oja.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    <!-- JS -->
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="libs/angular-resource/angular-resource.min.js"></script>
+    <!-- ANGULAR CUSTOM -->
+    <script src="project/module_project.js"></script>
+    <script src="profile/module_profile.js"></script>
+    <script src="certification/module_certification.js"></script>
+    <script src="app.js"></script>
+
+</head>
+<body class="home">
+  <div id="wrapper">
+    <!-- <div ui-view="header"></div> -->
+    <headerdir></headerdir>
+    <div ui-view="body"></div>
+  </div>
+  <div ui-view="footer"></div>
+  <script type="text/javascript" src="libs/jquery/dist/jquery.min.js" defer></script>
+</body>
+</html>

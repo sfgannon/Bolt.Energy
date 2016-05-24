@@ -1,0 +1,27 @@
+    <header id="header">
+      <div class="container">
+        <div class="logo">
+          <a href="#">
+            <img src="images/logo.png" alt="bolt"/>
+          </a>
+        </div>
+        <a href="#" class="opener"><span></span></a>
+        <div class="menu">
+          <ul class="nav-btn" ng-if="!auth">
+            <li><a ui-sref="login" class="btn">Log In</a></li>
+            <li><a href="#" class="btn">Sign Up</a></li>
+            <li><button type="button" ng-click="testauth()">Click to test</button><input type='text' value="{{username}}"></li>
+          </ul>
+          <ul class="nav-btn" ng-if="auth">
+            <li><a href="#" class="btn">Profile</a></li>
+            <li><a href="#" class="btn" ng-click="logout()">Log Out</a></li>
+          </ul>
+          <ul class="" id="nav">
+            <li><a href="#">Community</a></li>
+            <li><a href="#">Learn</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
