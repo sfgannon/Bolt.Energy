@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bolt.com</title>
+	<link media="all" rel="stylesheet" href="markup/css/main.css">
+	<script src="https://use.typekit.net/oex8oja.js"></script>
+	<script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="libs/angular-resource/angular-resource.min.js"></script>
+    <!-- ANGULAR CUSTOM -->
+    <script src="project/module_project.js"></script>
+    <script src="profile/module_profile.js"></script>
+    <script src="certification/module_certification.js"></script>
+    <script src="app.js"></script>
+</head>
+<body class="home">
+	<div id="wrapper" ng-app="boltprofiles">
+		<header id="header">
+			<div class="container">
+				<div class="logo">
+					<a href="#">
+						<img src="markup/images/logo.png" alt="bolt"/>
+					</a>
+				</div>
+				<a href="#" class="opener"><span></span></a>
+				<div class="menu">
+					<ul class="nav-btn">
+						<li><a href="#" class="btn">Log In</a></li>
+						<li><a href="#" class="btn">Sign Up</a></li>
+					</ul>
+					<ul class="" id="nav">
+						<li><a href="#">Community</a></li>
+						<li><a href="#">Learn</a></li>
+						<li><a href="#">About</a></li>
+						<li><a href="#">Contact</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+		<main id="main" role="main">
+			<!-- <div ui-view="profile"></div> -->
+			<div ui-view></div>
+			<div class="tab-nav">
+				<div class="container">
+					<ul class="tabset">
+						<li><a href="#tab1">Projects</a></li>
+						<li><a href="#tab2">Updates<span class="counter">2</span></a></li>
+						<li><a href="#tab3">Comments<span class="counter">13</span></a></li>
+					</ul>
+					<a href="#" class="btn icon-bubble22">Message</a>
+				</div>
+			</div>
+			<!-- <div ui-view="project"></div> -->
+		</main>
+	</div>
+	<footer id="footer">
+		<div class="container">
+			<p>&copy; 2015 <a href="#">Bolt</a>, LLC <a href="#" class="privacy">Privacy Policy</a></p>
+		</div>
+	</footer>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" defer></script>
+	<script type="text/javascript">window.jQuery || document.write('<script src="markup/js/jquery-1.11.2.min.js" defer><\/script>')</script>
+	<script type="text/javascript" src="markup/js/jquery.main.js" defer></script>
+</body>
+</html>
+

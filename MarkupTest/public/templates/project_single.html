@@ -1,0 +1,173 @@
+<main id="main" role="main">
+  <div class="visual">
+    <div class="container">
+      <div class="visual-content">
+        <div class="slogan">
+          <strong class="title">
+            <span>{{profile.type}}</span><strong> {{profile.name}}</strong>
+          </strong>
+        </div>
+        <div class="bottom-block">
+          <ul class="btn-block">
+            <li><a href="#" class="btn icon-plus22">Connect</a></li>
+            <li><a href="#" class="btn icon-bubble22">Message</a></li>
+            <li><a href="#" class="btn icon-link39">Share</a></li>
+          </ul>
+          <ul class="calculation">
+            <li><strong>3.7K</strong><span>Connections</span></li>
+            <li><strong>10</strong><span>Projects</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="col-left">
+      <div class="carousel">
+        <div class="mask">
+          <div class="slideset">
+            <div class="slide active" style="width: 620px;"><img src="media/video1.jpg" alt="img description"></div>
+          </div>
+        </div>
+        <a class="btn-prev" href="#">Previous</a>
+        <a class="btn-next" href="#">Next</a>
+      </div>
+      <h2>Our Story</h2>
+      <p>{{ profile.desc }}</p>
+    </div>
+    <aside class="col-right">
+      <div class="snapshot">
+        <strong class="title line">Snapshot</strong>
+        <dl>
+          <dt>Owner</dt>
+          <dd>{{ profile.owner }}</dd>
+          <dt>Street</dt>
+          <dd>{{profile.address1}}<br>{{profile.address2}}<br>{{profile.city}}, {{profile.state}} {{profile.zip}}</dd>
+          <dt>Type</dt>
+          <dd>{{profile.type}}</dd>
+          <dt>Energy Type</dt>
+          <dd>{{profile.energyType}}</dd>
+          <dt>Availability</dt>
+          <dd>{{  profile.availability }}</dd>
+          <dt>Certifications</dt>
+          <dd><a href="#">Learn More</a></dd>
+        </dl>
+      </div>
+      <div class="connections">
+          <strong class="title line">Connections <a href="#" class="btn icon-plus22">Connect</a></strong>
+        <ul class="followers">
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+        </ul>
+      </div>
+      <div class="connections adds">
+        <strong class="title">Mutual Connections</strong>
+        <ul class="followers">
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+          <li>
+            <div class="img-box"><img src="images/img-5.png" alt="img description"></div>
+          </li>
+        </ul>
+        <a href="#" class="btn">Explore</a>
+      </div>
+    </aside>
+  </div>
+  <div class="tab-nav">
+    <div class="container">
+      <ul class="tabset">
+        <li><a href="#tab1">Projects</a></li>
+        <li><a href="#tab2">Updates<span class="counter">2</span></a></li>
+        <li><a href="#tab3">Comments<span class="counter">13</span></a></li>
+      </ul>
+      <a href="#" class="btn icon-bubble22">Message</a>
+    </div>
+  </div>
+  <div class="container">
+  <!-- PROJECTS SECTION -->
+    <div class="tab-content">
+      <div id="tab1">
+        <div class="text-frame ">
+          <h1>{{ project.name }}</h1>
+          <span class="add-text">{{ project.projectType }}</span>
+        </div>
+        <div class="col-left">
+          <div class="carousel">
+            <div class="mask">
+              <div class="slideset">
+                <div class="slide active" style="width: 620px;"><img src="images/img-4.jpg" alt="img description"></div>
+                <div class="slide" style="width: 620px;"><img src="images/img-4.jpg" alt="img description"></div>
+                <div class="slide" style="width: 620px;"><img src="images/img-4.jpg" alt="img description"></div>
+              </div>
+            </div>
+            <a class="btn-prev" href="#">Previous</a>
+            <a class="btn-next" href="#">Next</a>
+          </div>
+          <h2>Overview</h2>
+          <p>{{ project.desc }}</p>
+        </div>
+        <aside class="col-right">
+          <div class="snapshot">
+            <strong class="title line">Project Snapshot</strong>
+            <dl>
+              <dt>Status</dt>
+              <dd>{{ project.status }}</dd>
+              <dt>Project Type</dt>
+              <dd>{{ project.projectType }}</dd>
+              <dt>Availability</dt>
+              <dd>{{ project.availability }}</dd>
+              <dt>Energy Mix</dt>
+              <dd>{{ project.energyMix }}</dd>
+              <dt>Utility Districts</dt>
+              <dd>{{ project.utilityDistricts }}</dd>
+              <dt>Capacity</dt>
+              <dd>{{ project.capacity }}</dd>
+              <dt>MD Program Category</dt>
+              <dd>{{ project.programCategory }}</dd>
+            </dl>
+          </div>
+          <div class="green-box">
+            <strong class="title line">Ready to Go Solar?</strong>
+            <p>Contact us today to sign up or join us for an information session to find out more!</p>
+            <a href="#" class="btn">Contact Us</a>
+          </div>
+        </aside>
+      </div>
+      <div id="tab2">
+
+      </div>
+      <div id="tab3">
+
+      </div>
+    </div>
+  </div>
+</main>
