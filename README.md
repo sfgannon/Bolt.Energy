@@ -14,7 +14,7 @@ From Command line:
 
 After dependencies have installed cd into static directory and install bower deps
 
-`cd static`
+`cd public`
 
 `bower install`
 
