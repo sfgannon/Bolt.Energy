@@ -1,0 +1,4 @@
+node_modules/
+public/libs/
+public2/bower_components/
+*.7z
