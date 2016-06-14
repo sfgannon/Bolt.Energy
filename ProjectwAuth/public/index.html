@@ -15,6 +15,8 @@
     <script src="libs/angular/angular.min.js"></script>
     <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="libs/angular-resource/angular-resource.min.js"></script>
+    <script src="libs/ng-file-upload-shim/ng-file-upload.min.js"></script>
+    <script src="libs/ng-file-upload-shim/ng-file-upload-shim.min.js"></script>
     <!-- ANGULAR CUSTOM -->
     <script src="project/module_project.js"></script>
     <script src="profile/module_profile.js"></script>
@@ -51,6 +53,14 @@
       </div>
     </header>
     <div ui-view></div>
+    <div class="wrapper">
+      <form ng-controller="ImageController" name="form">
+        Single Image with validations
+        <input type="file" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+          ngf-accept="'image/*'" />
+        <button type="submit" ng-click="submit()">submit</button>
+      </form>
+    </div>
   </div>
   <footer id="footer">
     <div class="container">

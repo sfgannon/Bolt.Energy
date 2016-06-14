@@ -61,6 +61,7 @@ module.exports = function(app) {
             const token = jwt.sign(user, config.secret, {
               expiresIn: 10080 // in seconds
             });
+            console.log(Date.now());
             res.status(200).json({ success: true, token: 'JWT ' + token });
           } else {
             res.status(401).json({ success: false, message: 'Authentication failed. Passwords did not match.' });

@@ -1,4 +1,4 @@
-angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","ProfileModule","CertificationModule"])
+angular.module("boltprofiles", ["ngFileUpload","ui.router","ngResource","ProjectModule","ProfileModule","CertificationModule"])
  .config(function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
@@ -58,7 +58,7 @@ angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","Profil
       }
     }
   }])
- .service('LoginService',['$http','$q','$window','ConfigService',function($http,$q,$window,ConfigService) {
+ .service('LoginService',['$http','$q','$window','ConfigService',function($http,$q,$window,ConfigService) { 
       return {
           login: function(username,password) {
               var $return = $q.defer();
@@ -71,6 +71,7 @@ angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","Profil
                 }
               }).then(function(responseData) {
                 $window.localStorage.setItem('BoltToken', responseData.data.token);
+                $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
                 $return.resolve({ token: responseData.data.token });
               }, function(httpError) {
                   $return.reject({ status: httpError.status })
@@ -79,17 +80,25 @@ angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","Profil
           },
           logout: function() {
               try {
-                  $window.localStorage.removeItem('BoltToken');
+                $window.localStorage.removeItem('BoltToken');
+                $window.localStorage.removeItem('BoltTokenExp');
               } catch (e) {
                   console.log(e);
               }
           },
           authenticated: function() {
             if (($window.localStorage.getItem('BoltToken') != 'undefined') && ($window.localStorage.getItem('BoltToken') != null)) {
-                  return true;
+              var exp = $window.localStorage.getItem('BoltTokenExp');
+              if (exp > Date.now()) {
+                return true;
               } else {
-                  return false;
+                $window.localStorage.removeItem('BoltToken');
+                $window.localStorage.removeItem('BoltTokenExp');
+                return false;
               }
+            } else {
+                return false;
+            }
           },
           register: function(username, password) {
             //Register a new user account
@@ -103,6 +112,7 @@ angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","Profil
               }
             }).then(function(responseData) {
               $window.localStorage.setItem('BoltToken', responseData.data.token);
+              $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
               $return.resolve({ token: responseData.data.token });
             }, function(status) {
               $return.reject({ status: status.status });
@@ -110,4 +120,30 @@ angular.module("boltprofiles", ["ui.router","ngResource","ProjectModule","Profil
             return $return.promise;
           }
       }
+  }])
+ .controller("ImageController", ['$state','$scope','Upload','ConfigService',function($state,$scope,Upload,ConfigService) {
+    $scope.submit = function() {
+      if ($scope.form.file.$valid && $scope.file) {
+        $scope.upload($scope.file);
+      }
+    };
+
+    // upload on file select or drop
+    $scope.upload = function (file) {
+        Upload.upload({
+            url: ConfigService.appRoot() + "/data/images",
+            data: {file: file, contentType: file.type, fileName: file.name}
+        }).then(function (resp) {
+            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            $scope.file = null;
+            $state.go('home');
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+            $scope.file = null;
+            $state.go('home');
+        }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
   }])

@@ -12,6 +12,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 require('./routes/routes_auth')(app);
+require('./routes/routes_image')(app);
 app.use(express.static('public'));
 var port = config.port || 3001;
 
