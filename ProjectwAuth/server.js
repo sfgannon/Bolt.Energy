@@ -1,4 +1,4 @@
-express = require('express');
+var express = require('express');
 var config = require('./config/app_config');
 var mongoose = require('mongoose');
 mongoose.connect(config.dbUrl);

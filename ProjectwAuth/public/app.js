@@ -105,7 +105,7 @@ angular.module("boltprofiles", ["ngFileUpload","ui.router","ngResource","Project
             var $return = $q.defer();
             $return.promise = $http({
               method: 'POST',
-              url: ConfigService.appRoot() + '/data/authenticate',
+              url: ConfigService.appRoot() + '/data/register',
               data: {
                 email: username,
                 password: password
