@@ -20,7 +20,10 @@ var ProjectSchema = new Schema({
 		required: true
 	},
 	energyMix: String,
-	bannerUrl: String,
+	images: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Image'
+	}],
 	address1: String,
 	address2: String,
 	city: String,
