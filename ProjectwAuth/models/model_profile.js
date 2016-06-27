@@ -9,8 +9,14 @@ var ProfileSchema = new Schema({
 	type: String,
 	states: [],
 	energyType: String,
-	bannerUrl: String,
-	owner: String,	
+	images: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Image'
+	}],
+	owner: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	},	
 	address1: String,
 	address2: String,
 	city: String,
