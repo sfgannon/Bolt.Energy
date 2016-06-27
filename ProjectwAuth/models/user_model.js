@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
 var UserSchema = new mongoose.Schema({
-	firstName: String,
-	lastName: String,
-	email: String,
-	username: String,
-	password: String
+    firstName: String,
+    lastName: String,
+    email: String,
+    username: String,
+    password: String
 });
 
 UserSchema.pre('save', function (next) {
@@ -24,11 +24,12 @@ UserSchema.pre('save', function (next) {
                 next();
             });
         });
+
     } else {
         return next();
     }
 });
- 
+
 UserSchema.methods.comparePassword = function (passw, cb) {
     bcrypt.compare(passw, this.password, function (err, isMatch) {
         if (err) {

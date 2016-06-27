@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" ng-app="boltprofiles">
 <head>
     <meta charset="UTF-8">
@@ -37,10 +37,10 @@
         <div class="menu">
           <ul class="nav-btn" ng-hide="authenticated">
             <li><a ui-sref='login' class="btn">Log In</a></li>
-            <li><a href="#" class="btn">Sign Up</a></li>
+            <li><a ui-sref="signup" class="btn">Sign Up</a></li>
           </ul>
           <ul class="nav-btn" ng-show="authenticated">
-            <li><a ui-sref='login' class="btn">Profile</a></li>
+            <li><a ui-sref='devprofile' class="btn">Profile</a></li>
             <li><a ng-click="logout()" href='' class="btn">Logout</a></li>
           </ul>
           <ul class="" id="nav">

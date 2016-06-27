@@ -7,11 +7,13 @@
     </div>
     <div class="wrapper">
     	<table style="border-collapse:separate; border-spacing:15px;">
-    		<thead>
-        <th></th>
-    			<th>FileName</th>
-    			<th>ContentType</th>
-    		</thead>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>FileName</th>
+                    <th>ContentType</th>
+                </tr>
+            </thead>
     		<tbody >
     		<tr ng-repeat="img in images">
     		<td><a>Edit Item</a></td>
@@ -19,6 +21,7 @@
     		<td>{{ img.contentType }}</td>
     		</tr>
     		</tbody>
+        
     	</table>
     </div>
     <div class="wrapper">

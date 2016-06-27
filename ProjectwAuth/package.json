@@ -9,14 +9,23 @@
   "author": "sfg",
   "license": "MIT",
   "dependencies": {
+    "angular": "^1.5.6",
+    "angular-resource": "^1.5.6",
+    "angular-route": "^1.5.6",
+    "angular-ui-router": "^0.3.1",
+    "bcrypt": "^0.8.7",
     "body-parser": "^1.14.2",
     "compression": "^1.6.1",
     "connect-busboy": "0.0.2",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "jsonwebtoken": "^7.0.1",
     "method-override": "^2.3.5",
     "mongoose": "^4.3.6",
     "morgan": "^1.6.1",
-    "multer": "^1.1.0"
+    "multer": "^1.1.0",
+    "ng-file-upload": "^12.0.4",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.1.0"
   }
 }
