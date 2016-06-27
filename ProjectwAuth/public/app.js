@@ -1,8 +1,8 @@
-angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "ProjectModule", "ProfileModule", "CertificationModule"])
+angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource", "ProjectModule", "ProfileModule", "CertificationModule"])
   .config(function ($stateProvider, $urlRouterProvider) {
-    
+
     $urlRouterProvider.otherwise('/home');
-    
+
     $stateProvider.state('home', {
         url: '/home',
         templateUrl: '/templates/home.html',
@@ -26,64 +26,9 @@ angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "Proj
 })
   .controller('HeaderController', ['$rootScope', '$scope', 'LoginService', function ($rootScope, $scope, LoginService) {
         $rootScope.authenticated = LoginService.authenticated();
-<<<<<<< HEAD
-        $state.go('home');
-      }, function(status) {
-        alert('Login Unsuccessful.');
-        $state.go('home');
-      })
-    }
-    $scope.logout = function() {
-      var result = LoginService.logout();
-      $state.go('home');
-    }
-  }])
-  .service('ConfigService', ['$http', '$q', function($http, $q) {
-    return {
-      appRoot: function() {
-        //var url = 'https://bolt-test-sgannonumd.c9users.io';
-        var url = 'http://localhost:3002';
-        return url;
-      },
-      appPort: function() {
-        var port = 3002;
-        return port;
-      }
-    }
-  }])
-  .service('LoginService', ['$http', '$q', '$window', 'ConfigService', function($http, $q, $window, ConfigService) {
-    return {
-      login: function(username, password) {
-        var $return = $q.defer();
-        $return.promise = $http({
-          method: 'POST',
-          url: ConfigService.appRoot() + '/data/authenticate',
-          data: {
-            email: username,
-            password: password
-          }
-        }).then(function(responseData) {
-          $window.localStorage.setItem('BoltToken', responseData.data.token);
-          $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
-          $return.resolve({
-            token: responseData.data.token
-          });
-        }, function(httpError) {
-          $return.reject({
-            status: httpError.status
-          })
-        })
-        return $return.promise;
-      },
-      logout: function() {
-        try {
-          $window.localStorage.removeItem('BoltToken');
-          $window.localStorage.removeItem('BoltTokenExp');
-=======
         $scope.logout = function () {
             LoginService.logout();
             $rootScope.authenticated = LoginService.authenticated();
->>>>>>> 21f8c3d9e2e94f7cd3f17cac6703eed1f247af6d
         }
     }])
   .controller('HomeController', ['$scope', 'CertificationFactory', 'ProfileFactory', 'ProjectFactory', function ($scope, CertificationFactory, ProfileFactory, ProjectFactory) {
@@ -94,7 +39,7 @@ angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "Proj
         $scope.projects = ProjectFactory.query();
     }])
   .controller('LoginController', ['$rootScope', '$scope', 'LoginService', '$state', function ($rootScope, $scope, LoginService, $state) {
-        $scope.authenticated = LoginService.authenticated();
+        $rootScope.authenticated = LoginService.authenticated();
         $scope.login = function () {
             var result = LoginService.login($scope.username, $scope.password);
             result.then(function (responseData) {
@@ -114,7 +59,8 @@ angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "Proj
   .service('ConfigService', ['$http', '$q', function ($http, $q) {
         return {
             appRoot: function () {
-                var url = 'http://localhost:3002';
+                //var url = 'http://localhost:3002';
+                var url = 'https://bolt-test-sgannonumd.c9users.io';
                 return url;
             },
             appPort: function () {
@@ -152,7 +98,7 @@ angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "Proj
                     $window.localStorage.removeItem('BoltToken');
                     $window.localStorage.removeItem('BoltTokenExp');
                 }
-        catch (e) {
+                catch (e) {
                     console.log(e);
                 }
             },
@@ -248,21 +194,25 @@ angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "Proj
         }
     }])
   .controller('CarouselController', ['$state', '$scope', 'ConfigService', 'ImagesService', function ($state, $scope, ConfigService, ImagesService) {
-        
+
         ImagesService.getAll().then(function (response) {
             $scope.images = response.images;
+            $scope.slides = [];
+            angular.forEach(response.images, function(image) {
+                $scope.slides.push({ fileName: image.fileName, description: image.contentType });
+            })
         }, function (err) {
             console.log("Could not get images.");
         });
-        
+
         $scope.uploadedFile = function (element) {
             $scope.$apply(function ($scope) {
                 $scope.files = element.files;
             });
         }
-        
+
         $scope.root = "/temp/";
-        
+
         $scope.addFile = function () {
             var upload = ImagesService.uploadfile($scope.files);
             upload.then(function (response) {
@@ -271,32 +221,77 @@ angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "Proj
                 alert(response.message);
             })
         }
+        $scope.direction = 'left';
+        $scope.currentIndex = 0;
+
+        $scope.setCurrentSlideIndex = function (index) {
+            $scope.direction = (index > $scope.currentIndex) ? 'left' : 'right';
+            $scope.currentIndex = index;
+        };
+
+        $scope.isCurrentSlideIndex = function (index) {
+            return $scope.currentIndex === index;
+        };
+
+        $scope.prevSlide = function () {
+            $scope.direction = 'left';
+            $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
+        };
+
+        $scope.nextSlide = function () {
+            $scope.direction = 'right';
+            $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
+        };
+
     }])
-   .controller('SignupController', function ($scope, LoginService, $state) {
-    $scope.authenticated = LoginService.authenticated();
+   .controller('SignupController', function ($rootScope, $scope, LoginService, $state) {
+    $rootScope.authenticated = LoginService.authenticated();
     $scope.signup = function () {
         LoginService.register($scope.firstname, $scope.lastname, $scope.email, $scope.password)
             .then(function (rd) {
-                LoginService.login($scope.email, $scope.password).then(function () {
-                    $state.go('home');
-                 });
-                },
-                function (status) {
-                    alert('Error trying to sign you up. Sorry!');
-                }
-            )
-        
-        
-        //var reslogin = 
-        //console.log("logged in");
-        //console.log(reslogin);
-            
-        
+                $rootScope.authenticated = LoginService.authenticated();
+                $state.go('home');
+        })
     }
     $scope.logout = function () {
         //  var result = LoginService.logout();
         $state.go('home');
     }
+    })
+.animation('.slide-animation', function () {
+    return {
+        addClass: function (element, className, done) {
+            var scope = element.scope();
+            element = $(element);
 
-}
-)
+            if (className == 'ng-hide') {
+                var finishPoint = element.parent().width();
+                if(scope.direction !== 'right') {
+                    finishPoint = -finishPoint;
+                }
+                TweenMax.to(element, 0.5, {left: finishPoint, onComplete: done });
+            }
+            else {
+                done();
+            }
+        },
+        removeClass: function (element, className, done) {
+            var scope = element.scope();
+            element = $(element);
+            if (className == 'ng-hide') {
+                element.removeClass('ng-hide');
+
+                var startPoint = element.parent().width();
+                if(scope.direction === 'right') {
+                    startPoint = -startPoint;
+                }
+
+                TweenMax.set(element, { left: startPoint });
+                TweenMax.to(element, 0.5, {left: 0, onComplete: done });
+            }
+            else {
+                done();
+            }
+        }
+    };
+    });
