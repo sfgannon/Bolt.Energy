@@ -54,7 +54,8 @@ angular.module("boltprofiles", ["ngFileUpload", "ui.router", "ngResource", "Proj
   .service('ConfigService', ['$http', '$q', function($http, $q) {
     return {
       appRoot: function() {
-        var url = 'https://bolt-test-sgannonumd.c9users.io';
+        //var url = 'https://bolt-test-sgannonumd.c9users.io';
+        var url = 'http://localhost:3002';
         return url;
       },
       appPort: function() {
