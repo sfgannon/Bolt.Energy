@@ -24,23 +24,34 @@ module.exports = function(app) {
   const apiRoutes = express.Router();
 
   // Register new users
-  apiRoutes.post('/register', function(req, res) {
-    if(!req.body.email || !req.body.password) {
-      res.status(400).json({ success: false, message: 'Please enter email and password.' });
-    } else {
-      const newUser = new User({
-        email: req.body.email,
-        password: req.body.password
-      });
-
-      // Attempt to save the user
-      newUser.save(function(err) {
-        if (err) {
-          return res.status(400).json({ success: false, message: 'That email address already exists.'});
+    apiRoutes.post('/register', function (req, res) {
+        console.log('hitting register');
+        if (!req.body.email || !req.body.password) {
+            res.status(400).json({ success: false, message: 'Please enter email and password.' });
+        } else {
+            console.log(req.body);
+            if (!req.body.email || !req.body.password) {
+                res.status(400).json({ success: false, message: 'Please enter email and password.' });
+            } 
+            else {
+                const newUser = new User({
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    username: req.body.username,        
+                    email: req.body.email,
+                    password: req.body.password
+                });
+                
+                
+                // Attempt to save the user
+                newUser.save(function (err) {
+                    if (err) {
+                        return res.status(400).json({ success: false, message: 'That email address already exists.' });
+                    }
+                    res.status(201).json({ success: true, message: 'Successfully created new user.' });
+                });
+            }
         }
-        res.status(201).json({ success: true, message: 'Successfully created new user.' });
-      });
-    }
   });
 
   apiRoutes.get('/users', function(req, res, next){

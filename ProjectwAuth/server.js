@@ -14,7 +14,8 @@ app.use(bodyParser.json({ limit: '10mb' }));
 require('./routes/routes_auth')(app);
 require('./routes/routes_image')(app);
 app.use(express.static('public'));
-var port = process.env.PORT || config.port || 3001;
+//var port = process.env.PORT || config.port || 3001;
+var port = config.port || 3001;
 
 app.use("/data", projectRouter);
 app.use("/data", profileRouter);
