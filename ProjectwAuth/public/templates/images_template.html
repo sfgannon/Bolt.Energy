@@ -1,0 +1,31 @@
+  <div class="container">
+    <div class="wrapper">
+      <form name="upload" class="form" data-ng-submit="addFile()">
+          <input type="file" name="files" multiple onchange="angular.element(this).scope().uploadedFile(this)" />
+          <button type="submit">Upload </button>
+      </form>
+    </div>
+    <div class="wrapper">
+    	<table style="border-collapse:separate; border-spacing:15px;">
+    		<thead>
+        <th></th>
+    			<th>FileName</th>
+    			<th>ContentType</th>
+    		</thead>
+    		<tbody >
+    		<tr ng-repeat="img in images">
+    		<td><a>Edit Item</a></td>
+    		<td>{{ img.fileName }}</td>
+    		<td>{{ img.contentType }}</td>
+    		</tr>
+    		</tbody>
+    	</table>
+    </div>
+    <div class="wrapper">
+        <table style="border-collapse:separate; border-spacing:15px;">
+            <tr ng-repeat="img in images">
+                <td><img style="height:200px;width:auto;" ng-src="{{ root + img.fileName }}"/></td>
+            </tr>
+        </table>
+    </div>
+  </div>

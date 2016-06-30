@@ -5,7 +5,7 @@
     <base href="/">
 
     <title>Bolt.Energy</title>
-    <!-- Styling -->    
+    <!-- Styling -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link media="all" rel="stylesheet" href="css/main.css">
@@ -53,14 +53,6 @@
       </div>
     </header>
     <div ui-view></div>
-    <div class="wrapper">
-      <form ng-controller="ImageController" name="form">
-        Single Image with validations
-        <input type="file" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
-          ngf-accept="'image/*'" />
-        <button type="submit" ng-click="submit()">submit</button>
-      </form>
-    </div>
   </div>
   <footer id="footer">
     <div class="container">

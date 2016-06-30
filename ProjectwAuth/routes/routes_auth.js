@@ -12,6 +12,13 @@ const User = require('../models/user_model');
 
 // Export the routes for our app to use
 module.exports = function(app) {
+  // API Route Section
+
+  // Initialize passport for use
+  app.use(passport.initialize());
+
+  // Bring in defined Passport Strategy
+  require('../config/passport_config')(passport);
 
   // Create API group routes
   const apiRoutes = express.Router();
