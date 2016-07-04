@@ -31,4 +31,14 @@
             </tr>
         </table>
     </div>
+    <div class="container slider carousel">
+        <img ng-repeat="img in images" class="slide slide-animation nonDraggableImage"
+             ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
+             ng-hide="!isCurrentSlideIndex($index)" ng-src="{{ root + img.fileName }}">
+
+        <a class="btn-next" href="" ng-click="nextSlide()"></a>
+        <a class="btn-next" href="" ng-click="prevSlide()"></a>
+    </ul></div>
+    </nav>
+    </div>
   </div>
