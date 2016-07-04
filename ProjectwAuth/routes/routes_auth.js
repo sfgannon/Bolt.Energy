@@ -41,14 +41,17 @@ module.exports = function(app) {
                     email: req.body.email,
                     password: req.body.password
                 });
-                
-                
+                                
                 // Attempt to save the user
-                newUser.save(function (err) {
+                newUser.save(function (err, user) {
                     if (err) {
                         return res.status(400).json({ success: false, message: 'That email address already exists.' });
                     }
-                    res.status(201).json({ success: true, message: 'Successfully created new user.' });
+                    const token = jwt.sign(user, config.secret, {
+                      expiresIn: 10080 // in seconds
+                    });
+                    debugger;
+                    res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token });
                 });
             }
         }
