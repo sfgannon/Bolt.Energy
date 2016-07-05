@@ -21,17 +21,10 @@
     		<td>{{ img.contentType }}</td>
     		</tr>
     		</tbody>
-        
+
     	</table>
     </div>
-    <div class="wrapper">
-        <table style="border-collapse:separate; border-spacing:15px;">
-            <tr ng-repeat="img in images">
-                <td><img style="height:200px;width:auto;" ng-src="{{ root + img.fileName }}"/></td>
-            </tr>
-        </table>
-    </div>
-    <div class="container slider carousel">
+    <div class="wrapper slider carousel">
         <img ng-repeat="img in images" class="slide slide-animation nonDraggableImage"
              ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
              ng-hide="!isCurrentSlideIndex($index)" ng-src="{{ root + img.fileName }}">
