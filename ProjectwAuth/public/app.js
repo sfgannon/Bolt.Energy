@@ -1,8 +1,8 @@
 angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource", "ProjectModule", "ProfileModule", "CertificationModule"])
   .config(function ($stateProvider, $urlRouterProvider) {
-    
+
     $urlRouterProvider.otherwise('/home');
-    
+
     $stateProvider.state('home', {
         url: '/home',
         templateUrl: '/templates/home.html',
@@ -59,7 +59,8 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
   .service('ConfigService', ['$http', '$q', function ($http, $q) {
         return {
             appRoot: function () {
-                var url = 'http://localhost:3002';
+                //var url = 'http://localhost:3002';
+                var url = 'https://bolt-test-sgannonumd.c9users.io';
                 return url;
             },
             appPort: function () {
@@ -193,7 +194,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         }
     }])
   .controller('CarouselController', ['$state', '$scope', 'ConfigService', 'ImagesService', function ($state, $scope, ConfigService, ImagesService) {
-        
+
         ImagesService.getAll().then(function (response) {
             $scope.images = response.images;
             $scope.slides = [];
@@ -203,15 +204,15 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         }, function (err) {
             console.log("Could not get images.");
         });
-        
+
         $scope.uploadedFile = function (element) {
             $scope.$apply(function ($scope) {
                 $scope.files = element.files;
             });
         }
-        
+
         $scope.root = "/temp/";
-        
+
         $scope.addFile = function () {
             var upload = ImagesService.uploadfile($scope.files);
             upload.then(function (response) {
