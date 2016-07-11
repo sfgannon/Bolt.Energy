@@ -3,6 +3,8 @@ var passport = require('passport');
 var express = require('express');
 var config = require('../config/app_config');
 var jwt = require('jsonwebtoken');
+var mongoose = require('mongoose');
+var objectId = mongoose.Types.ObjectId;
 
 // Set up middleware
 const requireAuth = passport.authenticate('jwt', { session: false });
@@ -57,6 +59,7 @@ module.exports = function(app) {
         }
   });
 
+  //This is a general search, for granning individual profiles for administration see below
   apiRoutes.get('/users', function(req, res, next){
     //Get all profiles, or if req.email then search for one user by email
     var queryString = req.query;
@@ -116,6 +119,44 @@ module.exports = function(app) {
       }
     });
   });
+
+  //TODO: Add an authentication check to make sure user can edit this profile
+  apiRoutes.put('/users/:id', function(req, res) {
+    try {
+      if (objectId.isValid(req.params.id)) {
+        User.findOneAndUpdate({ _id: req.params.id }, req.body, function(err, User) {
+          if (err) {
+            //wtf happened?
+            res.status(500).json({ error: err });
+          } else {
+            res.status(200).json({ user: User, message: 'User information updated.'});
+          }
+        })
+      } else {
+        res.status(500).json({ message: "Invalid Object Id." });
+      }
+    } catch (e) {
+      res.status(500).json({ error: e, message: "Error occurred while saving." });
+    }
+  });
+
+  apiRoutes.get('/users/:id', function(req, res) {
+    try {
+      if (objectId.isValid(req.params.id)) {
+        User.findById(req.params.id, function(err, User) {
+          if (err) {
+            res.status(500).json({ error: err, message: "Erro finding user." });
+          } else {
+            res.status(200).json({ user: User, message: "User information found." });
+          }
+        })
+      } else {
+        res.status(500).json({ message: "Invalid User Id." });
+      }
+    } catch (e) {
+      res.status(500).json({ error: e, message: "Error occurred while retrieving data." });
+    }
+  })
 
   // Set url for API group routes
   app.use('/data', apiRoutes);

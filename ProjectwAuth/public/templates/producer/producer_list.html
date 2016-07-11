@@ -1,0 +1,10 @@
+<table>
+<thead>
+<tr>
+<th></th><th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="profile in profiles"><td><a ui-sref="editprofile({ id: {{ profile._id }} })">Edit</a></td><td>{{profile.name}}</td><td>{{ profile.description }}</td></tr>
+</tbody>
+</table>

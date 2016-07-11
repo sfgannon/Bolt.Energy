@@ -165,5 +165,25 @@
 		</div>
 	</div>
 </div>
-
-
+<div class="row">
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="project in projects">
+					<td>
+						<a href="" ui-sref="editproject({ id: {{ project._id }} })">Edit</a>
+						<td> {{project.name}} </td>
+						<td> {{ project.description }} </td>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

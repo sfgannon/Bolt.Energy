@@ -1,0 +1,21 @@
+<div class="container">
+	<div class="col-left">
+		<div ui-view="images"></div>
+	</div>
+	<div class="col-left">
+        <p><label for="inpFirstname">First: </label><input type="text" id="inpUsername" ng-model="firstname"></p>
+        <p><label for="inpLastname">Last: </label><input type="text" id="inpUsername" ng-model="lastname"></p>
+		<p><label for="inpEmail">Email: </label><input type="text" id="inpUsername" ng-model="email"></p>
+		<p><label for="selType">Profile Type: </label><select ng-model="type"><option value="Producer">Producer</option><option value="Consumer">Consumer</option></select></p>
+		<p><label for="inpPassword">Password: </label><input type="password" id="inpPassword" ng-model="password"></p>
+		<p><a id="btnSignUp" ng-click="saveProfile()" href="">Save</a>&nbsp&nbsp<a id="btnCancel" ng-click="cancel()" href="">Cancel</a></p>
+	</div>
+</div>
+<div class="container" ng-hide="{{type}} == 'Consumer'">
+	<div class="col-left">
+		<div>
+			<p><a href="" ui-sref="addProfile({ profileId: {{ _id }} })">Add a Producer Profile</a></p>
+		</div>
+		<div ui-demo="project"></div>
+	</div>
+</div>
