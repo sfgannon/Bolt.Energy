@@ -56,19 +56,21 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
             $state.go('home');
         }
     }])
-  .service('ConfigService', ['$http', '$q', function ($http, $q) {
+  .service('ConfigService', function ($http, $q, $window) {
         return {
             appRoot: function () {
                 //var url = 'http://localhost:3002';
-                var url = 'https://bolt-test-sgannonumd.c9users.io';
+                //var url = 'https://bolt-test-sgannonumd.c9users.io';
+                var url = '';
+                if ($window.location.href.indexOf('c9users') > -1) {
+                    url = 'https://bolt-test-sgannonumd.c9users.io';
+                } else {
+                    url = 'http://localhost:3002';
+                }
                 return url;
-            },
-            appPort: function () {
-                var port = 3002;
-                return port;
             }
         }
-    }])
+    })
   .service('LoginService', ['$http', '$q', '$window', 'ConfigService', function ($http, $q, $window, ConfigService) {
         return {
             login: function (username, password) {
