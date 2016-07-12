@@ -174,7 +174,8 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                     fd.append('files', file);
                     data.push({
                         fileName: file.name,
-                        contentType: file.type
+                        contentType: file.type,
+                        description: file.description
                     })
                 });
                 fd.append('data', JSON.stringify(data));
