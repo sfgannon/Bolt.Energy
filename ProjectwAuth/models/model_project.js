@@ -24,7 +24,6 @@ var ProjectSchema = new Schema({
 		ref: 'Image'
 	}],
 	energyMix: String,
-	bannerUrl: String,
 	address1: String,
 	address2: String,
 	city: String,

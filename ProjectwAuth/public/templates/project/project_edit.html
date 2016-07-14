@@ -2,20 +2,20 @@
 	<div class="col-sm-6 col-md-6 col-lg-6">
 		<div class="form-group">
 			<label for="inpName">Name: </label>
-			<input type="hidden" ng-model="profile._id" name="hiddenId">
-			<input name="inpName" type="text" class="form-control" ng-model="profile.name" value="{{ profile.name }}">
+			<input type="hidden" ng-model="project._id" name="hiddenId">
+			<input name="inpName" type="text" class="form-control" ng-model="project.name" value="{{ project.name }}">
 		</div>
 		<div class="form-group">
 			<label for="inpDesc">Description: </label>
-			<textarea name="inpDesc" rows=6 cols=10 class="form-control" ng-model="profile.desc"></textarea>
+			<textarea name="inpDesc" rows=6 cols=10 class="form-control" ng-model="project.desc"></textarea>
 		</div>
 		<div class="form-group">
 			<label for="inpStatus">Status: </label>
-			<input name="inpStatus" type="text" class="form-control" ng-model="profile.status" value="{{ profile.status }}">
+			<input name="inpStatus" type="text" class="form-control" ng-model="project.status" value="{{ project.status }}">
 		</div>
 		<div class="form-group">
 			<label for="lstAvailability">Availability: </label>
-			<select name="lstAvailability" multiple class="form-control" ng-model="profile.availability" value="{{profile.availability}}">
+			<select name="lstAvailability" multiple class="form-control" ng-model="project.availability" value="{{project.availability}}">
 				<option value="AL">Alabama</option>
 				<option value="AK">Alaska</option>
 				<option value="AZ">Arizona</option>
@@ -70,21 +70,15 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="selProfileType">Commercial or Non-Commercial: </label>
-			<select name="selProfileType" class="form-control" ng-model="profile.type" value="{{profile.type}}">
+			<label for="selProjectType">Project Type: </label>
+			<select name="selProjectType" class="form-control" ng-model="project.projectType" value="{{project.projectType}}">
 				<option value="Non-Commercial">Non-Commercial</option>
-				<option value="Commercial">Commercial</option>
-			</select>
-		</div>
-		<div class="form-group">
-			<label for="selEnergyType">Energy Type: </label>
-			<select name="selEnergyType" id="selEnergyType" class="form-control" ng-model="profile.energyType" value="{{profile.energyType}}">
-				<option value="Wind">Wind</option>
-				<option value="Solar">Solar</option>
-				<option value="Hydro">Hydro</option>
-				<option value="Geo_Thermal">Geo-Thermal</option>
-				<option value="Biomass">Biomass</option>
-				<option value="Landfill Gas">Landfill Gas</option>
+				<option value="Community Solar">Community Solar</option>
+				<option value="Solar Co-Op">Solar Co-Op</option>
+				<option value="Utility Green Power Program">Utility Green Power Program</option>
+				<option value="Competitive Supplier">Competitive Supplier</option>
+				<option value="Carbon Offset">Carbon Offset</option>
+				<option value="RECs">RECs</option>
 				<option value="Other">Other</option>
 			</select>
 		</div>
@@ -109,7 +103,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="img in profile.images">
+					<tr ng-repeat="img in project.images">
 						<td><img ng-src="{{ root + img.fileName}}" alt="img.description" /></td>
 						<td>{{ img.fileName }}, {{ img.contentType }}</td>
 						<td>{{ img.description }}</td>
@@ -118,50 +112,63 @@
 			</table>
 		</div>
 		<div class="form-group">
-			<label for="lblOwner">Owner: </label>
-			<label id="lblOwner">{{ profile.owner.firstName }} {{ profile.owner.lastName}}</label>
+			<label for="inpEnergyMix">Energy Mix: </label>
+			<input name="inpEnergyMix" type="text" class="form-control" ng-model="project.energyMix" value="{{project.energyMix}}">
 		</div>
 		<div class="form-group">
 			<label for="inpAddress1">Address 1: </label>
-			<input name="inpAddress1" type="text" class="form-control" ng-model="profile.address1" value="{{ profile.address1 }}">
+			<input name="inpAddress1" type="text" class="form-control" ng-model="project.address1" value="{{ project.address1 }}">
 		</div>
 		<div class="form-group">
 			<label for="inpAddress2">Address 2: </label>
-			<input name="inpAddress2" type="text" class="form-control" ng-model="profile.address2" value="{{ profile.address2 }}">
+			<input name="inpAddress2" type="text" class="form-control" ng-model="project.address2" value="{{ project.address2 }}">
 		</div>
 		<div class="form-group">
 			<label for="inpCity">City: </label>
-			<input name="inpCity" type="text" class="form-control" ng-model="profile.city" value="{{ profile.city }}">
+			<input name="inpCity" type="text" class="form-control" ng-model="project.city" value="{{ project.city }}">
 		</div>
 		<div class="form-group">
 			<label for="inpState">State: </label>
-			<input name="inpState" type="text" class="form-control" ng-model="profile.state" value="{{ profile.state }}">
+			<input name="inpState" type="text" class="form-control" ng-model="project.state" value="{{ project.state }}">
 		</div>
 		<div class="form-group">
 			<label for="inpZip">Zip: </label>
-			<input name="inpZip" type="text" class="form-control" ng-model="profile.zip" value="{{ profile.zip }}">
+			<input name="inpZip" type="text" class="form-control" ng-model="project.zip" value="{{ project.zip }}">
 		</div>
 		<div class="form-group">
-			<label for="inpApprovalNumber">Approval Number: </label>
-			<input name="inpState" type="text" class="form-control" ng-model="profile.approvalNumber" value="{{ profile.approvalNumber }}">
+			<label for="inpProgramCategory">Program Category: </label>
+			<input name="inpProgramCategory" type="text" class="form-control" ng-model="project.programCategory" value="{{ project.programCategory }}">
 		</div>
 		<div class="form-group">
-			<label for="selCertifications">Certifications: </label>
-			<select name="selCertifications" multiple class="form-control" ng-model="profile.certifications" value="{{profile.certifications}}">
-				<option ng-repeat="cert in certifications" value="{{ cert._id }}">{{ cert.type }}</option>
+			<label for="inpCapacity">Capacity: </label>
+			<input name="inpCapacity" type="text" class="form-control" ng-model="project.capacity" value="{{ project.capacity }}">
+		</div>
+		<div class="form-group">
+			<label for="selUtilityDIstricts">Utility Districts: </label>
+			<select name="selUtilityDIstricts" multiple class="form-control" ng-model="project.utilityDistricts" value="{{project.utilityDistricts}}">
+				<option value="Berlin">Berlin</option>
+				<option value="BGE">BGE</option>
+				<option value="Choptank">Choptank</option>
+				<option value="DPL">DPL</option>
+				<option value="Easton">Easton</option>
+				<option value="Hagerstown">Hagerstown</option>
+				<option value="PE">PE</option>
+				<option value="Pepco">Pepco</option>
+				<option value="SMECO">SMECO</option>
+				<option value="Thurmont">Thurmont</option>
+				<option value="Williamsport">Williamsport</option>
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="selProjects">Projects: </label>
-			<select name="selProjects" multiple class="form-control" ng-model="profile.projects" value="{{profile.projects}}">
-				<option ng-repeat="proj in projects" value="{{ proj._id }}">{{ proj.name
-				 }}</option>
+			<label for="selProjectOwner">Project Owner: </label>
+			<select name="selProjectOwner" class="form-control" ng-model="project.projectOwner" value="{{project.projectOwner}}">
+				<option ng-repeat="po in owners" value="{{ po._id }}">{{ po.name }}</option>
 			</select>
 		</div>
 		<div class="form-group">
-			<input type='submit' class="btn btn-default" ng-click="saveProfile()">&nbsp
-			<button type="button" class="btn btn-warning" ng-click="cancelProfile()">Cancel</button>&nbsp
-			<button type="button" class="btn btn-danger" ng-click="deleteProfile()">Delete</button>
+			<input type='submit' class="btn btn-default" ng-click="saveProject()">&nbsp
+			<button type="button" class="btn btn-warning" ng-click="cancelProject()">Cancel</button>&nbsp
+			<button type="button" class="btn btn-danger" ng-click="deleteProject()">Delete</button>
 		</div>
 	</div>
 </div>

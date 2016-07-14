@@ -1,0 +1,51 @@
+    <div class="tab-content">
+      <div id="tab1">
+        <div class="text-frame ">
+          <h1>{{ project.name }}</h1>
+          <span class="add-text">{{ project.projectType }}</span>
+        </div>
+        <div class="col-left">
+			    <div class="wrapper slider carousel">
+		        <img ng-repeat="img in images" class="slide slide-animation nonDraggableImage"
+		             ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
+		             ng-hide="!isCurrentSlideIndex($index)" ng-src="{{ root + img.fileName }}" alt="{{ img.description }}" />
+		        <a class="btn-next" href="" ng-click="nextSlide()"></a>
+		        <a class="btn-prev" href="" ng-click="prevSlide()"></a>
+			    </div>
+          <h2>Overview</h2>
+          <p>{{ project.desc }}</p>
+        </div>
+        <aside class="col-right">
+          <div class="snapshot">
+            <strong class="title line">Project Snapshot</strong>
+            <dl>
+              <dt>Status</dt>
+              <dd>{{ project.status }}</dd>
+              <dt>Project Type</dt>
+              <dd>{{ project.projectType }}</dd>
+              <dt>Availability</dt>
+              <dd>{{ project.availability }}</dd>
+              <dt>Energy Mix</dt>
+              <dd>{{ project.energyMix }}</dd>
+              <dt>Utility Districts</dt>
+              <dd>{{ project.utilityDistricts }}</dd>
+              <dt>Capacity</dt>
+              <dd>{{ project.capacity }}</dd>
+              <dt>MD Program Category</dt>
+              <dd>{{ project.programCategory }}</dd>
+            </dl>
+          </div>
+          <div class="green-box">
+            <strong class="title line">Ready to Go Solar?</strong>
+            <p>Contact us today to sign up or join us for an information session to find out more!</p>
+            <a href="#" class="btn">Contact Us</a>
+          </div>
+        </aside>
+      </div>
+      <div id="tab2">
+
+      </div>
+      <div id="tab3">
+
+      </div>
+    </div>
