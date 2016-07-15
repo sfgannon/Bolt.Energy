@@ -32,7 +32,17 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 	})
 })
 .controller('UserAdminController', function($scope, UserFactory, $stateParams) {
-	//Save, cancel methods
-	$scope.
 	//Get profile data for $scope variable
+	UserFactory.get(function(responseData) {
+		$scope.user = responseData.data.User;
+	})
+	//Save, cancel methods
+	$scope.saveProfile = function() {
+
+	}
+	$scope.cancel = function() {
+
+	}
+
+
 })
