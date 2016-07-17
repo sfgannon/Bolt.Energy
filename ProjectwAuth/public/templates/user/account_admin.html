@@ -1,0 +1,11 @@
+<div class="container">
+	<div class="col-left">
+		<div ui-view="userInfo"></div>
+	</div>
+	<div class="col-left" ng-hide="user.type == 'Consumer'">
+		<div ui-view="profileInfo"></div>
+	</div>
+	<div class="col-left" ng-hide="user.type == 'Consumer'">
+		<div ui-view="projectInfo"></div>
+	</div>
+</div>

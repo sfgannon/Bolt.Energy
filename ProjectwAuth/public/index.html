@@ -36,6 +36,7 @@
     <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="libs/angular-resource/angular-resource.min.js"></script>
     <!-- ANGULAR CUSTOM -->
+    <script src="user/user_module.js"></script>
     <script src="project/module_project.js"></script>
     <script src="profile/module_profile.js"></script>
     <script src="certification/module_certification.js"></script>
@@ -58,7 +59,7 @@
             <li><a ui-sref="signup" class="btn">Sign Up</a></li>
           </ul>
           <ul class="nav-btn" ng-show="authenticated">
-            <li><a ui-sref='devprofile' class="btn">Profile</a></li>
+            <li><a ui-sref="useradmin({ userId: currentUserId })" class="btn">Profile</a></li>
             <li><a ng-click="logout()" href='' class="btn">Logout</a></li>
           </ul>
           <ul class="" id="nav">

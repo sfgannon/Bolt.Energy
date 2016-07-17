@@ -23,8 +23,56 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         templateUrl: '/templates/signup.html',
         controller: 'SignupController'
     })
+    $stateProvider.state('useradmin', {
+        url: '/user/:userId',
+        resolve: {
+            userInfo: function(UserFactory,$stateParams) {
+                return UserFactory.get($stateParams.userId);
+            }
+        },
+        views: {
+            '': {
+                templateUrl: '/templates/user/account_admin.html'
+            },
+            'userInfo': {
+                templateUrl: '/templates/user/user_admin.html',
+                controller: 'UserAdminController'
+            // },
+            // 'profile': {
+            //  templateUrl: 'templates/profile_admin.html',
+            //  controller: 'ProfileAdminController'
+            // },
+            // 'project': {
+            //  templateUrl: 'templates/project_admin.html',
+            //  controller: 'ProjectAdminController'
+            }
+        }
+    });
+})
+.service("UserFactory", function($q, $http, ConfigService) {
+    return {
+        get: function(id) {
+            var $ret = $q.defer();
+            if (!id) {
+                $ret.promise = $http({
+                    method: 'GET',
+                    url: ConfigService.appRoot() + '/data/users/' + id
+                }).then(function(responseData) {
+                    $ret.resolve({ data: responseData });
+                }, function(error) {
+                    $ret.reject({ error: error });
+                })
+            }
+        }
+    }
+})
+.controller('UserAdminController', function($scope, UserFactory, $stateParams, userInfo) {
+    //Get profile data for $scope variable from resolved injected value
+    $scope.user = userInfo.data.user;
+    //Save, cancel methods
 })
   .controller('HeaderController', ['$rootScope', '$scope', 'LoginService', function ($rootScope, $scope, LoginService) {
+        $rootScope.currentUserId = '';
         $rootScope.authenticated = LoginService.authenticated();
         $scope.logout = function () {
             LoginService.logout();
@@ -45,6 +93,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
             result.then(function (responseData) {
                 alert('Login Successful.');
                 $rootScope.authenticated = LoginService.authenticated();
+                $rootScope.currentUserId = responseData.user._id;
                 $state.go('home');
             }, function (status) {
                 alert('Login Unsuccessful.');
@@ -86,7 +135,8 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                     $window.localStorage.setItem('BoltToken', responseData.data.token);
                     $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
                     $return.resolve({
-                        token: responseData.data.token
+                        token: responseData.data.token,
+                        user: responseData.data.user
                     });
                 }, function (httpError) {
                     $return.reject({
@@ -137,7 +187,8 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                     $window.localStorage.setItem('BoltToken', responseData.data.token);
                     $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
                     $return.resolve({
-                        token: responseData.data.token
+                        token: responseData.data.token,
+                        user: responseData.data.user
                     });
                 }, function (status) {
                     $return.reject({
@@ -252,13 +303,14 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     $scope.signup = function () {
         LoginService.register($scope.firstname, $scope.lastname, $scope.email, $scope.password)
             .then(function (rd) {
+                $rootScope.currentUserId = rd.data.user._id;
                 $rootScope.authenticated = LoginService.authenticated();
                 $state.go('home');
         })
     }
     $scope.logout = function () {
         //  var result = LoginService.logout();
-        $state.go('home');
+        $state.go('home');  
     }
     })
 .animation('.slide-animation', function () {

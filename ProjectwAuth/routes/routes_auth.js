@@ -53,7 +53,7 @@ module.exports = function(app) {
                       expiresIn: 10080 // in seconds
                     });
                     debugger;
-                    res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token });
+                    res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token, user: user });
                 });
             }
         }
@@ -111,7 +111,7 @@ module.exports = function(app) {
               expiresIn: 10080 // in seconds
             });
             console.log(Date.now());
-            res.status(200).json({ success: true, token: 'JWT ' + token });
+            res.status(200).json({ success: true, token: 'JWT ' + token, user: user });
           } else {
             res.status(401).json({ success: false, message: 'Authentication failed. Passwords did not match.' });
           }
