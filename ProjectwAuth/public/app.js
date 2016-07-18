@@ -25,26 +25,26 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     })
     $stateProvider.state('useradmin', {
         url: '/user/:userId',
-        resolve: {
-            userInfo: function(UserFactory,$stateParams) {
-                return UserFactory.get($stateParams.userId);
-            }
-        },
         views: {
             '': {
                 templateUrl: '/templates/user/account_admin.html'
             },
-            'userInfo': {
+            'user@useradmin': {
                 templateUrl: '/templates/user/user_admin.html',
-                controller: 'UserAdminController'
-            // },
-            // 'profile': {
-            //  templateUrl: 'templates/profile_admin.html',
-            //  controller: 'ProfileAdminController'
-            // },
-            // 'project': {
-            //  templateUrl: 'templates/project_admin.html',
-            //  controller: 'ProjectAdminController'
+                controller: 'UserAdminController',
+                resolve: {
+                    userInfo: function(UserFactory,$stateParams) {
+                        return UserFactory.get($stateParams.userId);
+                    }
+                }
+            },
+            'profile@useradmin': {
+             templateUrl: '/templates/user/profile_admin.html',
+             controller: 'ProfileAdminController'
+            },
+            'project@useradmin': {
+             templateUrl: '/templates/user/project_admin.html',
+             controller: 'ProjectAdminController'
             }
         }
     });
@@ -53,7 +53,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     return {
         get: function(id) {
             var $ret = $q.defer();
-            if (!id) {
+            if (id) {
                 $ret.promise = $http({
                     method: 'GET',
                     url: ConfigService.appRoot() + '/data/users/' + id
@@ -62,15 +62,29 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                 }, function(error) {
                     $ret.reject({ error: error });
                 })
+            } else {
+                $ret.promise = $http({
+                    method: 'GET',
+                    url: ConfigService.appRoot() + '/data/users'
+                }).then(function(response) {
+                    $ret.resolve({ data: response });
+                }, function(err) {
+                    $ret.reject({ error: err });
+                })
             }
+            return $ret.promise;
         }
     }
 })
-.controller('UserAdminController', function($scope, UserFactory, $stateParams, userInfo) {
-    //Get profile data for $scope variable from resolved injected value
-    $scope.user = userInfo.data.user;
-    //Save, cancel methods
+.controller('TestController', function($scope) {
+    $scope.mesage = "Heres a message in a scope var.";
 })
+.controller('UserAdminController', ['$scope','UserFactory','$state','$stateParams', 'userInfo', function($scope, UserFactory, $state, $stateParams, userInfo) {
+    //Get profile data for $scope variable from resolved injected value
+    $scope.user = userInfo.data.data.user;
+    $scope.message = "Heres the user admin controller";
+    //Save, cancel methods
+}])
   .controller('HeaderController', ['$rootScope', '$scope', 'LoginService', function ($rootScope, $scope, LoginService) {
         $rootScope.currentUserId = '';
         $rootScope.authenticated = LoginService.authenticated();
