@@ -14,49 +14,41 @@ const User = require('../models/user_model');
 
 // Export the routes for our app to use
 module.exports = function(app) {
-  // API Route Section
-
   // Initialize passport for use
   app.use(passport.initialize());
-
   // Bring in defined Passport Strategy
   require('../config/passport_config')(passport);
-
   // Create API group routes
   const apiRoutes = express.Router();
-
   // Register new users
-    apiRoutes.post('/register', function (req, res) {
-        console.log('hitting register');
-        if (!req.body.email || !req.body.password) {
-            res.status(400).json({ success: false, message: 'Please enter email and password.' });
-        } else {
-            console.log(req.body);
-            if (!req.body.email || !req.body.password) {
-                res.status(400).json({ success: false, message: 'Please enter email and password.' });
-            } 
-            else {
-                const newUser = new User({
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    username: req.body.username,        
-                    email: req.body.email,
-                    password: req.body.password
-                });
-                                
-                // Attempt to save the user
-                newUser.save(function (err, user) {
-                    if (err) {
-                        return res.status(400).json({ success: false, message: 'That email address already exists.' });
-                    }
-                    const token = jwt.sign(user, config.secret, {
-                      expiresIn: 10080 // in seconds
-                    });
-                    debugger;
-                    res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token, user: user });
-                });
-            }
+  apiRoutes.post('/register', function (req, res) {
+    console.log('hitting register');
+    if (!req.body.email || !req.body.password) {
+      res.status(400).json({ success: false, message: 'Please enter email and password.' });
+    } else {
+      console.log(req.body);
+      if (!req.body.email || !req.body.password) {
+        res.status(400).json({ success: false, message: 'Please enter email and password.' });
+      } else {
+        const newUser = new User({
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          email: req.body.email,
+          password: req.body.password
+        });
+        // Attempt to save the user
+        newUser.save(function (err, user) {
+          if (err) {
+            return res.status(400).json({ success: false, message: 'That email address already exists.' });
+          }
+          const token = jwt.sign(user, config.secret, {
+            expiresIn: 10080 // in seconds
+          });
+          debugger;
+          res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token, user: user });
+        });
         }
+      }
   });
 
   //This is a general search, for granning individual profiles for administration see below

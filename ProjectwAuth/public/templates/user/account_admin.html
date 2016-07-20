@@ -1,12 +1,11 @@
 <div class="container">
-Heres some text.
 	<div class="col-left">
 		<div ui-view="user"></div>
 	</div>
-	<div class="col-left" ng-hide="user.type == 'Consumer'">
+	<div class="col-left" ng-hide="{{user.accountType == 'Consumer'}}">
 		<div ui-view="profile"></div>
 	</div>
-	<div class="col-left" ng-hide="user.type == 'Consumer'">
+	<div class="col-left" ng-hide="{{user.accountType == 'Consumer'}}">
 		<div ui-view="project"></div>
 	</div>
 </div>

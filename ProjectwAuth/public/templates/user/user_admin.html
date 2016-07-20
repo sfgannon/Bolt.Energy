@@ -1,8 +1,5 @@
-<p><label for="inpFirstname">First: </label><input type="text" id="inpUsername" ng-model="user.firstname"></p>
-<p><label for="inpLastname">Last: </label><input type="text" id="inpUsername" ng-model="user.lastname"></p>
+<p><label for="inpFirstname">First: </label><input type="text" id="inpUsername" ng-model="user.firstName"></p>
+<p><label for="inpLastname">Last: </label><input type="text" id="inpUsername" ng-model="user.lastName"></p>
 <p><label for="inpEmail">Email: </label><input type="text" id="inpUsername" ng-model="user.email"></p>
-<p><label for="selType">Profile Type: </label><select ng-model="user.type"><option value="Producer">Producer</option><option value="Consumer">Consumer</option></select></p>
-<p><label for="inpPassword">Password: </label><input type="password" id="inpPassword" ng-model="user.password"></p>
+<p><label for="selType">Profile Type: </label><select ng-model="user.accountType" value="{{user.accountType}}"><option value="Producer">Producer</option><option value="Consumer">Consumer</option></select></p>
 <p><a id="btnSignUp" ng-click="saveProfile()" href="">Save</a>&nbsp&nbsp<a id="btnCancel" ng-click="cancel()" href="">Cancel</a></p>
-
-{{message}}

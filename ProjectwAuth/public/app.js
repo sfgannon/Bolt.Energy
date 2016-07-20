@@ -1,4 +1,4 @@
-angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource", "ProjectModule", "ProfileModule", "CertificationModule"])
+angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource","UserModule", "ProjectModule", "ProfileModule", "CertificationModule"])
   .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
@@ -23,74 +23,14 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         templateUrl: '/templates/signup.html',
         controller: 'SignupController'
     })
-    $stateProvider.state('useradmin', {
-        url: '/user/:userId',
-        views: {
-            '': {
-                templateUrl: '/templates/user/account_admin.html'
-            },
-            'user@useradmin': {
-                templateUrl: '/templates/user/user_admin.html',
-                controller: 'UserAdminController',
-                resolve: {
-                    userInfo: function(UserFactory,$stateParams) {
-                        return UserFactory.get($stateParams.userId);
-                    }
-                }
-            },
-            'profile@useradmin': {
-             templateUrl: '/templates/user/profile_admin.html',
-             controller: 'ProfileAdminController'
-            },
-            'project@useradmin': {
-             templateUrl: '/templates/user/project_admin.html',
-             controller: 'ProjectAdminController'
-            }
-        }
-    });
 })
-.service("UserFactory", function($q, $http, ConfigService) {
-    return {
-        get: function(id) {
-            var $ret = $q.defer();
-            if (id) {
-                $ret.promise = $http({
-                    method: 'GET',
-                    url: ConfigService.appRoot() + '/data/users/' + id
-                }).then(function(responseData) {
-                    $ret.resolve({ data: responseData });
-                }, function(error) {
-                    $ret.reject({ error: error });
-                })
-            } else {
-                $ret.promise = $http({
-                    method: 'GET',
-                    url: ConfigService.appRoot() + '/data/users'
-                }).then(function(response) {
-                    $ret.resolve({ data: response });
-                }, function(err) {
-                    $ret.reject({ error: err });
-                })
-            }
-            return $ret.promise;
-        }
-    }
-})
-.controller('TestController', function($scope) {
-    $scope.mesage = "Heres a message in a scope var.";
-})
-.controller('UserAdminController', ['$scope','UserFactory','$state','$stateParams', 'userInfo', function($scope, UserFactory, $state, $stateParams, userInfo) {
-    //Get profile data for $scope variable from resolved injected value
-    $scope.user = userInfo.data.data.user;
-    $scope.message = "Heres the user admin controller";
-    //Save, cancel methods
-}])
-  .controller('HeaderController', ['$rootScope', '$scope', 'LoginService', function ($rootScope, $scope, LoginService) {
+  .controller('HeaderController', ['$rootScope', '$scope', 'LoginService','$state', function ($rootScope, $scope, LoginService) {
         $rootScope.currentUserId = '';
         $rootScope.authenticated = LoginService.authenticated();
         $scope.logout = function () {
             LoginService.logout();
             $rootScope.authenticated = LoginService.authenticated();
+            $state.go('home');
         }
     }])
   .controller('HomeController', ['$scope', 'CertificationFactory', 'ProfileFactory', 'ProjectFactory', function ($scope, CertificationFactory, ProfileFactory, ProjectFactory) {
@@ -103,7 +43,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
   .controller('LoginController', ['$rootScope', '$scope', 'LoginService', '$state', function ($rootScope, $scope, LoginService, $state) {
         $rootScope.authenticated = LoginService.authenticated();
         $scope.login = function () {
-            var result = LoginService.login($scope.username, $scope.password);
+            var result = LoginService.login($scope.email, $scope.password);
             result.then(function (responseData) {
                 alert('Login Successful.');
                 $rootScope.authenticated = LoginService.authenticated();
@@ -136,13 +76,13 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     })
   .service('LoginService', ['$http', '$q', '$window', 'ConfigService', function ($http, $q, $window, ConfigService) {
         return {
-            login: function (username, password) {
+            login: function (email, password) {
                 var $return = $q.defer();
                 $return.promise = $http({
                     method: 'POST',
                     url: ConfigService.appRoot() + '/data/authenticate',
                     data: {
-                        email: username,
+                        email: email,
                         password: password
                     }
                 }).then(function (responseData) {
@@ -194,7 +134,6 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                         firstname: firstname,
                         lastname: lastname,
                         email: email,
-                        username: email,
                         password: password
                     }
                 }).then(function (responseData) {
@@ -324,7 +263,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     }
     $scope.logout = function () {
         //  var result = LoginService.logout();
-        $state.go('home');  
+        $state.go('home');
     }
     })
 .animation('.slide-animation', function () {
