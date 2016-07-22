@@ -20,7 +20,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     })
     $stateProvider.state('signup', {
         url: '/signup',
-        templateUrl: '/templates/signup.html',
+        templateUrl: '/templates/user/user_registration.html',
         controller: 'SignupController'
     })
 })
