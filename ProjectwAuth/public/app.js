@@ -24,7 +24,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         controller: 'SignupController'
     })
 })
-  .controller('HeaderController', ['$rootScope', '$scope', 'LoginService','$state', function ($rootScope, $scope, LoginService) {
+  .controller('HeaderController', ['$rootScope', '$scope', 'LoginService','$state', function ($rootScope, $scope, LoginService, $state) {
         $rootScope.currentUserId = '';
         $rootScope.authenticated = LoginService.authenticated();
         $scope.logout = function () {

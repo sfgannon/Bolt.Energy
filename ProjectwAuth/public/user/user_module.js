@@ -3,6 +3,9 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 	$stateProvider.state('useradmin', {
 		url: '/user/:userId',
 		resolve: {
+			profileInfo: function(UserProfileFactory,$stateParams) {
+				return UserProfileFactory.find($stateParams.userId);
+			},
 			userInfo: function(UserFactory,$stateParams) {
 				return UserFactory.get($stateParams.userId);
 			}
@@ -16,12 +19,12 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 				controller: 'UserAdminController'
 			},
 			'profile@useradmin': {
-				templateUrl: 'templates/user/profile_admin.html',
+				templateUrl: 'templates/producer/producer_edit.html',
 				controller: 'ProfileAdminController'
-			},
-			'project@useradmin': {
-				templateUrl: 'templates/user/project_admin.html',
-				controller: 'ProjectAdminController'
+			// },
+			// 'project@useradmin': {
+			// 	templateUrl: 'templates/user/project_admin.html',
+			// 	controller: 'ProjectAdminController'
 			}
 		}
 	});
@@ -30,12 +33,12 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 	return {
 		get: function(id) {
 			var $ret = $q.defer();
-			if (!id) {
+			if (id) {
 				$ret.promise = $http({
 					method: 'GET',
 					url: ConfigService.appRoot() + '/data/users/' + id
 				}).then(function(responseData) {
-					$ret.resolve({ data: responseData.data[0] });
+					$ret.resolve({ data: responseData.data.user });
 				}, function(error) {
 					$ret.reject({ error: error });
 				})
@@ -44,7 +47,7 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 					method: 'GET',
 					url: ConfigService.appRoot() + '/data/users'
 				}).then(function(responseData) {
-					$ret.resolve({ data: responseData.data });
+					$ret.resolve({ data: responseData.data.users });
 				}, function(err) {
 					$ret.reject({ error: err });
 				})
@@ -67,6 +70,23 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 			}, function(err) {
 				$ret.reject({ error: err });
 			})
+			return $ret.promise;
+		}
+	}
+})
+.service('UserProfileFactory', function($q,$http,ConfigService) {
+	return {
+		find: function(ownerId) {
+			var $ret = $q.defer();
+			$ret.promise = $http({
+				method: 'GET',
+				url: ConfigService.appRoot() + '/data/profiles?' + 'owner=' + ownerId
+			}).then(function(responseData) {
+				$ret.resolve({ data: responseData.data.profiles });
+			}, function(err) {
+				$ret.reject({ error: err });
+			})
+			return $ret.promise;
 		}
 	}
 })
@@ -74,7 +94,7 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 	//Get profile data for $scope variable from resolved injected value
 	$scope.user = userInfo.data;
 	//Save, cancel methods
-	$scope.saveProfile = function() {
+	$scope.saveAccount = function() {
 		var $ret = $q.defer();
 		$ret.promise = $http({
 			method: 'PUT',
@@ -98,8 +118,41 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 		$scope.user.email = $stateParams.user.email;
 	}
 })
-.controller('ProfileAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService) {
+.controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService) {
 	//Get profile data for $scope variable from resolved injected value
+	$scope.profile = profileInfo.data;
+	$scope.saveProfile = function() {
+		$scope.profile.owner = userInfo.data._id;
+		var $ret = $q.defer();
+		if ($scope.profile._id) {
+			$ret.promise = $http({
+				method: 'PUT',
+				url: ConfigService.appRoot() + '/data/profiles/' + profileInfo.data._id,
+				data: {
+					profile: $scope.profile
+				}
+			}).then(function(responseData) {
+				$ret.resolve({ data: responseData.data });
+			}, function(err) {
+				$ret.reject({ error: err });
+			})
+		} else {
+			$ret.promise = $http({
+				method: 'POST',
+				url: ConfigService.appRoot() + '/data/profiles',
+				data: {
+					profile: $scope.profile
+				}
+			}).then(function(responseData) {
+				$ret.resolve({ data: responseData.data });
+			}, function(err) {
+				$ret.reject({ error: err });
+			})
+		}
+	}
+	$scope.cancel = function() {
+
+	}
 
 })
 .controller('ProjectAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService) {

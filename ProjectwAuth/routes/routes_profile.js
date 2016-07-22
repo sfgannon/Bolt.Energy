@@ -6,25 +6,49 @@ var objectid = mongoose.Types.ObjectId;
 var router = express.Router();
 router.route("/profiles")
 	.get(function(req, res, next){
-		//Get all profiles
-		Profile.find(function(err, profiles){
-			if (err) {
-				console.log(err);
-				next(err);
-			}
-			console.log(profiles);
-			res.json(profiles);
-		})
-	})
+    //Get all profiles, or if req.email then search for one user by email
+    var queryString = req.query;
+    if (Object.keys(queryString).length > 0) {
+    // if (req.query) {
+      var result = Profile.find();
+      for (i = 0; i < Object.keys(req.query).length; i++) {
+        var term = Object.keys(req.query)[i];
+        var value = req.query[term];
+        result.where(term).equals(value);
+      };
+      result.exec(function(err, profiles) {
+        if (err) {
+          res.status(500).json({ error: err });
+        }
+        if (Object.keys(profiles).length == 0) {
+          res.status(200).json({ message: "No profiles found matching search criteria." });
+        } else {
+          res.json({ profiles: profiles });
+        }
+      })
+    } else {
+      Profile.find(function(err, profile){
+        if (err) {
+          console.log(err);
+          res.json({ error: err });
+        }
+        console.log(profile);
+        res.json(profile);
+      })
+    }
+  })
 	.post(function(req, res, next) {
 		//Save a new profile()
-		var proj = new Profile(req.body);
-		proj.save(function(err, proj){
+		//TODO: Check if user already has a profile, run auth() to check authentication, pass user
+		//info on to rest of cb func
+		req.body.profile.owner = mongoose.Types.ObjectId(req.body.profile.owner);
+		var profile = new Profile(req.body.profile);
+		profile.save(function(err, profile){
 			if (err) {
 				console.log(err);
-				next(err);
+				res.json({ error: err });
 			}
-			res.json({ err: err, proj: proj });
+			res.json({ profile: profile });
 			console.log("Profile saved");
 		});
 	});
@@ -33,26 +57,25 @@ router.route("/profiles/:id")
 		try {
 			if (objectid.isValid(req.params.id)) {
 				console.log("Finding Profile");
-				Profile.findById(req.params.id, function(err, proj) {
+				Profile.findById(req.params.id, function(err, profile) {
 					if (err) {
-						res.json(err);
-						next(err);
+						res.json({error: err});
 					}
-					res.json(proj);
+					res.json({ profile: profile });
 				})
 			} else { console.log("Invalid ID"); }
 		} catch (e) {
 			res.json({ err: e });
-		}	
+		}
 	})
 	.put(function(req, res, next) {
 		try {
 			if (objectid.isValid(req.params.id)) {
-				Profile.findOneAndUpdate({_id: req.params.id}, req.body, function(err, profile) { 
+				Profile.findOneAndUpdate({_id: req.params.id}, req.body, function(err, profile) {
 					if (err) {
 						res.json(err);
 					}
-					res.json(profile);
+					res.json({ profile: profile });
 				});
 			}
 		} catch (e) {
@@ -64,8 +87,11 @@ router.route("/profiles/:id")
 			if (objectid.isValid(req.params.id)) {
 				Profile.remove({
 					_id: req.params.id
-				}, function(err, proj) { 
-					res.json(proj);
+				}, function(err, proj) {
+					if (err) {
+						res.json({error: err});
+					}
+					res.json({error: err} || { message: "Profile deleted." });
 				})
 			}
 		} catch (e) {

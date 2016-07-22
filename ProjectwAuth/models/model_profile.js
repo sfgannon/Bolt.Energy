@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var User = require('./user_model');
 
 var ProfileSchema = new Schema({
 	name: String,
@@ -16,13 +17,13 @@ var ProfileSchema = new Schema({
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
-	},	
+	},
 	address1: String,
 	address2: String,
 	city: String,
 	state: String,
 	zip: Number,
-	approvalNumber: Number,
+	approvalNumber: String,
 	certifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Certification'
@@ -32,5 +33,4 @@ var ProfileSchema = new Schema({
 		ref: 'Project'
 	}]
 });
-
 module.exports = mongoose.model('Profile', ProfileSchema);

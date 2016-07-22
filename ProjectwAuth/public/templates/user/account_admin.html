@@ -1,11 +1,14 @@
 <div class="container">
 	<div class="col-left">
+		<h3>Account Information</h3>
 		<div ui-view="user"></div>
 	</div>
 	<div class="col-left" ng-hide="{{user.accountType == 'Consumer'}}">
+		<h3>Producer Profile Information</h3>
 		<div ui-view="profile"></div>
 	</div>
-	<div class="col-left" ng-hide="{{user.accountType == 'Consumer'}}">
-		<div ui-view="project"></div>
-	</div>
+	<!--<div class="col-left" ng-hide="{{user.accountType == 'Consumer'}}">-->
+	<!--	<h3>Project Information</h3>-->
+	<!--	<div ui-view="project"></div>-->
+	<!--</div>-->
 </div>

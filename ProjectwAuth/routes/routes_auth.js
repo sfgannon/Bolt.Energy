@@ -11,6 +11,7 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 
 // Load models
 const User = require('../models/user_model');
+const Profile = require('../models/model_profile');
 
 // Export the routes for our app to use
 module.exports = function(app) {
@@ -70,17 +71,17 @@ module.exports = function(app) {
         if (Object.keys(user).length == 0) {
           res.status(200).json({ message: "No users found matching search criteria." });
         } else {
-          res.json({ user: user });
+          res.json({ users: user });
         }
       })
     } else {
       User.find(function(err, users){
         if (err) {
           console.log(err);
-          next(err);
+          res.json({ error: err });
         }
         console.log(users);
-        res.json(users);
+        res.json({ users: users });
       })
     }
   })
@@ -135,9 +136,9 @@ module.exports = function(app) {
   apiRoutes.get('/users/:id', function(req, res) {
     try {
       if (objectId.isValid(req.params.id)) {
-        User.findById(req.params.id, function(err, User) {
+        User.findById(req.params.id).populate('profiles profile.projects').exec(function(err, User) {
           if (err) {
-            res.status(500).json({ error: err, message: "Erro finding user." });
+            res.status(500).json({ error: err, message: "Error finding user." });
           } else {
             res.status(200).json({ user: User, message: "User information found." });
           }

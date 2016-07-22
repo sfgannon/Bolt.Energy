@@ -10,10 +10,6 @@ var UserSchema = new mongoose.Schema({
         type: String,
         enum: ['Producer','Consumer']
     },
-    profiles: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project'
-    }],
     isAdmin: { type: Boolean, default: false },
     created: { type: Date, default: Date.now },
     modified: Date,

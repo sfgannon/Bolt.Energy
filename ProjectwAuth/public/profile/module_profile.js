@@ -26,7 +26,8 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
     if ($stateParams.profileid){
         //This is an existing profile
         var id = $stateParams.profileid;
-        $scope.profile = ProfileFactory.get({ id: id }, function(profile) {
+        $scope.profile = ProfileFactory.get({ id: id }, function(responseData) {
+        		var profile = responseData.profile;
             //Format some fields for display
             var formattedValue = '';
             formattedValue = profile.availability.toString();
@@ -51,8 +52,8 @@ angular.module("ProfileModule", ["ui.router","ngResource"])
         //This is a new profile
         $scope.profile = new ProfileFactory();
     };
-    $scope.projects = ProjectFactory.query();   
-    $scope.certifications = CertificationFactory.query(); 
+    $scope.projects = ProjectFactory.query();
+    $scope.certifications = CertificationFactory.query();
     $scope.saveProfile = function() {
         if (!$scope.profile._id) {
             $scope.profile.$save(function() {
