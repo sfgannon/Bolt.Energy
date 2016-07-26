@@ -124,17 +124,18 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                     return false;
                 }
             },
-            register: function (firstname, lastname, email, password) {
+            register: function (firstname, lastname, email, password, type) {
                 //Register a new user account
                 var $return = $q.defer();
                 $return.promise = $http({
                     method: 'POST',
                     url: ConfigService.appRoot() + '/data/register',
                     data: {
-                        firstname: firstname,
-                        lastname: lastname,
+                        firstName: firstname,
+                        lastName: lastname,
                         email: email,
-                        password: password
+                        password: password,
+                        accountType: type
                     }
                 }).then(function (responseData) {
                     $window.localStorage.setItem('BoltToken', responseData.data.token);
@@ -253,10 +254,10 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     }])
    .controller('SignupController', function ($rootScope, $scope, LoginService, $state) {
     $rootScope.authenticated = LoginService.authenticated();
-    $scope.signup = function () {
-        LoginService.register($scope.firstname, $scope.lastname, $scope.email, $scope.password)
+    $scope.register = function () {
+        LoginService.register($scope.firstname, $scope.lastname, $scope.email, $scope.password, $scope.type)
             .then(function (rd) {
-                $rootScope.currentUserId = rd.data.user._id;
+                $rootScope.currentUserId = rd.user._id;
                 $rootScope.authenticated = LoginService.authenticated();
                 $state.go('home');
         })

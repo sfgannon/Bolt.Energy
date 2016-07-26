@@ -4,8 +4,8 @@ var bcrypt = require('bcrypt');
 var UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
-    email: String,
-    password: String,
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
     accountType: {
         type: String,
         enum: ['Producer','Consumer']

@@ -45,25 +45,24 @@ router.route("/profiles")
 		var profile = new Profile(req.body.profile);
 		profile.save(function(err, profile){
 			if (err) {
-				console.log(err);
-				res.json({ error: err });
+				res.status(400).json({ error: err });
+			} else {
+				res.json({ message: "Profile saved.", profile: profile });
 			}
-			res.json({ profile: profile });
-			console.log("Profile saved");
 		});
 	});
 router.route("/profiles/:id")
 	.get(function(req, res) {
 		try {
 			if (objectid.isValid(req.params.id)) {
-				console.log("Finding Profile");
 				Profile.findById(req.params.id, function(err, profile) {
 					if (err) {
-						res.json({error: err});
+						res.status(400).json({error: err});
+					} else {
+						res.json({ profile: profile });
 					}
-					res.json({ profile: profile });
-				})
-			} else { console.log("Invalid ID"); }
+				});
+			} else { res.status(401).json({ message: "Invalid object id." }); }
 		} catch (e) {
 			res.json({ err: e });
 		}
@@ -71,11 +70,12 @@ router.route("/profiles/:id")
 	.put(function(req, res, next) {
 		try {
 			if (objectid.isValid(req.params.id)) {
-				Profile.findOneAndUpdate({_id: req.params.id}, req.body, function(err, profile) {
+				Profile.findOneAndUpdate({_id: req.params.id}, req.body.profile, function(err, profile) {
 					if (err) {
-						res.json(err);
+						res.status(400).json(err);
+					} else {
+						res.json({ profile: profile });
 					}
-					res.json({ profile: profile });
 				});
 			}
 		} catch (e) {
@@ -90,8 +90,9 @@ router.route("/profiles/:id")
 				}, function(err, proj) {
 					if (err) {
 						res.json({error: err});
+					} else {
+						res.json({ message: "Profile deleted." });
 					}
-					res.json({error: err} || { message: "Profile deleted." });
 				})
 			}
 		} catch (e) {

@@ -22,34 +22,26 @@ module.exports = function(app) {
   // Create API group routes
   const apiRoutes = express.Router();
   // Register new users
-  apiRoutes.post('/register', function (req, res) {
-    console.log('hitting register');
-    if (!req.body.email || !req.body.password) {
-      res.status(400).json({ success: false, message: 'Please enter email and password.' });
-    } else {
-      console.log(req.body);
-      if (!req.body.email || !req.body.password) {
-        res.status(400).json({ success: false, message: 'Please enter email and password.' });
-      } else {
-        const newUser = new User({
-          firstname: req.body.firstname,
-          lastname: req.body.lastname,
-          email: req.body.email,
-          password: req.body.password
-        });
-        // Attempt to save the user
-        newUser.save(function (err, user) {
-          if (err) {
-            return res.status(400).json({ success: false, message: 'That email address already exists.' });
+  apiRoutes.post('/register', function(req, res, next) {
+    if (req.body.email && req.body.password) {
+      var newUser = new User(req.body);
+      newUser.save(function(err, user) {
+        if (err) {
+          if (err.message.indexOf('duplicate') != -1) {
+            res.status(403).json({ message: 'Email already in use.' });
+          } else {
+            res.status(403).json({ error: err });
           }
+        } else {
           const token = jwt.sign(user, config.secret, {
             expiresIn: 10080 // in seconds
           });
-          debugger;
           res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token, user: user });
-        });
         }
-      }
+      });
+    } else {
+      res.json({ message: "Email and password are required to register." });
+    }
   });
 
   //This is a general search, for granning individual profiles for administration see below
@@ -59,32 +51,34 @@ module.exports = function(app) {
     if (Object.keys(queryString).length > 0) {
     // if (req.query) {
       var result = User.find();
-      for (i = 0; i < Object.keys(req.query).length; i++) {
+      for (var i = 0; i < Object.keys(req.query).length; i++) {
         var term = Object.keys(req.query)[i];
         var value = req.query[term];
         result.where(term).equals(value);
-      };
+      }
       result.exec(function(err, user) {
         if (err) {
           res.status(500).json({ error: err });
-        }
-        if (Object.keys(user).length == 0) {
-          res.status(200).json({ message: "No users found matching search criteria." });
         } else {
-          res.json({ users: user });
+          if (Object.keys(user).length == 0) {
+            res.status(200).json({ message: "No users found matching search criteria." });
+          } else {
+            res.json({ users: user });
+          }
         }
-      })
+      });
     } else {
       User.find(function(err, users){
         if (err) {
           console.log(err);
           res.json({ error: err });
+        } else {
+          console.log(users);
+          res.json({ users: users });
         }
-        console.log(users);
-        res.json({ users: users });
-      })
+      });
     }
-  })
+  });
 
   // Authenticate the user and get a JSON Web Token to include in the header of future requests.
   apiRoutes.post('/authenticate', function(req, res) {
@@ -124,7 +118,7 @@ module.exports = function(app) {
           } else {
             res.status(200).json({ user: User, message: 'User information updated.'});
           }
-        })
+        });
       } else {
         res.status(500).json({ message: "Invalid Object Id." });
       }
@@ -142,14 +136,14 @@ module.exports = function(app) {
           } else {
             res.status(200).json({ user: User, message: "User information found." });
           }
-        })
+        });
       } else {
         res.status(500).json({ message: "Invalid User Id." });
       }
     } catch (e) {
       res.status(500).json({ error: e, message: "Error occurred while retrieving data." });
     }
-  })
+  });
 
   // Set url for API group routes
   app.use('/data', apiRoutes);

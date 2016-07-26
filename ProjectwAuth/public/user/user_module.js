@@ -56,20 +56,37 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 		},
 		save: function(id, first, last, email, type) {
 			var $ret = $q.defer();
-			$ret.promise = $http({
-				method: 'PUT',
-				url: ConfigService.appRoot() + '/data/users/' + id,
-				data: {
-					firstName: first,
-					lastName: last,
-					accountType: type,
-					email: email
-				}
-			}).then(function(responseData) {
-				$ret.resolve({ data: responseData.data.user, message: responseData.data.message });
-			}, function(err) {
-				$ret.reject({ error: err });
-			})
+			if (id) {
+				$ret.promise = $http({
+					method: 'PUT',
+					url: ConfigService.appRoot() + '/data/users/' + id,
+					data: {
+						firstName: first,
+						lastName: last,
+						accountType: type,
+						email: email
+					}
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data });
+				}, function(err) {
+					$ret.reject({ error: err });
+				})
+			} else {
+				$ret.promise = $http({
+					method: 'POST',
+					url: ConfigService.appRoot() + '/data/users',
+					data: {
+						firstName: first,
+						lastName: last,
+						email: email,
+						accountType: type
+					}
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data });
+				}, function(err) {
+					$ret.reject({ error: err });
+				})
+			}
 			return $ret.promise;
 		}
 	}
@@ -87,6 +104,35 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 				$ret.reject({ error: err });
 			})
 			return $ret.promise;
+		},
+		save: function(profile) {
+			var $ret = $q.defer();
+			if (profile._id) {
+				$ret.promise = $http({
+					method: 'PUT',
+					url: ConfigService.appRoot() + '/data/profiles/' + profile._id,
+					data: {
+						profile: profile
+					}
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data });
+				}, function(err) {
+					$ret.reject({ error: err });
+				});
+			} else {
+				$ret.promise = $http({
+					method: 'POST',
+					url: ConfigService.appRoot() + '/data/profiles',
+					data: {
+						profile: profile
+					}
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data });
+				}, function(err) {
+					$ret.reject({ error: err });
+				});
+			}
+			return $ret.promise;
 		}
 	}
 })
@@ -95,21 +141,13 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 	$scope.user = userInfo.data;
 	//Save, cancel methods
 	$scope.saveAccount = function() {
-		var $ret = $q.defer();
-		$ret.promise = $http({
-			method: 'PUT',
-			url: ConfigService.appRoot() + '/data/users/' + userInfo.data._id,
-			data: {
-				firstName: $scope.user.firstName,
-				lastName: $scope.user.lastName,
-				accountType: $scope.user.accountType,
-				email: $scope.user.email
-			}
-		}).then(function(responseData) {
-			$ret.resolve({ data: responseData.data });
-		}, function(err) {
-			$ret.reject({ error: err });
-		})
+		UserFactory.save($scope.user._id, $scope.user.firstName, $scope.user.lastName, $scope.user.email, $scope.user.accountType).then(
+			function(responseData) {
+				$scope.user = responseData.user;
+				userInfo.data = responseData.user;
+			}, function(error) {
+				alert(JSON.stringify(error));
+			})
 	}
 	$scope.cancel = function() {
 		$scope.user.firstName = $stateParams.user.firstName;
@@ -118,40 +156,20 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 		$scope.user.email = $stateParams.user.email;
 	}
 })
-.controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService) {
+.controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService, UserProfileFactory) {
 	//Get profile data for $scope variable from resolved injected value
-	$scope.profile = profileInfo.data;
+	$scope.profile = profileInfo.data[0];
 	$scope.saveProfile = function() {
 		$scope.profile.owner = userInfo.data._id;
-		var $ret = $q.defer();
-		if ($scope.profile._id) {
-			$ret.promise = $http({
-				method: 'PUT',
-				url: ConfigService.appRoot() + '/data/profiles/' + profileInfo.data._id,
-				data: {
-					profile: $scope.profile
-				}
-			}).then(function(responseData) {
-				$ret.resolve({ data: responseData.data });
-			}, function(err) {
-				$ret.reject({ error: err });
-			})
-		} else {
-			$ret.promise = $http({
-				method: 'POST',
-				url: ConfigService.appRoot() + '/data/profiles',
-				data: {
-					profile: $scope.profile
-				}
-			}).then(function(responseData) {
-				$ret.resolve({ data: responseData.data });
-			}, function(err) {
-				$ret.reject({ error: err });
-			})
-		}
+		UserProfileFactory.save($scope.profile).then(function(responseData) {
+			$scope.profile = responseData.data.profile;
+			profileInfo.data = responseData.data.profile;
+		}, function(err) {
+			alert(JSON.stringify(err));
+		})
 	}
 	$scope.cancel = function() {
-
+		$scope.profile = profileInfo.data;
 	}
 
 })
