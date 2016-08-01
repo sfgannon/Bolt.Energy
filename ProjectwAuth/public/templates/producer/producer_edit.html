@@ -5,6 +5,23 @@
 			<input type="hidden" ng-model="profile._id" name="hiddenId">
 			<input name="inpName" type="text" class="form-control" ng-model="profile.name" value="{{ profile.name }}">
 		</div>
+		<p><label>Add User Images: </label>
+		  <form name="upload" class="form" data-ng-submit="addFile()">
+		      <!--<input id="inpImageUpload" type="file" name="files" multiple onchange="angular.element(this).scope().uploadedFile(this)" />-->
+		      <input id="inpImageUpload" type="file" name="files" onchange="angular.element(this).scope().uploadedFile(this)" /><br>
+		      <label for="inpDescription">Description: </label>
+		      <input type="text" id="inpDescription" name="inpDescription" ng-model="image.description"></input><br>
+		      <label for="inpPrimary">Use this as primary image: </label>
+		      <input type="checkbox" id="inpPrimary" name="inpPrimary" ng-model="image.primary" ng-true-value="true" ng-false-value="false"></input>
+		      <button type="submit">Upload</button>
+		  </form>
+		</p>
+		<p><div>
+			<h4>User Account Images</h4>
+			<div ng-repeat="image in images" style="height:200px;width:200px;border:1px solid black;">
+				<img ng-src="{{ root + image.fileName }}" />
+			</div>
+		</div></p>
 		<div class="form-group">
 			<label for="inpDesc">Description: </label>
 			<textarea name="inpDesc" rows=6 cols=10 class="form-control" ng-model="profile.desc"></textarea>
@@ -156,28 +173,5 @@
 			<button type="button" class="btn btn-warning" ng-click="cancelProfile()">Cancel</button>&nbsp
 			<button type="button" class="btn btn-danger" ng-click="deleteProfile()">Delete</button>
 		</div>
-	</div>
-</div>
-<div class="row">
-	<h3>Projects</h3>
-	<div class="col-sm-6 col-md-6 col-lg-6">
-		<table>
-			<thead>
-				<tr>
-					<th></th>
-					<th>Name</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="project in projects">
-					<td>
-						<a href="" ui-sref="editproject({ id: {{ project._id }} })">Edit</a>
-						<td> {{project.name}} </td>
-						<td> {{ project.description }} </td>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 </div>

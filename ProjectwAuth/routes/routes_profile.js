@@ -14,9 +14,11 @@ router.route("/profiles")
       for (i = 0; i < Object.keys(req.query).length; i++) {
         var term = Object.keys(req.query)[i];
         var value = req.query[term];
-        result.where(term).equals(value);
+        if (term && value) {
+        	result.where(term).equals(value);
+        }
       };
-      result.exec(function(err, profiles) {
+      result.populate('projects').exec(function(err, profiles) {
         if (err) {
           res.status(500).json({ error: err });
         }
@@ -55,7 +57,7 @@ router.route("/profiles/:id")
 	.get(function(req, res) {
 		try {
 			if (objectid.isValid(req.params.id)) {
-				Profile.findById(req.params.id, function(err, profile) {
+				Profile.findById(req.params.id).populate('projects').populate('owner').exec(function(err, profile) {
 					if (err) {
 						res.status(400).json({error: err});
 					} else {
@@ -70,7 +72,7 @@ router.route("/profiles/:id")
 	.put(function(req, res, next) {
 		try {
 			if (objectid.isValid(req.params.id)) {
-				Profile.findOneAndUpdate({_id: req.params.id}, req.body.profile, function(err, profile) {
+				Profile.findOneAndUpdate({_id: req.params.id}, req.body.profile, { new: true }, function(err, profile) {
 					if (err) {
 						res.status(400).json(err);
 					} else {

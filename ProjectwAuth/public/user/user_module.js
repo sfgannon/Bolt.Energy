@@ -1,13 +1,23 @@
-angular.module("UserModule", ["ui.router", "ngResource"])
+angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 .config(function($stateProvider,$urlRouterProvider) {
 	$stateProvider.state('useradmin', {
-		url: '/user/:userId',
+		url: '/user/:userId?projectId',
 		resolve: {
 			profileInfo: function(UserProfileFactory,$stateParams) {
-				return UserProfileFactory.find($stateParams.userId);
+				return UserProfileFactory.findByOwner($stateParams.userId);
 			},
 			userInfo: function(UserFactory,$stateParams) {
 				return UserFactory.get($stateParams.userId);
+			},
+			projectInfo: function(UserProjectFactory,$stateParams) {
+				if ($stateParams.projectId && $stateParams.projectId != 'new') {
+					return UserProjectFactory.get($stateParams.projectId);
+				} else {
+					return '';
+				}
+			},
+			userImagesInfo: function($stateParams,ImagesService) {
+				return ImagesService.getByItem($stateParams.userId);
 			}
 		},
 		views: {
@@ -21,13 +31,106 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 			'profile@useradmin': {
 				templateUrl: 'templates/producer/producer_edit.html',
 				controller: 'ProfileAdminController'
-			// },
-			// 'project@useradmin': {
-			// 	templateUrl: 'templates/user/project_admin.html',
-			// 	controller: 'ProjectAdminController'
+			},
+			'project@useradmin': {
+				templateUrl: function($stateParams) {
+					if ($stateParams.projectId) {
+						return 'templates/project/project_edit.html';
+					} else {
+						return 'templates/project/project_list.html';
+					}
+				},
+				controller: 'ProjectAdminController'
 			}
 		}
 	});
+})
+.service('UserProjectFactory', function($q,$http,ConfigService) {
+	return {
+		get: function(id) {
+			var $ret = $q.defer();
+			if (id) {
+				$ret.promise = $http({
+					method: 'GET',
+					url: ConfigService.appRoot() + '/data/projects/' + id
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data.project });
+				}, function(error) {
+					$ret.reject({ error: error });
+				})
+			} else {
+				$ret.promise = $http({
+					method: 'GET',
+					url: ConfigService.appRoot() + '/data/projects'
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data.projects });
+				}, function(err) {
+					$ret.reject({ error: err });
+				})
+			}
+			return $ret.promise;
+		},
+		find: function(arrayKeyValue) {
+			var $ret = $q.defer();
+			var queryString = '?';
+			for (var i=0; i<arrayKeyValue.length; i++) {
+				queryString += arrayKeyValue[i][0] + '=' + arrayKeyValue[i][1];
+				if (i != arrayKeyValue.length - 1) {
+					queryString += '&';
+				}
+			}
+			$ret.promise = $http({
+				method: 'GET',
+				url: ConfigService.appRoot() + '/data/projects' + queryString
+			}).then(function(responseData) {
+				$ret.resolve({ data: responseData.data });
+			}, function(err) {
+				$ret.reject({ error: err });
+			})
+			return $ret.promise;
+		},
+		findByOwner: function(ownerId) {
+			var $ret = $q.defer();
+			$ret.promise = $http({
+				method: 'GET',
+				url: ConfigService.appRoot() + '/data/projects?' + 'owner=' + ownerId
+			}).then(function(responseData) {
+				$ret.resolve({ data: responseData.data });
+			}, function(err) {
+				$ret.reject({ error: err });
+			})
+			return $ret.promise;
+		},
+		save: function(project) {
+			var $ret = $q.defer();
+			if (project._id) {
+				$ret.promise = $http({
+					method: 'PUT',
+					url: ConfigService.appRoot() + '/data/projects/' + project._id,
+					data: {
+						project: project
+					}
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data });
+				}, function(err) {
+					$ret.reject({ error: err });
+				});
+			} else {
+				$ret.promise = $http({
+					method: 'POST',
+					url: ConfigService.appRoot() + '/data/projects',
+					data: {
+						project: project
+					}
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data });
+				}, function(err) {
+					$ret.reject({ error: err });
+				});
+			}
+			return $ret.promise;
+		}
+	}
 })
 .service("UserFactory", function($q, $http, ConfigService) {
 	return {
@@ -93,7 +196,30 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 })
 .service('UserProfileFactory', function($q,$http,ConfigService) {
 	return {
-		find: function(ownerId) {
+		get: function(id) {
+			var $ret = $q.defer();
+			if (id) {
+				$ret.promise = $http({
+					method: 'GET',
+					url: ConfigService.appRoot() + '/data/profiles/' + id
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data.profile });
+				}, function(error) {
+					$ret.reject({ error: error });
+				})
+			} else {
+				$ret.promise = $http({
+					method: 'GET',
+					url: ConfigService.appRoot() + '/data/profiles'
+				}).then(function(responseData) {
+					$ret.resolve({ data: responseData.data.profiles });
+				}, function(err) {
+					$ret.reject({ error: err });
+				})
+			}
+			return $ret.promise;
+		},
+		findByOwner: function(ownerId) {
 			var $ret = $q.defer();
 			$ret.promise = $http({
 				method: 'GET',
@@ -136,27 +262,50 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 		}
 	}
 })
-.controller('UserAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService) {
+.controller('UserAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
 	//Get profile data for $scope variable from resolved injected value
 	$scope.user = userInfo.data;
+  $scope.uploadedFile = function (element) {
+      $scope.$apply(function ($scope) {
+          $scope.files = element.files;
+      });
+  }
+
+  $scope.images = (userImagesInfo)?(userImagesInfo.images):(null);
+
+  $scope.root = "/temp/";
+
+  $scope.addFile = function () {
+  	var primary = $scope.image.primaryImage || false;
+    var upload = ImagesService.uploadfile($scope.files, { description: $scope.image.description, primaryImage: primary, item: $stateParams.userId });
+    upload.then(function (response) {
+        toastr.success("Upload successful.", "Success");
+				ImagesService.getByItem($stateParams.userId).then(function(responseData) {
+					$scope.images = responseData.images;
+				});
+    }, function (response) {
+        toastr.error("Upload failed.", "Error");
+    })
+  }
 	//Save, cancel methods
 	$scope.saveAccount = function() {
 		UserFactory.save($scope.user._id, $scope.user.firstName, $scope.user.lastName, $scope.user.email, $scope.user.accountType).then(
 			function(responseData) {
-				$scope.user = responseData.user;
-				userInfo.data = responseData.user;
+				$scope.user = responseData.data.user;
+				userInfo.data = responseData.data.user;
+				toastr.success("User account information successfully saved.","Success!");
 			}, function(error) {
 				alert(JSON.stringify(error));
 			})
 	}
 	$scope.cancel = function() {
-		$scope.user.firstName = $stateParams.user.firstName;
-		$scope.user.lastName = $stateParams.user.lastName;
-		$scope.user.accountType = $stateParams.user.accountType;
-		$scope.user.email = $stateParams.user.email;
+		$scope.user.firstName = userInfo.data.firstName;
+		$scope.user.lastName = userInfo.data.lastName;
+		$scope.user.accountType = userInfo.data.accountType;
+		$scope.user.email = userInfo.data.email;
 	}
 })
-.controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService, UserProfileFactory) {
+.controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService, UserProfileFactory, toastr) {
 	//Get profile data for $scope variable from resolved injected value
 	$scope.profile = profileInfo.data[0];
 	$scope.saveProfile = function() {
@@ -164,8 +313,9 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 		UserProfileFactory.save($scope.profile).then(function(responseData) {
 			$scope.profile = responseData.data.profile;
 			profileInfo.data = responseData.data.profile;
+			toastr.success("Producer profile information successfully saved.","Success!");
 		}, function(err) {
-			alert(JSON.stringify(err));
+			toastr.error(err.data.message || err.message, "Error");
 		})
 	}
 	$scope.cancel = function() {
@@ -173,7 +323,24 @@ angular.module("UserModule", ["ui.router", "ngResource"])
 	}
 
 })
-.controller('ProjectAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService) {
+.controller('ProjectAdminController', function($scope, UserProjectFactory, $stateParams, $state, projectInfo, profileInfo, userInfo, $http, $q, ConfigService, toastr) {
 	//Get profile data for $scope variable from resolved injected value
-
+	$scope.project = projectInfo.data;
+	$scope.userId = userInfo.data._id;
+	$scope.saveProject = function() {
+		$scope.project.owner = profileInfo.data[0]._id;
+		UserProjectFactory.save($scope.project).then(function(responseData) {
+			$scope.project = responseData.data.project;
+			projectInfo.data = responseData.data.project;
+			$state.go('useradmin', { userId: $scope.userId, projectId: $scope.project._id});
+			toastr.success("Producer project information successfully saved.","Success!");
+		}, function(err) {
+			toastr.error(err.data.message || err.message, "Error");
+		})
+	}
+	$scope.cancel = function() {
+		$scope.project = projectInfo.data;
+		$state.go('useradmin', {userId: userInfo.data._id, projectId: null });
+	}
+	$scope.projects = profileInfo.data[0].projects;
 })

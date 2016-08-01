@@ -17,6 +17,7 @@
 		<table style="border-collapse:separate; border-spacing:15px;">
 			<thead>
 				<th></th>
+				<th></th>
 				<th>Name</th>
 				<th>Description</th>
 				<th>Status</th>
@@ -26,6 +27,7 @@
 			<tbody >
 			<tr ng-repeat="prof in profiles">
 			<td><a ui-sref="profile({ profileid: prof._id, single: (prof.projects.length > 1 ? 'false' : 'true') })">Edit Item</a></td>
+			<td><a ui-sref="producer({ producerId: prof._id, projectId: null })">Edit Item</a></td>
 			<td>{{ prof.name }}</td>
 			<td>{{ prof.desc }}</td>
 			<td>{{ prof.status }}</td>

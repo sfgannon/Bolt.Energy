@@ -111,7 +111,7 @@ module.exports = function(app) {
   apiRoutes.put('/users/:id', function(req, res) {
     try {
       if (objectId.isValid(req.params.id)) {
-        User.findOneAndUpdate({ _id: req.params.id }, req.body, function(err, User) {
+        User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function(err, User) {
           if (err) {
             //wtf happened?
             res.status(500).json({ error: err });

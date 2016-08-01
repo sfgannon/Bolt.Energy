@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Profile = require('../models/model_profile');
 
 var ProjectSchema = new Schema({
 	name: {
@@ -29,7 +30,7 @@ var ProjectSchema = new Schema({
 	city: String,
 	state: String,
 	zip: Number,
-	programCategory: Number,
+	programCategory: String,
 	capacity: String,
 	utilityDistricts: [{
 		required: true,
@@ -41,5 +42,22 @@ var ProjectSchema = new Schema({
 		ref: 'Profile'
 	}
 });
+
+ProjectSchema.post('save', function(next) {
+	var that = this;
+	//Push the project ID as a ref back to the owning profile
+	Profile.findById(this.projectOwner, function(profile) {
+		var found = false;
+		for (var i = 0; i < profile.projects.length; i++) {
+			if (profile.projects[i] == that._id) {
+				found = true;
+			}
+		}
+		if (!found) {
+			profile.projects.push(that._id);
+			profile.save();
+		}
+	})
+})
 
 module.exports = mongoose.model('Project', ProjectSchema);

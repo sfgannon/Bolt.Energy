@@ -33,4 +33,29 @@ var ProfileSchema = new Schema({
 		ref: 'Project'
 	}]
 });
+ProfileSchema.post('save', function(next) {
+	var profile = this;
+	User.findById({ id: this.owner._id }, function(err, user) {
+		if (err) {
+			next();
+		} else {
+			var profiles = user.profiles;
+			var found = false;
+			for (var i = 0; i > profiles.length; i++) {
+				if (profiles[i]._id == profile._id) {
+					found = true;
+				}
+			}
+			if (!found) {
+				user.profiles.push(mongoose.Type.ObjectId(profile._id));
+				user.save(function(err, user) {
+					if (err) {
+						console.log(err);
+					}
+					next();
+				})
+			}
+		}
+	})
+})
 module.exports = mongoose.model('Profile', ProfileSchema);

@@ -160,14 +160,8 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="selProjectOwner">Project Owner: </label>
-			<select name="selProjectOwner" class="form-control" ng-model="project.projectOwner" value="{{project.projectOwner}}">
-				<option ng-repeat="po in owners" value="{{ po._id }}">{{ po.name }}</option>
-			</select>
-		</div>
-		<div class="form-group">
 			<input type='submit' class="btn btn-default" ng-click="saveProject()">&nbsp
-			<button type="button" class="btn btn-warning" ng-click="cancelProject()">Cancel</button>&nbsp
+			<button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>&nbsp
 			<button type="button" class="btn btn-danger" ng-click="deleteProject()">Delete</button>
 		</div>
 	</div>

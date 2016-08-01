@@ -1,4 +1,4 @@
-angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource","UserModule", "ProjectModule", "ProfileModule", "CertificationModule"])
+angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource","UserModule", "ProjectModule", "ProfileModule", "CertificationModule","toastr","ProducerProfileModule"])
   .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
@@ -24,41 +24,43 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         controller: 'SignupController'
     })
 })
-  .controller('HeaderController', ['$rootScope', '$scope', 'LoginService','$state', function ($rootScope, $scope, LoginService, $state) {
-        $rootScope.currentUserId = '';
+  .controller('HeaderController', function ($rootScope, $scope, LoginService, $state, $window) {
+        $rootScope.currentUserId = $window.localStorage.getItem('BoltUser') || '';
         $rootScope.authenticated = LoginService.authenticated();
         $scope.logout = function () {
             LoginService.logout();
             $rootScope.authenticated = LoginService.authenticated();
             $state.go('home');
         }
-    }])
-  .controller('HomeController', ['$scope', 'CertificationFactory', 'ProfileFactory', 'ProjectFactory', function ($scope, CertificationFactory, ProfileFactory, ProjectFactory) {
+    })
+  .controller('HomeController', function ($scope, CertificationFactory, ProfileFactory, ProjectFactory) {
         $scope.certifications = CertificationFactory.query();
         $scope.profiles = ProfileFactory.query(function (data) {
             console.log(data);
         });
         $scope.projects = ProjectFactory.query();
-    }])
-  .controller('LoginController', ['$rootScope', '$scope', 'LoginService', '$state', function ($rootScope, $scope, LoginService, $state) {
+    })
+  .controller('LoginController', function ($rootScope, $scope, LoginService, $state, toastr, $http) {
         $rootScope.authenticated = LoginService.authenticated();
         $scope.login = function () {
             var result = LoginService.login($scope.email, $scope.password);
             result.then(function (responseData) {
-                alert('Login Successful.');
+                $http.defaults.headers.common.Authorization = responseData.token;
                 $rootScope.authenticated = LoginService.authenticated();
-                $rootScope.currentUserId = responseData.user._id;
+                //$rootScope.currentUserId = responseData.user._id;
                 $state.go('home');
+                toastr.success("Welcome to Bolt, " + responseData.user.firstName, "Login Successful");
             }, function (status) {
-                alert('Login Unsuccessful.');
+    			toastr.error(status.data.message || status.message || "Error logging in.", "Login Failed");
                 $state.go('home');
             })
         }
         $scope.logout = function () {
+            $http.defaults.headers.common.Authorization = null;
             var result = LoginService.logout();
             $state.go('home');
         }
-    }])
+    })
   .service('ConfigService', function ($http, $q, $window) {
         return {
             appRoot: function () {
@@ -87,6 +89,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                     }
                 }).then(function (responseData) {
                     $window.localStorage.setItem('BoltToken', responseData.data.token);
+                    $window.localStorage.setItem('BoltUser', responseData.data.user._id);
                     $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
                     $return.resolve({
                         token: responseData.data.token,
@@ -103,6 +106,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                 try {
                     $window.localStorage.removeItem('BoltToken');
                     $window.localStorage.removeItem('BoltTokenExp');
+                    $window.localStorage.removeItem('BoltUser');
                 }
                 catch (e) {
                     console.log(e);
@@ -155,6 +159,18 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
     }])
   .service('ImagesService', ['$http', '$q', '$window', 'ConfigService', function ($http, $q, $window, ConfigService) {
         return {
+            getByItem: function(itemId) {
+              var $ret = $q.defer();
+              $ret.promise = $http({
+                  method: 'GET',
+                  url: ConfigService.appRoot() + "/data/images/" + itemId
+              }).then(function(responseData) {
+                  $ret.resolve({ images: responseData.data.images });
+              }, function(error) {
+                  $ret.reject({ error: error });
+              });
+              return $ret.promise;
+            },
             getAll: function () {
                 var ret = $q.defer();
                 ret.promise = $http({
@@ -171,7 +187,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                 })
                 return ret.promise;
             },
-            uploadfile : function (files) {
+            uploadfile : function (files, imageData) {
                 var fd = new FormData();
                 var url = ConfigService.appRoot() + "/data/images";
                 var data = [];
@@ -180,7 +196,9 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                     data.push({
                         fileName: file.name,
                         contentType: file.type,
-                        description: file.description
+                        description: imageData.description,
+                        primaryImage: imageData.primaryImage,
+                        item: imageData.item
                     })
                 });
                 fd.append('data', JSON.stringify(data));
@@ -201,7 +219,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
             }
         }
     }])
-  .controller('CarouselController', ['$state', '$scope', 'ConfigService', 'ImagesService', function ($state, $scope, ConfigService, ImagesService) {
+  .controller('CarouselController', function ($state, $scope, ConfigService, ImagesService, toastr) {
 
         ImagesService.getAll().then(function (response) {
             $scope.images = response.images;
@@ -224,9 +242,9 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         $scope.addFile = function () {
             var upload = ImagesService.uploadfile($scope.files);
             upload.then(function (response) {
-                alert(response.message);
+                toastr.success("Upload successful.", "Success");
             }, function (response) {
-                alert(response.message);
+                toastr.error("Upload failed.", "Error");
             })
         }
         $scope.direction = 'left';
@@ -251,7 +269,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
             $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
         };
 
-    }])
+    })
    .controller('SignupController', function ($rootScope, $scope, LoginService, $state) {
     $rootScope.authenticated = LoginService.authenticated();
     $scope.register = function () {

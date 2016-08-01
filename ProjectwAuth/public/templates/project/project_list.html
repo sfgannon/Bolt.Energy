@@ -1,0 +1,22 @@
+
+	<div></div><a ui-sref="useradmin({ userId: userId, projectId: 'new' })">Add Project</a></div>
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="project in projects">
+					<td>
+						<a href="" ui-sref="useradmin({ userId: userId, projectId: project._id })">Edit</a>
+						<td> {{project.name}} </td>
+						<td> {{ project.description }} </td>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>

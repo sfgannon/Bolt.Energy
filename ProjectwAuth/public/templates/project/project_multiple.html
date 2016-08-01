@@ -1,0 +1,20 @@
+<div class="col" ng-repeat="project in projects">
+	<div class="promo-box">
+		<a ui-sref="producer({ projectId: project._id })"><div class="img-wrapper">
+				<img ng-src="{{ project.primaryImage }}" alt="{{ project.primaryImage.description }}">
+				<strong class="title">{{ project.projectType }}</strong>
+			</div>
+			<div class="text-wrapper">
+				<h3>{{ project.name }}</h3>
+				<dl>
+					<dt>STATUS</dt>
+					<dd> {{ project.status }}</dd>
+					<dt>ENERGY TYPE</dt>
+					<dd>{{ project.energyMix }}</dd>
+					<dt>AVAILABILITY</dt>
+					<dd>{{ project.availability }}</dd>
+				</dl>
+			</div>
+		</a>
+	</div>
+</div>

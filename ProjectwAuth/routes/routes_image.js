@@ -50,6 +50,14 @@ module.exports = function(app) {
           var result = imageModelInstance.save();
           result.then(function(image) {
             result.resolve({ data: image });
+            if (image.primaryImage) {
+              ImageModel.find({ 'item': image.item, '_id': { $ne: image._id }, 'primaryImage': { $ne: false }}).exec(function(err, images) {
+                for (var i = 0; i < images.length; i++) {
+                  images[i].primaryImage = false;
+                  images[i].save();
+                }
+              })
+            }
           }, function(err) {
             result.reject({ error: err });
           });
@@ -73,5 +81,18 @@ module.exports = function(app) {
       res.status(500).json({ message: "Error uploading file. ", error: ex });
     }
 	});
+	router.get('/images/:id', function(req, res, next) {
+	  try {
+	    ImageModel.find({"item": req.params.id}, function(err, images) {
+	      if (err) {
+	        res.status(401).json({ error: err });
+	      } else {
+	        res.status(200).json({ images: images });
+	      }
+	    })
+	  } catch (e) {
+	    throw e;
+	  }
+	})
 	app.use('/data', router);
 };
