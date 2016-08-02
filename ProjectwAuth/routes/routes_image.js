@@ -13,6 +13,7 @@ var storage = multer.diskStorage({
     cb(null, file.originalname);
   }
 });
+
 var upload = multer({
   storage: storage
 });
@@ -29,6 +30,9 @@ var uploadImage = multer({
   }
 });
 
+// Set up middleware
+var requireAuth = passport.authenticate('jwt', { session: false });
+
 module.exports = function(app) {
 	var router = express.Router();
 	router.get('/images', function(req, res, next) {
@@ -40,7 +44,8 @@ module.exports = function(app) {
 			res.json(images);
 		});
 	})
-	.post('/images', uploadImage.array('files'), function(req, res, next) {
+	.post('/images', requireAuth, uploadImage.array('files'), function(req, res, next) {
+// 	.post('/images', uploadImage.array('files'), function(req, res, next) {
 	  //Multiple images coming in, parse req.files for image data and image contents
     try {
       var data = JSON.parse(req.body.data);
@@ -56,7 +61,7 @@ module.exports = function(app) {
                   images[i].primaryImage = false;
                   images[i].save();
                 }
-              })
+              });
             }
           }, function(err) {
             result.reject({ error: err });

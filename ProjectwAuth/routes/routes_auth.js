@@ -15,10 +15,10 @@ const Profile = require('../models/model_profile');
 
 // Export the routes for our app to use
 module.exports = function(app) {
-  // Initialize passport for use
-  app.use(passport.initialize());
-  // Bring in defined Passport Strategy
-  require('../config/passport_config')(passport);
+  // // Initialize passport for use
+  // app.use(passport.initialize());
+  // // Bring in defined Passport Strategy
+  // require('../config/passport_config')(passport);
   // Create API group routes
   const apiRoutes = express.Router();
   // Register new users

@@ -1,6 +1,8 @@
 var express = require('express');
 var config = require('./config/app_config');
 var mongoose = require('mongoose');
+var compression = require('compression');
+var passport = require('passport');
 mongoose.connect(config.dbUrl);
 
 var projectRouter = require('./routes/routes_project');
@@ -9,8 +11,15 @@ var certRouter = require('./routes/routes_certification');
 
 var bodyParser = require('body-parser');
 var app = express();
+app.use(compression());
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use(bodyParser.json({ limit: '10mb' }));
+
+// Initialize passport for use
+app.use(passport.initialize());
+// Bring in defined Passport Strategy
+require('./config/passport_config')(passport);
+
 require('./routes/routes_auth')(app);
 require('./routes/routes_image')(app);
 app.use(express.static('public'));
