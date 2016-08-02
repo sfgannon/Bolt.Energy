@@ -4,7 +4,27 @@ angular.module("ProducerProfileModule", ["ui.router","toastr"])
 			url: '/producer/:producerId/:projectId',
 			resolve: {
 				producerInfo: function(UserProfileFactory,$stateParams) {
-					return UserProfileFactory.get($stateParams.producerId);
+					UserProfileFactory.get($stateParams.producerId).then(function(responseData) {
+						var projectList = responseData.data.projects;
+						var featured, projects;
+						for (var i = 0; i < projectList.length; i++) {
+							var formattedValue = '';
+							formattedValue = projectList[i].availability.toString();
+							formattedValue = formattedValue.replace('[').replace(']').replace('"').replace(/,/g, ', ');
+							projectList[i].availability = formattedValue;
+
+							formattedValue = projectList[i].utilityDistricts.toString();
+							formattedValue = formattedValue.replace('[').replace(']').replace('"').replace(/,/g, ', ');
+							projectList[i].utilityDistricts = formattedValue;
+							
+							if (projectList[i].featured) {
+								featured = projectList[i];
+							} else {
+								projects.push(projectList[i]);
+							}
+						}
+						return { producer: responseData.data, projects: projects, featured: featured };
+					})
 				},
 				projectInfo: function(UserProjectFactory,$stateParams) {
 					if ($stateParams.projectId) {
@@ -21,27 +41,26 @@ angular.module("ProducerProfileModule", ["ui.router","toastr"])
 				},
 				'projects@producer': {
 					controller: 'ProjectViewController',
-					templateUrl: function($stateParams) {
-						if ($stateParams.projectId) {
-							return '../templates/project/project_single.html';
-						} else {
-							return '../templates/project/project_multiple.html';
-						}
-					}
+					templateUrl: '../templates/project/project_section.html'
 				}
 			}
 		})
 	})
 	.controller('ProducerViewController', function(toastr,UserProfileFactory,UserProjectFactory,ConfigService,$stateParams,$scope,producerInfo,projectInfo) {
-		$scope.profile = producerInfo.data;
+		$scope.profile = producerInfo.producer;
     var formattedValue = '';
     formattedValue = $scope.profile.availability.toString();
     formattedValue = formattedValue.replace('[').replace(']').replace('"').replace(/,/g, ', ');
     $scope.profile.availability = formattedValue;
 	})
 	.controller('ProjectViewController', function(toastr,UserProfileFactory,UserProjectFactory,ConfigService,$stateParams,$scope,producerInfo,projectInfo) {
-		$scope.projects = producerInfo.data.projects;
+		$scope.projects = producerInfo.projects;
+		$scope.featured = producerInfo.featured;
 		$scope.project = projectInfo.data;
+		$scope.activeTab = 'projects';
+		$scope.activateTab = function(tabName) {
+			$scope.active	= tabName;
+		}
 		if ($scope.project) {
 	    var formattedValue = '';
 	    formattedValue = $scope.project.availability.toString();

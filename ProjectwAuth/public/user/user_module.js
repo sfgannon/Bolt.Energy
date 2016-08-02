@@ -307,7 +307,7 @@ angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 })
 .controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService, UserProfileFactory, toastr) {
 	//Get profile data for $scope variable from resolved injected value
-	$scope.profile = profileInfo.data[0];
+	$scope.profile = (profileInfo.data) ? profileInfo.data[0] : '';
 	$scope.saveProfile = function() {
 		$scope.profile.owner = userInfo.data._id;
 		UserProfileFactory.save($scope.profile).then(function(responseData) {
@@ -328,6 +328,7 @@ angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 	$scope.project = projectInfo.data;
 	$scope.userId = userInfo.data._id;
 	$scope.saveProject = function() {
+		//TODO: how do I handle this when the user hasn't saved a producer profile yet? Add an ng-disable in profileInfo?
 		$scope.project.owner = profileInfo.data[0]._id;
 		UserProjectFactory.save($scope.project).then(function(responseData) {
 			$scope.project = responseData.data.project;
@@ -342,5 +343,5 @@ angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 		$scope.project = projectInfo.data;
 		$state.go('useradmin', {userId: userInfo.data._id, projectId: null });
 	}
-	$scope.projects = profileInfo.data[0].projects;
+	$scope.projects = (profileInfo.data) ? profileInfo.data[0].projects : '';
 })
