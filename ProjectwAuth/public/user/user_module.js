@@ -328,6 +328,7 @@ angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 	$scope.project = projectInfo.data;
 	$scope.userId = userInfo.data._id;
 	$scope.saveProject = function() {
+		//TODO: how do I handle this when the user hasn't saved a producer profile yet? Add an ng-disable in profileInfo?
 		$scope.project.owner = profileInfo.data[0]._id;
 		UserProjectFactory.save($scope.project).then(function(responseData) {
 			$scope.project = responseData.data.project;

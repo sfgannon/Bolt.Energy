@@ -1,0 +1,124 @@
+			<div class="tab-nav">
+				<div class="container">
+					<ul class="tabset">
+						<li><a ng-click="activateTab('projects')" ng-class="{ active: activeTab === 'projects' }">Projects</a></li>
+						<li><a ng-click="activateTab('updates')" ng-class="{ active: activeTab === 'updates' }">Updates</a></li>
+						<li><a ng-click="activateTab('comments')" ng-class="{ active: activeTab === 'comments' }">Comments</a></li>
+					</ul>
+					<a href="#" class="btn icon-bubble22">Message</a>
+				</div>
+			</div>
+			<div class="container">
+				<div class="tab-content">
+					<div id="tab1" ng-hide="{ activeTab != 'projects' }">
+						<div ng-hide="projectId">
+							<section class="featured" ng-show="{ featured }">
+								<div class="text-frame text-center">
+									<h1>Featured Project</h1>
+									<span class="add-text">Check out our latest { featured.projectType.toLowerCase() } program.</span>
+								</div>
+								<div class="promo-block">
+									<div class="img-block"><img src="temp/default.jpg" alt="img description"></div>
+									<article class="article">
+										<div class="article-title">
+											<h2>{ featured.name }</h2>
+											<span class="add-text">{ featured.city }, { featured.state }</span>
+										</div>
+										<p>{ featured.desc }</p>
+										<a ui-sref="producer({ producerId: producerId, projectId: featured._id })" class="btn more">Learn More</a>
+										<div class="article-wrapper">
+											<span class="accept">{ featured.status }</span><p>PROJECT STATUS</p>
+										</div>
+									</article>
+								</div>
+							</section>
+							<section class="portfolio">
+								<div class="text-frame text-center">
+									<h1>Our Portfolio</h1>
+									<span class="add-text">Find a project that fits your clean energy needs.</span>
+								</div>
+								<div class="three-columns">
+									<div class="col" ng-repeat="project in projects">
+										<div class="promo-box">
+											<a ui-sref="producer({ producerId: producerId, projectId: project._id })">
+												<div class="img-wrapper">
+													<img src="temp/default.jpg" alt="img description">
+													<strong class="title">{ project.projectType }</strong>
+												</div>
+												<div class="text-wrapper">
+													<h3>{ project.name }</h3>
+													<dl>
+														<dt>STATUS</dt>
+														<dd> { project.status }</dd>
+														<dt>ENERGY TYPE</dt>
+														<dd>{ project.energyMix }</dd>
+														<dt>AVAILABILITY</dt>
+														<dd>{ project.availability }</dd>
+													</dl>
+												</div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
+						<div ng-hide="!projectId">
+							<div class="text-frame ">
+					          <h1>{ project.name }</h1>
+					          <span class="add-text">{ project.projectType }</span>
+					        </div>
+					        <div class="col-left">
+								    <div class="wrapper slider carousel">
+							        <img ng-repeat="img in images" class="slide slide-animation nonDraggableImage"
+							             ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
+							             ng-hide="!isCurrentSlideIndex($index)" ng-src="{ root + img.fileName }" alt="{ img.description }" />
+							        <a class="btn-next" href="" ng-click="nextSlide()"></a>
+							        <a class="btn-prev" href="" ng-click="prevSlide()"></a>
+								    </div>
+					          <h2>Overview</h2>
+					          <p>{ project.desc }</p>
+					        </div>
+					        <aside class="col-right">
+					          <div class="snapshot">
+					            <strong class="title line">Project Snapshot</strong>
+					            <dl>
+					              <dt>Status</dt>
+					              <dd>{ project.status }</dd>
+					              <dt>Project Type</dt>
+					              <dd>{ project.projectType }</dd>
+					              <dt>Availability</dt>
+					              <dd>{ project.availability }</dd>
+					              <dt>Energy Mix</dt>
+					              <dd>{ project.energyMix }</dd>
+					              <dt>Utility Districts</dt>
+					              <dd>{ project.utilityDistricts }</dd>
+					              <dt>Capacity</dt>
+					              <dd>{ project.capacity }</dd>
+					              <dt>MD Program Category</dt>
+					              <dd>{ project.programCategory }</dd>
+					            </dl>
+					          </div>
+					          <div class="green-box">
+					            <strong class="title line">Ready to Go Solar?</strong>
+					            <p>Contact us today to sign up or join us for an information session to find out more!</p>
+					            <a href="#" class="btn">Contact Us</a>
+					          </div>
+					        </aside>
+						</div>
+					</div>
+					<div id="tab2" ng-hide="{ activeTab != 'updates' }">
+						<div class="col">
+							<div class="promo-box">
+								<h3>This is the updates tab.</h3>
+							</div>
+						</div>
+					</div>
+					<div id="tab3" ng-hide="{ activeTab != 'comments' }">
+						<div class="col">
+							<div class="promo-box">
+								<h3>This is the comments tab.</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>

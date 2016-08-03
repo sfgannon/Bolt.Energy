@@ -40,7 +40,8 @@ var ProjectSchema = new Schema({
 	projectOwner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Profile'
-	}
+	},
+	featured: { type: Boolean, default: false }
 });
 
 ProjectSchema.post('save', function(next) {

@@ -1,0 +1,11 @@
+<div class="container">
+	<div class="col-left">
+        <p><label for="inpFirstname">First: </label><input type="text" id="inpUsername" ng-model="firstname"></p>
+        <p><label for="inpLastname">Last: </label><input type="text" id="inpUsername" ng-model="lastname"></p>
+		<p><label for="inpEmail">Email: </label><input type="text" id="inpUsername" ng-model="email"></p>
+		<p><label for="inpPassword">Password: </label><input type="password" id="inpPassword" ng-model="password"></p>
+		<p><label for="inpConfirmPassword">Confirm Password: </label><input type="password" id="inpConfirmPassword"></p>
+		<p><label for="selType">Profile Type: </label><select ng-model="type"><option value="Producer">Producer</option><option value="Consumer">Consumer</option></select></p>
+		<p><a id="btnSignUp" ng-click="register()" href="">Register</a>&nbsp&nbsp<a id="btnCancel" ng-click="cancel()" href="">Cancel</a></p>
+	</div>
+</div>

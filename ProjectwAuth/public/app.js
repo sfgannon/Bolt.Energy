@@ -43,17 +43,17 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
   .controller('LoginController', function ($rootScope, $scope, LoginService, $state, toastr, $http) {
         $rootScope.authenticated = LoginService.authenticated();
         $scope.login = function () {
-            var result = LoginService.login($scope.email, $scope.password);
-            result.then(function (responseData) {
-                $http.defaults.headers.common.Authorization = responseData.token;
-                $rootScope.authenticated = LoginService.authenticated();
-                //$rootScope.currentUserId = responseData.user._id;
-                $state.go('home');
-                toastr.success("Welcome to Bolt, " + responseData.user.firstName, "Login Successful");
-            }, function (status) {
-    			toastr.error(status.data.message || status.message || "Error logging in.", "Login Failed");
-                $state.go('home');
-            })
+					var result = LoginService.login($scope.email, $scope.password);
+					result.then(function (responseData) {
+						$http.defaults.headers.common.Authorization = responseData.token;
+						$rootScope.authenticated = LoginService.authenticated();
+						//$rootScope.currentUserId = responseData.user._id;
+						$state.go('home');
+						toastr.success("Welcome to Bolt, " + responseData.user.firstName, "Login Successful");
+					}, function (status) {
+						toastr.error("Error logging in.", "Login Failed");
+						$state.go('home');
+					})
         }
         $scope.logout = function () {
             $http.defaults.headers.common.Authorization = null;
