@@ -270,7 +270,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         };
 
     })
-   .controller('SignupController', function ($rootScope, $scope, LoginService, $state) {
+   .controller('SignupController', function ($rootScope, $scope, LoginService, $state, toastr) {
     $rootScope.authenticated = LoginService.authenticated();
     $scope.register = function () {
         LoginService.register($scope.firstname, $scope.lastname, $scope.email, $scope.password, $scope.type)
@@ -278,6 +278,8 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                 $rootScope.currentUserId = rd.user._id;
                 $rootScope.authenticated = LoginService.authenticated();
                 $state.go('home');
+        }, function(error) {
+            toastr.error("Error logging in: " + JSON.stringify(error));
         })
     }
     $scope.logout = function () {
