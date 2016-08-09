@@ -2,22 +2,28 @@
 <p><label for="inpLastname">Last: </label><input type="text" id="inpUsername" ng-model="user.lastName"></p>
 <p><label for="inpEmail">Email: </label><input type="text" id="inpUsername" ng-model="user.email"></p>
 <p><label for="selType">Profile Type: </label><select ng-model="user.accountType" value="{{user.accountType}}"><option value="Producer">Producer</option><option value="Consumer">Consumer</option></select></p>
-<p><label>Add User Images: </label>
-  <form name="upload" class="form" data-ng-submit="addFile()">
+<p><label>Add User Images</label></p>
+  <!--<form name="upload" class="form" data-ng-submit="addFile()">-->
       <!--<input id="inpImageUpload" type="file" name="files" multiple onchange="angular.element(this).scope().uploadedFile(this)" />-->
-      <input id="inpImageUpload" type="file" name="files" onchange="angular.element(this).scope().uploadedFile(this)" /><br>
-      <label for="inpDescription">Description: </label>
-      <input type="text" id="inpDescription" name="inpDescription" ng-model="image.description"></input><br>
-      <label for="inpPrimary">Use this as primary image: </label>
-      <input type="checkbox" id="inpPrimary" name="inpPrimary" ng-model="image.primaryImage"></input>
-      <button type="submit">Upload</button>
+  <!--    <input id="inpImageUpload" type="file" name="files" onchange="angular.element(this).scope().uploadedFile(this)" /><br>-->
+  <!--    <label for="inpDescription">Description: </label>-->
+  <!--    <input type="text" id="inpDescription" name="inpDescription" ng-model="image.description"></input><br>-->
+  <!--    <label for="inpPrimary">Use this as primary image: </label>-->
+  <!--    <input type="checkbox" id="inpPrimary" name="inpPrimary" ng-model="image.primaryImage"></input>-->
+  <!--    <button type="submit">Upload</button>-->
+  <!--</form>-->
+
+  <form name="form">
+      <label for="file">Select Files</label>
+      <input type="file" ng-model="uploads" name="files" base-sixty-four-input multiple accept="image/*" on-change="onChange"><br>
+      <button ng-click="saveUploads()">Save Uploads</button><button ng-click="cancelUploads()">Cancel Uploads</button>
   </form>
-</p>
-<p><div style="padding:10px;">
-	<h4>User Account Images</h4>
-	<div ng-repeat="image in images" style="height:200px;width:200px;border:1px solid black;padding:5px;margin:10px;overflow:hidden;">
-		<span>{{image.primaryImage}}</span>
-		<img ng-src="{{ root + image.fileName }}" style="float:left;" />
-	</div>
-</div></p>
+
+<!--<p><div style="padding:10px;">-->
+<!--	<h4>User Account Images</h4>-->
+<!--	<div ng-repeat="image in images" style="height:200px;width:200px;border:1px solid black;padding:5px;margin:10px;overflow:hidden;">-->
+<!--		<span>{{image.primaryImage}}</span>-->
+<!--		<img ng-src="{{ root + image.fileName }}" style="float:left;" />-->
+<!--	</div>-->
+<!--</div></p>-->
 <p><a id="btnSignUp" ng-click="saveAccount()" href="">Save</a>&nbsp&nbsp<a id="btnCancel" ng-click="cancel()" href="">Cancel</a></p>

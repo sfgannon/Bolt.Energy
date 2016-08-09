@@ -1,6 +1,16 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
+var UploadModel = new mongoose.Schema({
+	filename: String,
+	filetype: String,
+	description: String,
+	primaryImage: Boolean,
+  // item: { type: mongoose.Schema.Types.ObjectId, required: true }
+  base64: { type: String, required: true },
+	filesize: Number
+});
+
 var UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -16,7 +26,8 @@ var UserSchema = new mongoose.Schema({
     images: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Image'
-    }]
+    }],
+    uploads: [ UploadModel ]
 });
 
 UserSchema.pre('save', function (next) {

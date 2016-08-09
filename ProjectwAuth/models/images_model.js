@@ -1,11 +1,13 @@
 var mongoose = require('mongoose');
 
-var ImageModel = new mongoose.Schema({
+var Image = new mongoose.Schema({
 	fileName: String,
 	contentType: String,
 	description: String,
 	primaryImage: Boolean,
-  item: { type: mongoose.Schema.Types.ObjectId, required: true }
+  // item: { type: mongoose.Schema.Types.ObjectId, required: true }
+  imageData: { type: String, required: true },
+	size: Number
 });
 
 // ImageModel.post('save', function(next) {
@@ -26,6 +28,6 @@ var ImageModel = new mongoose.Schema({
 //     })
 // })
 
-var ImageModel = mongoose.model('Image', ImageModel);
+var ImageModel = mongoose.model('Image', Image);
 
 module.exports = ImageModel;

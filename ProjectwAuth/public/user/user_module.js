@@ -1,4 +1,7 @@
-angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
+angular.module("UserModule", ["naif.base64", "ui.router", "ngResource", "ngAnimate", "toastr"])
+.constant('_',
+    window._
+)
 .config(function($stateProvider,$urlRouterProvider) {
 	$stateProvider.state('useradmin', {
 		url: '/user/:userId?projectId',
@@ -17,11 +20,13 @@ angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 				}
 			},
 			userImagesInfo: function($stateParams,ImagesService) {
+				//TODO - this needs to be updated to reflect new image storage
 				return ImagesService.getByItem($stateParams.userId);
 			}
 		},
 		views: {
 			'': {
+				controller: 'AccountAdminController',
 				templateUrl: 'templates/user/account_admin.html'
 			},
 			'user@useradmin': {
@@ -191,6 +196,21 @@ angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 				})
 			}
 			return $ret.promise;
+		},
+		saveUploads: function(id, uploads) {
+			var $ret = $q.defer();
+			$ret.promise = $http({
+				method: 'PUT',
+				url: ConfigService.appRoot() + '/data/users/' + id,
+				data: {
+					uploads: uploads
+				}
+			}).then(function(responseData) {
+				$ret.resolve({ data: responseData.data });
+			}, function(err) {
+				$ret.reject({ error: err });
+			})
+			return $ret.promise;
 		}
 	}
 })
@@ -262,31 +282,75 @@ angular.module("UserModule", ["ui.router", "ngResource","ngAnimate","toastr"])
 		}
 	}
 })
+.controller('AccountAdminController', function($scope, userInfo) {
+	$scope.user = userInfo.data;
+})
 .controller('UserAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
 	//Get profile data for $scope variable from resolved injected value
 	$scope.user = userInfo.data;
-  $scope.uploadedFile = function (element) {
-      $scope.$apply(function ($scope) {
-          $scope.files = element.files;
-      });
+  // $scope.uploadedFile = function (element) {
+  //     $scope.$apply(function ($scope) {
+  //         $scope.files = element.files;
+  //     });
+  // }
+
+  //$scope.images = (userImagesInfo)?(userImagesInfo.images):(null);
+
+  $scope.uploads = [];
+  //Image Uploader Properties:
+  // file.filename
+  // file.filetype
+  // file.filesize
+  // file.base64
+
+  $scope.saveUploads = function() {
+		UserFactory.saveUploads($scope.user._id, $scope.user.uploads).then(
+			function(responseData) {
+				$scope.user = responseData.data.user;
+				userInfo.data = responseData.data.user;
+				toastr.success("User uploads successfully saved.","Success!");
+			}, function(error) {
+				alert(JSON.stringify(error));
+			})
   }
 
-  $scope.images = (userImagesInfo)?(userImagesInfo.images):(null);
-
-  $scope.root = "/temp/";
-
-  $scope.addFile = function () {
-  	var primary = $scope.image.primaryImage || false;
-    var upload = ImagesService.uploadfile($scope.files, { description: $scope.image.description, primaryImage: primary, item: $stateParams.userId });
-    upload.then(function (response) {
-        toastr.success("Upload successful.", "Success");
-				ImagesService.getByItem($stateParams.userId).then(function(responseData) {
-					$scope.images = responseData.images;
-				});
-    }, function (response) {
-        toastr.error("Upload failed.", "Error");
-    })
+  $scope.onChange = function(e, fileList) {
+  	//On Change event fired when new files added/removed via input
+  	if ($scope.uploads.length == 0) {
+  		$scope.user.uploads = userInfo.data.uploads;
+  	} else {
+  		var difference = _.difference($scope.uploads, $scope.user.uploads);
+  		if (difference.length > 0) {
+  			//Check that no file is larger than 16MB
+  			var cleanFiles = [];
+  			for (var i = 0; i < difference.length; i++) {
+  				if (difference[i].filesize < (16*1024*1024)) {
+  					cleanFiles.push(difference[i]);
+  				}
+  			}
+  			difference = cleanFiles;
+  			//Add files to the user uploads array
+  			for (var i = 0; i < difference.length; i++) {
+  				$scope.user.uploads.push(difference[i]);
+  			}
+  		}
+  	}
   }
+
+  // $scope.root = "/temp/";
+
+  // $scope.addFile = function () {
+  // 	var primary = $scope.image.primaryImage || false;
+  //   var upload = ImagesService.uploadfile($scope.files, { description: $scope.image.description, primaryImage: primary, item: $stateParams.userId });
+  //   upload.then(function (response) {
+  //       toastr.success("Upload successful.", "Success");
+		// 		ImagesService.getByItem($stateParams.userId).then(function(responseData) {
+		// 			$scope.images = responseData.images;
+		// 		});
+  //   }, function (response) {
+  //       toastr.error("Upload failed.", "Error");
+  //   })
+  // }
 	//Save, cancel methods
 	$scope.saveAccount = function() {
 		UserFactory.save($scope.user._id, $scope.user.firstName, $scope.user.lastName, $scope.user.email, $scope.user.accountType).then(

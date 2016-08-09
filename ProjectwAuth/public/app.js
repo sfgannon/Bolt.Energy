@@ -1,4 +1,4 @@
-angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource","UserModule", "ProjectModule", "ProfileModule", "CertificationModule","toastr","ProducerProfileModule"])
+angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.router", "ngResource","UserModule", "ProjectModule", "ProfileModule", "CertificationModule","toastr","ProducerProfileModule"])
   .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
@@ -47,7 +47,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
 					result.then(function (responseData) {
 						$http.defaults.headers.common.Authorization = responseData.token;
 						$rootScope.authenticated = LoginService.authenticated();
-						//$rootScope.currentUserId = responseData.user._id;
+						$rootScope.currentUserId = responseData.user._id;
 						$state.go('home');
 						toastr.success("Welcome to Bolt, " + responseData.user.firstName, "Login Successful");
 					}, function (status) {
@@ -220,7 +220,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         }
     }])
   .controller('CarouselController', function ($state, $scope, ConfigService, ImagesService, toastr) {
-
+        //TODO - this needs to be updated to reflect image storage as base64 and display as data url
         ImagesService.getAll().then(function (response) {
             $scope.images = response.images;
             $scope.slides = [];
