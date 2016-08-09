@@ -316,10 +316,10 @@ angular.module("UserModule", ["naif.base64", "ui.router", "ngResource", "ngAnima
 
   $scope.onChange = function(e, fileList) {
   	//On Change event fired when new files added/removed via input
-  	if ($scope.uploads.length == 0) {
+  	if (fileList.length == 0) {
   		$scope.user.uploads = userInfo.data.uploads;
   	} else {
-  		var difference = _.difference($scope.uploads, $scope.user.uploads);
+  		var difference = _.difference(fileList, $scope.user.uploads);
   		if (difference.length > 0) {
   			//Check that no file is larger than 16MB
   			var cleanFiles = [];
