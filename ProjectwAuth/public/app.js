@@ -45,7 +45,6 @@ angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.route
         $scope.login = function () {
 					var result = LoginService.login($scope.email, $scope.password);
 					result.then(function (responseData) {
-						$http.defaults.headers.common.Authorization = responseData.token;
 						$rootScope.authenticated = LoginService.authenticated();
 						$rootScope.currentUserId = responseData.user._id;
 						$state.go('home');
@@ -56,7 +55,6 @@ angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.route
 					})
         }
         $scope.logout = function () {
-            $http.defaults.headers.common.Authorization = null;
             var result = LoginService.logout();
             $state.go('home');
         }
@@ -88,6 +86,7 @@ angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.route
                         password: password
                     }
                 }).then(function (responseData) {
+                    $http.defaults.headers.common.Authorization = responseData.data.token;
                     $window.localStorage.setItem('BoltToken', responseData.data.token);
                     $window.localStorage.setItem('BoltUser', responseData.data.user._id);
                     $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
@@ -104,6 +103,7 @@ angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.route
             },
             logout: function () {
                 try {
+                    $http.defaults.headers.common.Authorization = null;
                     $window.localStorage.removeItem('BoltToken');
                     $window.localStorage.removeItem('BoltTokenExp');
                     $window.localStorage.removeItem('BoltUser');
@@ -142,6 +142,7 @@ angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.route
                         accountType: type
                     }
                 }).then(function (responseData) {
+                    $http.defaults.headers.common.Authorization = responseData.data.token;
                     $window.localStorage.setItem('BoltToken', responseData.data.token);
                     $window.localStorage.setItem('BoltTokenExp', Date.now() + 10080000);
                     $return.resolve({

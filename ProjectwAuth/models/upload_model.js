@@ -6,7 +6,7 @@ var UploadModel = new mongoose.Schema({
 	description: String,
 	primaryImage: Boolean,
   // item: { type: mongoose.Schema.Types.ObjectId, required: true }
-  base64: { type: String, required: true },
+  //base64: { type: String, required: true },
 	filesize: Number
 });
 

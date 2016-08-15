@@ -7,7 +7,7 @@
 		<h3>Producer Profile Information</h3>
 		<div ui-view="profile"></div>
 	</div>
-	<div class="col-left" ng-show="{{user.accountType == 'Producer'}}">
+	<div class="col-left" ng-show="{{user.accountType == 'Producer' && profile != ''}}">
 		<h3>Project Information</h3>
 		<div ui-view="project"></div>
 	</div>

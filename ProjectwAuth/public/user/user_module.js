@@ -282,8 +282,9 @@ angular.module("UserModule", ["naif.base64", "ui.router", "ngResource", "ngAnima
 		}
 	}
 })
-.controller('AccountAdminController', function($scope, userInfo) {
+.controller('AccountAdminController', function($scope, userInfo, profileInfo) {
 	$scope.user = userInfo.data;
+	$scope.profile = (profileInfo.data) ? profileInfo.data[0] : '';
 })
 .controller('UserAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
 	//Get profile data for $scope variable from resolved injected value
