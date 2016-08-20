@@ -5,16 +5,18 @@ var config = require('../config/app_config');
 var jwt = require('jsonwebtoken');
 var UploadModel = require('../models/upload_model');
 var UserModel = require('../models/upload_model');
-var mkdirp = require('mkdirp-promise');
+var mkdirp = require('mkdirp-promise')
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
+  	//Make sure there is a folder in the user images directory that
+  	//corresponds to the user's ID, if not create it.
+    //cb(null, './public/temp/');
     var destinationDirectory = './userImages/';
     var userDir = req.user ? req.user._id.toString() : 'uploads';
     var path = destinationDirectory + userDir;
     mkdirp(path).then(function(responseData) {
     	console.log("User upload directory created: " + path);
-    	req.filepath = path;
     	cb(null, path);
     }).catch(function(error) {
     	console.log("Error creating user upload directory: " + JSON.stringify(error));
@@ -22,8 +24,11 @@ var storage = multer.diskStorage({
     })
   },
   filename: function (req, file, cb) {
+  	//Overall: Grab user ID from auth token in header
+  	//Create a directory with the user's ID if it hasn't already been created
+  	//Upload the file there with a new name
  		var id = req.user._id.toString();
- 		var fileName = id + "_" + file.originalname;
+ 		var fileName = id + "_" + file.name;
     cb(null, fileName);
   }
 });
@@ -60,7 +65,6 @@ module.exports = function(app) {
         };
         for (var i = 0; i < data.length; i++) {
           var img = new UploadModel(data[i]);
-          img.path = req.path;
           images.push(img);
         }
         var promises = images.map(saveOne);
@@ -80,6 +84,7 @@ module.exports = function(app) {
 	router.get("/upload", function(req, res, next) {
 		UploadModel.find(function(err, uploads) {
 			if (err) {
+				//End execution, send the error
 				next(err);
 			}
 			res.json(uploads);

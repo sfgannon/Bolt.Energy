@@ -33,8 +33,7 @@ module.exports = function(app) {
             res.status(403).json({ error: err });
           }
         } else {
-          // Create token if the password matched and no error was thrown
-          const token = jwt.sign({ id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email }, config.secret, {
+          const token = jwt.sign(user, config.secret, {
             expiresIn: 10080 // in seconds
           });
           res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token, user: user });
