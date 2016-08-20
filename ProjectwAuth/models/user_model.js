@@ -1,15 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
-
-var UploadModel = new mongoose.Schema({
-	filename: String,
-	filetype: String,
-	description: String,
-	primaryImage: Boolean,
-  // item: { type: mongoose.Schema.Types.ObjectId, required: true }
-  base64: { type: String, required: true },
-	filesize: Number
-});
+var UploadSchema = require('./upload_model').schema;
+var ProducerSchema = require('./model_profile').schema;
 
 var UserSchema = new mongoose.Schema({
     firstName: String,
@@ -23,11 +15,11 @@ var UserSchema = new mongoose.Schema({
     isAdmin: { type: Boolean, default: false },
     created: { type: Date, default: Date.now },
     modified: Date,
-    images: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Image'
-    }],
-    uploads: [ UploadModel ]
+    // images: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Image'
+    // }],
+    uploads: [ UploadSchema ]
 });
 
 UserSchema.pre('save', function (next) {

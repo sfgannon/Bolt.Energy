@@ -1,7 +1,4 @@
-angular.module("UserModule", ["naif.base64", "ui.router", "ngResource", "ngAnimate", "toastr"])
-.constant('_',
-    window._
-)
+angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 .config(function($stateProvider,$urlRouterProvider) {
 	$stateProvider.state('useradmin', {
 		url: '/user/:userId?projectId',
@@ -50,6 +47,43 @@ angular.module("UserModule", ["naif.base64", "ui.router", "ngResource", "ngAnima
 		}
 	});
 })
+.directive('fileModel', ['$q', '$parse', '$compile', function ($q,$parse,$compile) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          var model = $parse(attrs.fileModel);
+          var modelSetter = model.assign;
+
+          element.bind('change', function(){
+          	var files = [];
+          	files = element[0].files;
+          	var readData = function(file) {
+          		var reader = new FileReader();
+          		var deferred = $q.defer();
+          		reader.onload = function(e) {
+          			file.dataUrl = e.target.result;
+          			deferred.resolve(e.target.result);
+          		}
+          		reader.onerror = function(error) {
+          			deferred.reject(error);
+          		}
+          		reader.readAsDataURL(file);
+          		return deferred.promise;
+          	}
+          	var promises = [];
+          	for (var i = 0; i < files.length; i++) {
+          		var promise = readData(files[i]);
+          		promises.push(promise);
+          	}
+          	Promise.all(promises).then(function(response) {
+          		scope.$apply(function(){
+	                modelSetter(scope, files);
+	            });
+          	});
+          });
+        }
+    };
+}])
 .service('UserProjectFactory', function($q,$http,ConfigService) {
 	return {
 		get: function(id) {
@@ -214,6 +248,95 @@ angular.module("UserModule", ["naif.base64", "ui.router", "ngResource", "ngAnima
 		}
 	}
 })
+.service('UtilitiesService', function() {
+	return {
+		pullFromArray: function(item, array, field) {
+			for (var i = array.length -1; i > -1; i--) {
+				if (field) {
+					//Array of objects, check field value instead of item value
+					if (array[i][field] == item) {
+						array.splice(i,1);
+					}
+				} else {
+					if (array[i] == item) {
+						array.splice(i,1);
+					}
+				}
+			}
+			return array;
+		}
+	}
+})
+.service("AccountService", function($q,$http,ConfigService,$window,UtilitiesService) {
+	return {
+		removeUpload: function(id,user) {
+			user.uploads = UtilitiesService.pullFromArray(id.id,user.uploads,'_id');
+			//Make http request
+			var fd = new FormData();
+			fd.append('data',JSON.stringify(user));
+			var ret = $q.defer();
+			ret.promise = $http({
+				method: 'PUT',
+				url: ConfigService.appRoot() + '/admin/account/' + user._id,
+				data: fd,
+        headers: {
+            'Content-Type': undefined,
+            'Authorization': $window.localStorage.getItem('BoltToken')
+        }
+			}).then(function(responseData) {
+				ret.resolve({ data: responseData.data });
+			}, function(err) {
+				ret.reject({ error: err });
+			});
+			return ret.promise;
+		},
+		saveAccount: function(newUploads,user) {
+			//send new uploads as part of its own body var
+			var uploads = [];
+			var files = [];
+			// angular.forEach(newUploads, function(file) {
+			// 	files.push(file);
+			// })
+			//Add new uploads to FormData
+			var fd = new FormData();
+			// fd.append('files',files);
+			angular.forEach(newUploads, function(file) {
+				fd.append('files', file);
+			})
+			//Add new uploads to User.uploads by transforming to UploadModel
+			angular.forEach(newUploads, function(file) {
+				var newFile = {};
+				newFile.filename = file.name;
+				newFile.filetype = file.type;
+				newFile.description = file.description;
+				newFile.filesize = file.size;
+				newFile.path = '';
+				uploads.push(newFile);
+			})
+			//Any more transformation needed?
+			//JSON.stringify all of the data
+			//Attach data to Form Data
+			fd.append('data',JSON.stringify(user));
+			fd.append('uploads',JSON.stringify(uploads));
+			//Make http request
+			var ret = $q.defer();
+			ret.promise = $http({
+				method: 'PUT',
+				url: ConfigService.appRoot() + '/admin/account/' + user._id,
+				data: fd,
+        headers: {
+            'Content-Type': undefined,
+            'Authorization': $window.localStorage.getItem('BoltToken')
+        }
+			}).then(function(responseData) {
+				ret.resolve({ data: responseData.data });
+			}, function(err) {
+				ret.reject({ error: err });
+			});
+			return ret.promise;
+		}
+	};
+})
 .service('UserProfileFactory', function($q,$http,ConfigService) {
 	return {
 		get: function(id) {
@@ -286,88 +409,43 @@ angular.module("UserModule", ["naif.base64", "ui.router", "ngResource", "ngAnima
 	$scope.user = userInfo.data;
 	$scope.profile = (profileInfo.data) ? profileInfo.data[0] : '';
 })
-.controller('UserAdminController', function($scope, UserFactory, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
+.controller('UserAdminController', function($scope, UserFactory, AccountService, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
 	//Get profile data for $scope variable from resolved injected value
+	const userData = {};
+	userData.firstName = userInfo.data.firstName;
+	userData.lastName = userInfo.data.lastName;
+	userData.email = userInfo.data.email;
+	userData.accountType = userInfo.data.accountType;
 	$scope.user = userInfo.data;
-  // $scope.uploadedFile = function (element) {
-  //     $scope.$apply(function ($scope) {
-  //         $scope.files = element.files;
-  //     });
-  // }
 
-  //$scope.images = (userImagesInfo)?(userImagesInfo.images):(null);
-
-  $scope.uploads = [];
-  //Image Uploader Properties:
-  // file.filename
-  // file.filetype
-  // file.filesize
-  // file.base64
-
-  $scope.saveUploads = function() {
-		UserFactory.saveUploads($scope.user._id, $scope.user.uploads).then(
-			function(responseData) {
-				$scope.user = responseData.data.user;
-				userInfo.data = responseData.data.user;
-				toastr.success("User uploads successfully saved.","Success!");
-			}, function(error) {
-				alert(JSON.stringify(error));
-			})
-  }
-
-  $scope.onChange = function(e, fileList) {
-  	//On Change event fired when new files added/removed via input
-  	if (fileList.length == 0) {
-  		$scope.user.uploads = userInfo.data.uploads;
-  	} else {
-  		var difference = _.difference(fileList, $scope.user.uploads);
-  		if (difference.length > 0) {
-  			//Check that no file is larger than 16MB
-  			var cleanFiles = [];
-  			for (var i = 0; i < difference.length; i++) {
-  				if (difference[i].filesize < (16*1024*1024)) {
-  					cleanFiles.push(difference[i]);
-  				}
-  			}
-  			difference = cleanFiles;
-  			//Add files to the user uploads array
-  			for (var i = 0; i < difference.length; i++) {
-  				$scope.user.uploads.push(difference[i]);
-  			}
-  		}
-  	}
-  }
-
-  // $scope.root = "/temp/";
-
-  // $scope.addFile = function () {
-  // 	var primary = $scope.image.primaryImage || false;
-  //   var upload = ImagesService.uploadfile($scope.files, { description: $scope.image.description, primaryImage: primary, item: $stateParams.userId });
-  //   upload.then(function (response) {
-  //       toastr.success("Upload successful.", "Success");
-		// 		ImagesService.getByItem($stateParams.userId).then(function(responseData) {
-		// 			$scope.images = responseData.images;
-		// 		});
-  //   }, function (response) {
-  //       toastr.error("Upload failed.", "Error");
-  //   })
-  // }
-	//Save, cancel methods
 	$scope.saveAccount = function() {
-		UserFactory.save($scope.user._id, $scope.user.firstName, $scope.user.lastName, $scope.user.email, $scope.user.accountType).then(
-			function(responseData) {
-				$scope.user = responseData.data.user;
-				userInfo.data = responseData.data.user;
-				toastr.success("User account information successfully saved.","Success!");
-			}, function(error) {
-				alert(JSON.stringify(error));
-			})
+		AccountService.saveAccount($scope.uploads, $scope.user).then(function(responseData) {
+			toastr.success("User account information saved.");
+			$scope.user = responseData.data.user;
+			userInfo.data = responseData.data.user;
+			$scope.uploads = [];
+		}, function(error) {
+			toastr.error("Error saving user account information.");
+		})
 	}
+
+	$scope.removeUpload = function(id) {
+		AccountService.removeUpload(id,$scope.user).then(function(responseData) {
+			toastr.success("User upload removed.");
+			$scope.user = responseData.data.user;
+			userInfo.data = responseData.data.user;
+			$scope.uploads = [];
+		}, function(error) {
+			toastr.error("Error saving user account information.");
+		})
+	}
+
 	$scope.cancel = function() {
-		$scope.user.firstName = userInfo.data.firstName;
-		$scope.user.lastName = userInfo.data.lastName;
-		$scope.user.accountType = userInfo.data.accountType;
-		$scope.user.email = userInfo.data.email;
+		$scope.user.firstName = userData.firstName;
+		$scope.user.lastName = userData.lastName;
+		$scope.user.accountType = userData.accountType;
+		$scope.user.email = userData.email;
+		$scope.uploads = [];
 	}
 })
 .controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService, UserProfileFactory, toastr) {

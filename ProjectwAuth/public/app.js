@@ -1,4 +1,4 @@
-angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.router", "ngResource","UserModule", "ProjectModule", "ProfileModule", "CertificationModule","toastr","ProducerProfileModule"])
+angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource","UserModule", "ProjectModule", "ProfileModule", "CertificationModule","toastr","ProducerProfileModule"])
   .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
@@ -33,12 +33,39 @@ angular.module("boltprofiles", ["naif.base64", "ngAnimate", "ngTouch", "ui.route
             $state.go('home');
         }
     })
-  .controller('HomeController', function ($scope, CertificationFactory, ProfileFactory, ProjectFactory) {
-        $scope.certifications = CertificationFactory.query();
+  .controller('HomeController', function (ConfigService, $http, $q, $scope, CertificationFactory, ProfileFactory, ProjectFactory) {
+        // $scope.certifications = CertificationFactory.query();
         $scope.profiles = ProfileFactory.query(function (data) {
             console.log(data);
         });
-        $scope.projects = ProjectFactory.query();
+        // $scope.projects = ProjectFactory.query();
+        $scope.uploadImages = function() {
+            var data = [];
+            var files = [];
+            var file = $scope.uploads[0];
+            files.push(file);
+            data.push({ filename: file.name,
+                filetype: file.type,
+                description: $scope.description,
+                filesize: file.size
+            });
+            var fd = new FormData();
+            fd.append('files',file);
+            fd.append('data', JSON.stringify(data));
+            var ret = $q.defer();
+            ret.promise = $http({
+                method: 'POST',
+                url: ConfigService.appRoot() + '/data/upload',
+                data: fd,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).then(function(responseData) {
+                console.log(responseData);
+            }, function(error) {
+                console.log(error);
+            });
+        }
     })
   .controller('LoginController', function ($rootScope, $scope, LoginService, $state, toastr, $http) {
         $rootScope.authenticated = LoginService.authenticated();

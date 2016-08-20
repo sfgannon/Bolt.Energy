@@ -22,6 +22,7 @@ require('./config/passport_config')(passport);
 
 require('./routes/routes_auth')(app);
 require('./routes/routes_image')(app);
+// require('./routes/upload_routes')(app);
 app.use(express.static('public'));
 var port = process.env.PORT || config.port || 3001;
 //var port = config.port || 3001;
@@ -29,6 +30,8 @@ var port = process.env.PORT || config.port || 3001;
 app.use("/data", projectRouter);
 app.use("/data", profileRouter);
 app.use("/data", certRouter);
+
+require('./routes/user_routes')(app);
 
 app.listen(port);
 console.log("Bolt Profile app running on " + port);

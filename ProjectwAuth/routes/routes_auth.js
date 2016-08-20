@@ -33,7 +33,8 @@ module.exports = function(app) {
             res.status(403).json({ error: err });
           }
         } else {
-          const token = jwt.sign(user, config.secret, {
+          // Create token if the password matched and no error was thrown
+          const token = jwt.sign({ id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email }, config.secret, {
             expiresIn: 10080 // in seconds
           });
           res.status(201).json({ success: true, message: 'Successfully created new user.', token: 'JWT ' + token, user: user });
@@ -94,7 +95,7 @@ module.exports = function(app) {
         user.comparePassword(req.body.password, function(err, isMatch) {
           if (isMatch && !err) {
             // Create token if the password matched and no error was thrown
-            const token = jwt.sign(user, config.secret, {
+            const token = jwt.sign({ id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email }, config.secret, {
               expiresIn: 10080 // in seconds
             });
             console.log(Date.now());
