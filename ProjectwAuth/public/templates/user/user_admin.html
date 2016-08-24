@@ -3,8 +3,14 @@
 			<p><label for="inpEmail">Email: </label><input type="text" id="inpUsername" ng-model="user.email"></p>
 			<p><label for="selType">Profile Type: </label><select ng-model="user.accountType" value="{{user.accountType}}"><option value="Producer">Producer</option><option value="Consumer">Consumer</option></select></p>
 			<p><label>Add User Images</label></p>
-
-
+			<p><label>User Images</label></p>
+			<div style="width:600px;float:left;">
+				<div ng-repeat="img in user.uploads" style="width:140px;padding:5px;float:left;height:auto;">
+	      	<button ng-click="removeUpload({ id: img._id.toString() })" alt="Remove image">Delete</button>
+					<img ng-src="{{img.path + img.filename}}" /><br>
+					<span>{{img.description}}</span>
+				</div>
+			</div>
       <label for="file">Select Files</label>
 		  <input type="file" name="files" multiple file-model="uploads"><br>
 		  <div>
