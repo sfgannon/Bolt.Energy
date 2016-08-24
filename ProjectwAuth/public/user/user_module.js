@@ -6,8 +6,8 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 			profileInfo: function(UserProfileFactory,$stateParams) {
 				return UserProfileFactory.findByOwner($stateParams.userId);
 			},
-			userInfo: function(UserFactory,$stateParams) {
-				return UserFactory.get($stateParams.userId);
+			userInfo: function(AccountService,$stateParams) {
+				return AccountService.get($stateParams.userId);
 			},
 			projectInfo: function(UserProjectFactory,$stateParams) {
 				if ($stateParams.projectId && $stateParams.projectId != 'new') {
@@ -171,7 +171,26 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 		}
 	}
 })
-.service("UserFactory", function($q, $http, ConfigService) {
+.service('UtilitiesService', function() {
+	return {
+		pullFromArray: function(item, array, field) {
+			for (var i = array.length -1; i > -1; i--) {
+				if (field) {
+					//Array of objects, check field value instead of item value
+					if (array[i][field] == item) {
+						array.splice(i,1);
+					}
+				} else {
+					if (array[i] == item) {
+						array.splice(i,1);
+					}
+				}
+			}
+			return array;
+		}
+	}
+})
+.service("AccountService", function($q,$http,ConfigService,$window,UtilitiesService) {
 	return {
 		get: function(id) {
 			var $ret = $q.defer();
@@ -196,91 +215,16 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 			}
 			return $ret.promise;
 		},
-		save: function(id, first, last, email, type) {
-			var $ret = $q.defer();
-			if (id) {
-				$ret.promise = $http({
-					method: 'PUT',
-					url: ConfigService.appRoot() + '/data/users/' + id,
-					data: {
-						firstName: first,
-						lastName: last,
-						accountType: type,
-						email: email
-					}
-				}).then(function(responseData) {
-					$ret.resolve({ data: responseData.data });
-				}, function(err) {
-					$ret.reject({ error: err });
-				})
-			} else {
-				$ret.promise = $http({
-					method: 'POST',
-					url: ConfigService.appRoot() + '/data/users',
-					data: {
-						firstName: first,
-						lastName: last,
-						email: email,
-						accountType: type
-					}
-				}).then(function(responseData) {
-					$ret.resolve({ data: responseData.data });
-				}, function(err) {
-					$ret.reject({ error: err });
-				})
-			}
-			return $ret.promise;
-		},
-		saveUploads: function(id, uploads) {
-			var $ret = $q.defer();
-			$ret.promise = $http({
-				method: 'PUT',
-				url: ConfigService.appRoot() + '/data/users/' + id,
-				data: {
-					uploads: uploads
-				}
-			}).then(function(responseData) {
-				$ret.resolve({ data: responseData.data });
-			}, function(err) {
-				$ret.reject({ error: err });
-			})
-			return $ret.promise;
-		}
-	}
-})
-.service('UtilitiesService', function() {
-	return {
-		pullFromArray: function(item, array, field) {
-			for (var i = array.length -1; i > -1; i--) {
-				if (field) {
-					//Array of objects, check field value instead of item value
-					if (array[i][field] == item) {
-						array.splice(i,1);
-					}
-				} else {
-					if (array[i] == item) {
-						array.splice(i,1);
-					}
-				}
-			}
-			return array;
-		}
-	}
-})
-.service("AccountService", function($q,$http,ConfigService,$window,UtilitiesService) {
-	return {
 		removeUpload: function(id,user) {
 			user.uploads = UtilitiesService.pullFromArray(id.id,user.uploads,'_id');
+			var data = { removeImage: id.id, user: user };
 			//Make http request
-			var fd = new FormData();
-			fd.append('data',JSON.stringify(user));
 			var ret = $q.defer();
 			ret.promise = $http({
 				method: 'PUT',
 				url: ConfigService.appRoot() + '/admin/account/' + user._id,
-				data: fd,
+				data: { data: JSON.stringify(data) },
         headers: {
-            'Content-Type': undefined,
             'Authorization': $window.localStorage.getItem('BoltToken')
         }
 			}).then(function(responseData) {
@@ -409,7 +353,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 	$scope.user = userInfo.data;
 	$scope.profile = (profileInfo.data) ? profileInfo.data[0] : '';
 })
-.controller('UserAdminController', function($scope, UserFactory, AccountService, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
+.controller('UserAdminController', function($scope, AccountService, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
 	//Get profile data for $scope variable from resolved injected value
 	const userData = {};
 	userData.firstName = userInfo.data.firstName;
@@ -430,7 +374,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 	}
 
 	$scope.removeUpload = function(id) {
-		AccountService.removeUpload(id,$scope.user).then(function(responseData) {
+		AccountService.removeUpload(id, $scope.user).then(function(responseData) {
 			toastr.success("User upload removed.");
 			$scope.user = responseData.data.user;
 			userInfo.data = responseData.data.user;
@@ -448,7 +392,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 		$scope.uploads = [];
 	}
 })
-.controller('ProfileAdminController', function($scope, UserFactory, $stateParams, profileInfo, userInfo, $http, $q, ConfigService, UserProfileFactory, toastr) {
+.controller('ProfileAdminController', function($scope, $stateParams, profileInfo, userInfo, $http, $q, ConfigService, UserProfileFactory, toastr) {
 	//Get profile data for $scope variable from resolved injected value
 	$scope.profile = (profileInfo.data) ? profileInfo.data[0] : '';
 	$scope.saveProfile = function() {

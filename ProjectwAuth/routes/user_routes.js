@@ -5,6 +5,7 @@ var config = require('../config/app_config');
 var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
 var objectId = mongoose.Types.ObjectId;
+var fs = require('fs-extra');
 var mkdirp = require('mkdirp-promise')
 var multer = require('multer');
 var storage = multer.diskStorage({
@@ -73,34 +74,51 @@ module.exports = function(app) {
   	//Ensure that the user editing the account is the owner
   	if (req.user._id == req.params.id) {
 	    try {
-	    	//Try to really specifially add each photo as an upload rather than as an array of objects
+	    	//Check to see if this is an image removal post
 	    	var data = (req.body.data)?(JSON.parse(req.body.data)):('');
-	    	var uplds = (req.body.uploads)?(JSON.parse(req.body.uploads)):('');
-	    	var destinationDirectory = './userImages/';
-  			var userDir = req.user ? req.user._id.toString() : 'uploads';
-  			var path = destinationDirectory + userDir + "/";
-  			var setPath = function(upload) {
-  				upload.path = path;
-  				upload.filename = req.user._id + "_" + upload.filename;
-  			};
-  			var addUploads = function(upload) {
-  				var up = new Upload(upload);
-  				data.uploads.push(up);
-  			}
-  			uplds.map(setPath);
-				uplds.map(addUploads);
-	      if (objectId.isValid(req.params.id)) {
-	        User.findOneAndUpdate({ _id: req.params.id }, data, { new: true }, function(err, User) {
-	          if (err) {
-	            //wtf happened?
-	            res.status(500).json({ error: err });
-	          } else {
-	            res.status(200).json({ user: User, message: 'User information updated.'});
-	          }
-	        });
-	      } else {
-	        res.status(500).json({ message: "Invalid Object Id." });
-	      }
+	    	//Try to really specifially add each photo as an upload rather than as an array of objects
+				if (data.removeImage) {
+					User.findById(req.params.id, function(err, user) {
+						var image = user.uploads.id(data.removeImage);
+						fs.remove(image.path + image.filename, null);
+						user.uploads.id(data.removeImage).remove();
+						user.save(function(err, user) {
+		          if (err) {
+		            //wtf happened?
+		            res.status(500).json({ error: err });
+		          } else {
+		            res.status(200).json({ user: user, message: 'User information updated.'});
+		          }
+						});
+					})
+				} else {
+		    	var uplds = (req.body.uploads)?(JSON.parse(req.body.uploads)):('');
+		    	var destinationDirectory = './userImages/';
+	  			var userDir = req.user ? req.user._id.toString() : 'uploads';
+	  			var path = destinationDirectory + userDir + "/";
+	  			var setPath = function(upload) {
+	  				upload.path = path;
+	  				upload.filename = req.user._id + "_" + upload.filename;
+	  			};
+	  			var addUploads = function(upload) {
+	  				var up = new Upload(upload);
+	  				data.uploads.push(up);
+	  			}
+	  			uplds.map(setPath);
+					uplds.map(addUploads);
+		      if (objectId.isValid(req.params.id)) {
+		        User.findOneAndUpdate({ _id: req.params.id }, data, { new: true }, function(err, User) {
+		          if (err) {
+		            //wtf happened?
+		            res.status(500).json({ error: err });
+		          } else {
+		            res.status(200).json({ user: User, message: 'User information updated.'});
+		          }
+		        });
+		      } else {
+		        res.status(500).json({ message: "Invalid Object Id." });
+		      }
+				}
 	    } catch (e) {
 	      res.status(500).json({ error: e, message: "Error occurred while saving." });
 	    }
