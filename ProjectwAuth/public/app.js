@@ -34,11 +34,11 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
         }
     })
   .controller('HomeController', function (ConfigService, $http, $q, $scope, CertificationFactory, ProfileFactory, ProjectFactory) {
-        // $scope.certifications = CertificationFactory.query();
+        $scope.certifications = CertificationFactory.query();
         $scope.profiles = ProfileFactory.query(function (data) {
             console.log(data);
         });
-        // $scope.projects = ProjectFactory.query();
+        $scope.projects = ProjectFactory.query();
         $scope.uploadImages = function() {
             var data = [];
             var files = [];

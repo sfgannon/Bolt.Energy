@@ -39,14 +39,7 @@
 	</div>
 </div>
 <div ng-show="authenticated">
-  <input type="file" name="files" multiple file-model="uploads"><br>
+  <input type="file" name="files" file-model="uploads"><br>
   <label for="inpDescription">Description: </label><input type="text" ng-model="description" /><br />
   <button ng-click="uploadImages()">Upload Images</button>
-  <div>
-      <h4>Selected Images</h4>
-      <div style="padding:5px;" ng-repeat="img in uploads">
-          <img style="height:100px;width:auto;padding:5px;" ng-src="{{img.dataUrl}}" /><br />
-          <input type="text" ng-model="img.description" /><br />
-      </div>
-  </div>
 </div>

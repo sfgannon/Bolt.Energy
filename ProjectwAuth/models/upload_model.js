@@ -6,8 +6,7 @@ var UploadModel = new mongoose.Schema({
 	description: String,
   // item: { type: mongoose.Schema.Types.ObjectId, required: true }
   //base64: { type: String, required: true },
-	filesize: Number,
-	path: String
+	filesize: Number
 });
 
 module.exports = mongoose.model('Upload', UploadModel);
