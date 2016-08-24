@@ -47,7 +47,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 		}
 	});
 })
-.directive('fileModel', ['$q', '$parse', '$compile', function ($q,$parse,$compile) {
+.directive('fileModel', ['$parse', '$compile', function ($parse,$compile) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -55,31 +55,9 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
           var modelSetter = model.assign;
 
           element.bind('change', function(){
-          	var files = [];
-          	files = element[0].files;
-          	var readData = function(file) {
-          		var reader = new FileReader();
-          		var deferred = $q.defer();
-          		reader.onload = function(e) {
-          			file.dataUrl = e.target.result;
-          			deferred.resolve(e.target.result);
-          		}
-          		reader.onerror = function(error) {
-          			deferred.reject(error);
-          		}
-          		reader.readAsDataURL(file);
-          		return deferred.promise;
-          	}
-          	var promises = [];
-          	for (var i = 0; i < files.length; i++) {
-          		var promise = readData(files[i]);
-          		promises.push(promise);
-          	}
-          	Promise.all(promises).then(function(response) {
-          		scope.$apply(function(){
-	                modelSetter(scope, files);
-	            });
-          	});
+              scope.$apply(function(){
+                  modelSetter(scope, element[0].files);
+              });
           });
         }
     };
