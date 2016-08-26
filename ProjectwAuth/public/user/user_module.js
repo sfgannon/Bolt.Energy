@@ -216,12 +216,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 			//send new uploads as part of its own body var
 			var uploads = [];
 			var files = [];
-			// angular.forEach(newUploads, function(file) {
-			// 	files.push(file);
-			// })
-			//Add new uploads to FormData
 			var fd = new FormData();
-			// fd.append('files',files);
 			angular.forEach(newUploads, function(file) {
 				fd.append('files', file);
 			})
@@ -363,10 +358,10 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 	}
 
 	$scope.cancel = function() {
-		$scope.user.firstName = userData.firstName;
-		$scope.user.lastName = userData.lastName;
-		$scope.user.accountType = userData.accountType;
-		$scope.user.email = userData.email;
+		userInfo.data.firstName = userData.firstName;
+		userInfo.data.lastName = userData.lastName;
+		userInfo.data.accountType = userData.accountType;
+		userInfo.data.email = userData.email;
 		$scope.uploads = [];
 	}
 })
@@ -377,6 +372,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 		$scope.profile.owner = userInfo.data._id;
 		UserProfileFactory.save($scope.profile).then(function(responseData) {
 			$scope.profile = responseData.data.profile;
+			$scope.$parent.profile = responseData.data.profile;
 			profileInfo.data = responseData.data.profile;
 			toastr.success("Producer profile information successfully saved.","Success!");
 		}, function(err) {
@@ -406,7 +402,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 	}
 	$scope.cancel = function() {
 		$scope.project = projectInfo.data;
-		$state.go('useradmin', {userId: userInfo.data._id, projectId: null });
+		$state.go('useradmin', {userId: $scope.userId, projectId: null });
 	}
 	$scope.projects = (profileInfo.data) ? profileInfo.data[0].projects : '';
 })

@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var User = require('./user_model');
 var UploadSchema = require('./upload_model').schema;
+var ProjectSchema = require('./model_project').schema;
 
 var ProducerSchema = new Schema({
 	name: String,
@@ -11,7 +12,7 @@ var ProducerSchema = new Schema({
 	type: String,
 	states: [],
 	energyType: String,
-  uploads: [ UploadSchema ],
+  	uploads: [ UploadSchema ],
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
@@ -26,9 +27,6 @@ var ProducerSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Certification'
 	}],
-	projects: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Project'
-	}]
+	projects: [ ProjectSchema ]
 });
 module.exports = mongoose.model('Producer', ProducerSchema);

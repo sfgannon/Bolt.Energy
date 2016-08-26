@@ -306,6 +306,7 @@ angular.module("boltprofiles", ["ngAnimate", "ngTouch", "ui.router", "ngResource
                 $rootScope.currentUserId = rd.user._id;
                 $rootScope.authenticated = LoginService.authenticated();
                 $state.go('home');
+                toastr.success("Welcome to Bolt, " + responseData.user.firstName, "Login Successful");
         }, function(error) {
             toastr.error("Error logging in: " + JSON.stringify(error));
         })
