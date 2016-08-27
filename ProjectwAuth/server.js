@@ -20,6 +20,7 @@ app.use(passport.initialize());
 // Bring in defined Passport Strategy
 require('./config/passport_config')(passport);
 
+require('./routes/user_routes')(app);
 require('./routes/routes_auth')(app);
 require('./routes/routes_image')(app);
 require('./routes/upload_routes')(app);

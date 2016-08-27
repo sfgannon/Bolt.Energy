@@ -325,6 +325,7 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 .controller('AccountAdminController', function($scope, userInfo, profileInfo) {
 	$scope.user = userInfo.data;
 	$scope.profile = (profileInfo.data) ? profileInfo.data[0] : '';
+	$scope.showMessage = false;
 })
 .controller('UserAdminController', function($scope, AccountService, $stateParams, userInfo, $http, $q, ConfigService, toastr, ImagesService, userImagesInfo) {
 	//Get profile data for $scope variable from resolved injected value
@@ -372,17 +373,17 @@ angular.module("UserModule", ["ui.router", "ngResource", "ngAnimate", "toastr"])
 		$scope.profile.owner = userInfo.data._id;
 		UserProfileFactory.save($scope.profile).then(function(responseData) {
 			$scope.profile = responseData.data.profile;
+			profileInfo.data[0] = responseData.data.profile;
 			$scope.$parent.profile = responseData.data.profile;
-			profileInfo.data = responseData.data.profile;
+			$scope.$parent.showMessage = true;
 			toastr.success("Producer profile information successfully saved.","Success!");
 		}, function(err) {
 			toastr.error(err.data.message || err.message, "Error");
 		})
 	}
 	$scope.cancel = function() {
-		$scope.profile = profileInfo.data;
+		$scope.profile = profileInfo.data[0];
 	}
-
 })
 .controller('ProjectAdminController', function($scope, UserProjectFactory, $stateParams, $state, projectInfo, profileInfo, userInfo, $http, $q, ConfigService, toastr) {
 	//Get profile data for $scope variable from resolved injected value

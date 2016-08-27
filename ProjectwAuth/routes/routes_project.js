@@ -43,6 +43,7 @@ router.route("/projects")
 		//TODO: Check if user already has a project, run auth() to check authentication, pass user
 		//info on to rest of cb func
 		//TODO make sure project is associated with profile
+		//TODO Image provessing, replicate producer save
 		req.body.project.projectOwner = mongoose.Types.ObjectId(req.body.project.owner);
 		var project = new Project(req.body.project);
 		project.save(function(err, project){

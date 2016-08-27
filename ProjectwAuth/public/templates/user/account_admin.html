@@ -3,12 +3,13 @@
 		<h3>Account Information</h3>
 		<div ui-view="user"></div>
 	</div>
-	<div class="col-left" ng-show="{{user.accountType == 'Producer'}}">
+	<div class="col-left" ng-show="user.accountType == 'Producer'">
 		<h3>Producer Profile Information</h3>
 		<div ui-view="profile"></div>
 	</div>
-	<div class="col-left" ng-show="{{user.accountType == 'Producer' && profile != ''}}">
+	<div class="col-left" ng-show="user.accountType == 'Producer' && profile != ''">
 		<h3>Project Information</h3>
 		<div ui-view="project"></div>
 	</div>
+	<div ng-show="showMessage">Heres a message</div>
 </div>
