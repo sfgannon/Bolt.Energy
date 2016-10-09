@@ -12,7 +12,7 @@ var ProducerSchema = new Schema({
 	type: String,
 	states: [],
 	energyType: String,
-  	uploads: [ UploadSchema ],
+	uploads: [ UploadSchema ],
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
