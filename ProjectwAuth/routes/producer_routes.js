@@ -12,9 +12,8 @@ var mkdirp = require('mkdirp-promise')
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    var destinationDirectory = './userImages/';
     var userDir = req.user ? req.user._id.toString() : 'uploads';
-    var path = destinationDirectory + userDir;
+    var path = config.userImagesDir + userDir;
     mkdirp(path).then(function(responseData) {
     	console.log("Producer upload directory created: " + path);
     	req.filepath = path;
@@ -25,9 +24,12 @@ var storage = multer.diskStorage({
     })
   },
   filename: function (req, file, cb) {
+  	req.user.images = (req.user.images)?(req.user.images):([]);
  		var id = req.user._id.toString();
- 		var fileName = id + "_" + file.originalname;
+ 		var currentDate = new Date();
+ 		var fileName = currentDate.now() + "_" + file.originalname;
  		file.path = req.filepath;
+ 		req.user.images.push(filename);
     cb(null, fileName);
   }
 });
@@ -43,6 +45,8 @@ var uploadFile = multer({
     }
   }
 });
+
+var uploadCall = uploadFile.array('files');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 
@@ -231,16 +235,98 @@ module.exports = function(app) {
 		}
 	})
 
-	router.post('/producer/:id/uploads', requireAuth, function(res, res) {
+	router.post('/producer/:id/uploads', [ requireAuth, uploadFile.array('files') ], function(res, res) {
 		try {
-
+			//Create a new upload entry under the producer's uploads field
+			//Check that producer profile is owner by this user
+			Producer.findById(req.params.id).populate('owner').exec(function(err, producer) {
+				if (err) {
+					res.status(500).json({ error: "Unable to save user upload.", err: err });
+				} else {
+					//Check to see that the current user owns this profile
+					if (producer.owner._id == req.user._id) {
+						//Current user owns this profile, save the files
+						//Loop through all of the uploaded files
+						var uploads = (req.body.uploads)?(JSON.parse(req.body.uploads)):('');
+						var directory = config.userImagesDir + req.user._id + "/";
+						var setFilenameAndPath = function(upload) {
+							upload.path = directory;
+							var updated = false;
+							for (var i = 0; i < req.user.images.length; i++) {
+								if ((req.user.images[i].indexOf(upload.filename) > -1) && (!updated)) {
+									upload.filename = req.user.images[i];
+									updated = true;
+								}
+							}
+							var newUpload = new Upload(upload);
+							producer.uploads.push(newUpload);
+						}
+						uploads.map(setFilenameAndPath);
+						producer.save(function(err) {
+							if (err) {
+								console.log(err);
+								res.status(500).json({ error: JSON.stringify(err.data), message: "Error saving user upload(s)." });
+							} else {
+								res.status(200).json({ message: "User upload(s) successfully saved." });
+							}
+						})
+					} else {
+						//Current user does not own this profile, return an access denied message and delete the files
+						res.status(403).json({ message: "The current user does not have permission to update this producer profile." });
+					}
+				}
+			})
 		} catch (e) {
-			res.status(404)
+			res.status(404).json({ message: "Error saving user uploads.", error: JSON.stringify(e) });
 		}
 	})
 
 	router.put('/producer/:id/uploads/:uploadId', requireAuth, function(req, res) {
-
+		try {
+			//Create a new upload entry under the producer's uploads field
+			//Check that producer profile is owner by this user
+			Producer.findById(req.params.id).populate('owner').populate('uploads').exec(function(err, producer) {
+				if (err) {
+					res.status(500).json({ error: "Unable to save user upload.", err: err });
+				} else {
+					//Check to see that the current user owns this profile
+					if (producer.owner._id == req.user._id) {
+						//Grab the upload specified in the route param
+						//Should not include a file update
+						var currentUpload = producer.uploads.id(req.params.uploadId);
+						currentUpload.description = req.body.description
+						var uploads = (req.body.uploads)?(JSON.parse(req.body.uploads)):('');
+						var directory = config.userImagesDir + req.user._id + "/";
+						var setFilenameAndPath = function(upload) {
+							upload.path = directory;
+							var updated = false;
+							for (var i = 0; i < req.user.images.length; i++) {
+								if ((req.user.images[i].indexOf(upload.filename) > -1) && (!updated)) {
+									upload.filename = req.user.images[i];
+									updated = true;
+								}
+							}
+							var newUpload = new Upload(upload);
+							producer.uploads.push(newUpload);
+						}
+						uploads.map(setFilenameAndPath);
+						producer.save(function(err) {
+							if (err) {
+								console.log(err);
+								res.status(500).json({ error: JSON.stringify(err.data), message: "Error saving user upload(s)." });
+							} else {
+								res.status(200).json({ message: "User upload(s) successfully saved." });
+							}
+						})
+					} else {
+						//Current user does not own this profile, return an access denied message and delete the files
+						res.status(403).json({ message: "The current user does not have permission to update this producer profile." });
+					}
+				}
+			})
+		} catch (e) {
+			res.status(404).json({ message: "Error saving user uploads.", error: JSON.stringify(e) });
+		}
 	})
 
 	router.delete('/producer/:id/uploads/:uploadId', requireAuth, function(req, res) {
@@ -248,7 +334,7 @@ module.exports = function(app) {
 	})
 
 	router.post('/producer/:id/projects', requireAuth, function(res, res) {
-		
+
 	})
 
 	router.put('/producer/:id/projects/:projectId', requireAuth, function(req, res) {
